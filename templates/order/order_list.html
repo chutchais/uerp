@@ -1,0 +1,36 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    <h2>Build order List</h2>
+
+    {% for object in object_list %}
+    	
+    	<a href="{{ object.get_absolute_url }}">
+    		{{object.name}}
+    	</a>
+    	| {{object.order|default:"Order - Not Defined"}} 
+        | <span class="qty">{{object.qty}}</span>
+        | <span class="weight">{{object.weight}}</span>
+        | <a href="{{object.product.get_absolute_url}}">{{object.product}} </a>| {{object.created_date}}<br>
+    {% endfor %}
+    
+   
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+		h2,h3 {
+		    color: #C25100;
+		}
+
+
+
+		.qty {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

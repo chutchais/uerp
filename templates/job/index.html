@@ -1,0 +1,30 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    <h2>Job Information <a href="{% url 'job:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2>
+
+    <div>
+        <h3>New Job (waiting for Assign Building Order)</h3>
+    </div>
+
+
+     
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+		h2,h3 {
+            color: #C25100;
+        }
+
+
+
+		.qty {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

@@ -1,0 +1,37 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    <h2>Job List</h2>
+
+    {% for object in object_list %}
+    	
+    	<a href="{{ object.get_absolute_url }}">
+    		{{object.name}}
+    	</a>
+    	| <a href="{{object.order.get_absolute_url}}">{{object.order|default:"Order not defined"}}</a> | 
+
+    	<a href="{{object.product.get_absolute_url}}">{{object.product}} </a>
+         | <a href="{{object.recipe.get_absolute_url}}">{{object.recipe|default:"Recipe not defined"}}</a>
+        | <span class="qty">{{object.qty}}</span> | <span class="qty">{{object.weight}}</span> | {{object.created_date}}| {{object.completed}}| {{object.balance}}<br>
+    {% endfor %}
+    
+   
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+		h2,h3 {
+		    color: #C25100;
+		}
+
+
+
+		.qty {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

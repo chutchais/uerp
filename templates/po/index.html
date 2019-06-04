@@ -1,0 +1,37 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    <h2>Purchase Order Information <a href="{% url 'po:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2>
+
+    <div>
+        <h3>New Purchase Order (waiting for Assign Building Order)</h3>
+    </div>
+
+    <div>
+        <h3>On progress</h3>
+    </div>
+
+      <div>
+        <h3>Completed/Delivery</h3>
+    </div>
+
+     
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+		h2,h3 {
+            color: #C25100;
+        }
+
+
+
+		.qty {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

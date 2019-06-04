@@ -1,0 +1,73 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    
+    <div class="wrapper">
+    	<h2>Purchase Order : {{ object}} <a href="{% url 'po:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2> 
+            
+	    <section class="purchase">
+	    	<div class="general_info">
+		    	{{object.description}}<br>
+	    		Issued on :{{object.created_date}}<br>
+	    		Status : {{object.completed}}
+	    	</div>
+	    	<div class="product">
+	    		Product : <a href="{{object.product.get_absolute_url}}">{{object.product}}</a><br>
+		    	QTY :<span class="qty">{{object.qty}}</span><br>
+	    		Total Weight :<span class="qty">{{object.weight}}</span><br>
+	    	</div>
+	    	<div class="customer">
+	    		{{object.customer}}<br>
+		    	{{object.delivery_date}}<br>
+		    	{{object.delivery_address}}
+	    	</div>
+	    	<div class="order">
+	    		Order : 
+	    		{% if object.order %}
+	    			<a href="{{object.orderitems.order.get_absolute_url}}">{{object.orderitems.order}}</a>
+	    		{% endif %}
+	    		<br>
+	    	</div>
+	    </section>
+
+
+	</div> <!-- End Wrapper -->
+
+   
+    
+   
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+
+	 	.wrapper{
+		    display:grid;
+		    grid-gap:20px;
+		}
+
+		.purchase{
+		    margin-top: 2rem;
+		    display: grid;
+		    grid-gap: 20px;
+		    grid-template-areas:
+		    'general_info product'
+		    'customer order';
+		}
+
+
+		h2 {
+		    color: #C25100;
+		}
+
+
+
+		.qty {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

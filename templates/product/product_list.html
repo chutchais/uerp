@@ -1,0 +1,33 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    <h2>Porduct List</h2>
+
+    {% for object in object_list %}
+    	
+    	<a href="{{ object.get_absolute_url }}">
+    		{{object.name}}
+    	</a> | {{object.fg_name}} | {{object.description}} | {{object.group}} | {{object.qty}}
+        <br>
+    {% endfor %}
+    
+   
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+		h2 h3 {
+		    color: #C25100;
+		}
+
+
+
+		.qty {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

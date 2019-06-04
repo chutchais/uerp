@@ -1,0 +1,71 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    
+    <div class="wrapper">
+    	<h2>Customer : {{ object}} <a href="{% url 'customer:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2> 
+	    <section class="customer">
+	    	<div class="general_info">
+		    	Description :{{object.description}}<br>
+		    	Address : {{object.address}}<br>
+	    		Issued on :{{object.created_date}}<br>
+	    	</div>
+
+	    	<div class="">
+	    		<h3>Purchase Order list</h3>
+	    		 {% for po in object.pos.all %}
+    					<a href="{{po.get_absolute_url}}">{{po}}</a> 
+    					|{{po.order}}
+    					|<a href="{{po.product.get_absolute_url}}">{{po.product}}</a>|{{po.qty}} |{{po.created_date}} |{{po.delivery_date}}|{{po.completed}}<br>
+			    {% endfor %}
+	    	</div>
+
+	    </section>
+
+
+
+
+	</div> <!-- End Wrapper -->
+
+   
+    
+   
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+
+	 	.wrapper{
+		    display:grid;
+		    grid-gap:20px;
+		}
+
+		.purchase{
+		    margin-top: 2rem;
+		    display: grid;
+		    grid-gap: 20px;
+		    grid-template-areas:
+		    'general_info product'
+		    'customer order';
+		}
+
+
+		h2 {
+		    color: #C25100;
+		}
+
+		h3 {
+		    color: #C25100;
+		}
+
+
+
+		.qty {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

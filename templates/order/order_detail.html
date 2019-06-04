@@ -1,0 +1,147 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    
+    <div class="wrapper">
+    	<h2>Order : {{ object}} <a href="{% url 'order:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2> 
+	    <section class="order">
+	    	<div class="general_info">
+		    	Description :{{object.description}}<br>
+		    	Product :<a href="{{object.product.get_absolute_url}}">{{object.product}} </a><br>
+		    	<!-- Show Child Product -->
+		    	{% if object.product.products %}
+			    	<ul>
+			    	{% for product in object.product.products.all %}
+			    		<li><a href="{{product.get_absolute_url}}">{{product}}</a></li>
+			    	{% endfor %}
+			    	</ul>
+		    	{% endif %}
+		    	<!-- End Child -->
+		    	Qty : <span class="qty">{{object.qty}}</span><br>
+		    	Weight : {{object.weight}} {{object.product.weight_unit}}<br>
+	    		Issued on :{{object.created_date}}<br>
+	    		Status : {{object.completed}}<br>
+	    		Draft : {{object.draft}}
+	    	</div>
+
+	    	<div>
+	    		<h3>Purchase Order items</h3>
+	    			
+	    		{% if po_list.count > 0 %}
+	    			<form method="POST" action="{{object.slug}}/items/add">
+				      {% csrf_token %}
+				     Select PO :
+	    			<select name="po">
+	    				{% for po in po_list %}
+					   <option value="{{po.slug}}">{{po}}  Qty : {{po.qty}} ({{po.created_date}})</option>
+					  {% endfor %}
+					</select>
+					<input type="submit" value="Add PO">
+					</form>
+				{% endif %}
+
+	    		 {% for po_object in object.orderitems.all %}
+    					{{po_object.seq}} 
+    					| <a href="{{po_object.po.get_absolute_url}}">{{po_object.po}}</a> 
+    					|<a href="{{po_object.po.product.get_absolute_url}}">{{po_object.po.product}}</a>
+    					|<span class="qty">{{po_object.po.qty}}</span>
+    					|{{po_object.po.weight}}
+    					|{{po_object.note}} 
+    					|{{po_object.created_date}}|{{ po_object.po.started }}|{{po_object.completed}}
+    					| 
+    					{% if po_object.po.started == False %}
+    					<a href="/order/items/{{po_object.pk}}/delete?next={{object.get_absolute_url}}">Delete</a>
+    					{% endif %}
+    					<br>
+	    			
+	    		
+			    {% endfor %}
+	    	</div>
+
+	    	<div>
+	    		<h3>Job Order</h3>
+
+	    		{% if object.orderitems.count > 0 %}
+	    		<form method="POST" action="{{object.slug}}/create_job">
+			      {% csrf_token %}
+			      <input type="hidden" name="order_slug" value="{{ object.slug }}">
+			      <input type="submit" value="Create Job">
+			    </form>
+			    {% endif %}
+			    
+	    		{% for job in object.jobs.all %}
+	    			<a href="{{job.get_absolute_url}}">{{job.name}}</a> 
+	    			| {{job.product}}
+	    			| {{job.description}} | <span class="qty">{{job.qty}} </span>| {{job.start_date}} 
+	    			| <span class="{% if job.recipe == none %}nothing{% endif %}"><a href="{{job.recipe.get_absolute_url}}">{{job.recipe|default:"Recipe not defined"}}</a></span>
+	    			| {{job.completed}} | {{job.balance}} 
+	    			| <a href="/job/{{job.slug}}/delete?next={{object.get_absolute_url}}">Delete</a> <br>
+	    		{% endfor %}
+
+	    		{% if object.jobs.count > 0 %}
+	    		<form method="POST" action="{{object.slug}}/delete_job">
+			      {% csrf_token %}
+			      <input type="hidden" name="order_slug" value="{{ object.slug }}">
+			      <input type="submit" value="Delete all Jobs">
+			    </form>
+			    {% endif %}
+	    	</div>
+	    	
+	    </section>
+
+
+	</div> <!-- End Wrapper -->
+
+   
+    
+   
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+
+	 	.wrapper{
+		    display:grid;
+		    grid-gap:20px;
+		}
+
+		.purchase{
+		    margin-top: 2rem;
+		    display: grid;
+		    grid-gap: 20px;
+		    grid-template-areas:
+		    'general_info product'
+		    'customer order';
+		}
+
+
+		h2 {
+		    color: #C25100;
+		}
+
+		h3 {
+		    color: #C25100;
+		}
+
+		.links a {
+		  text-decoration: none;
+		  color: white;
+		}
+
+
+		.qty {
+			color: #FF0000;
+		}
+
+		.nothing{
+			color: #FFFFFF;
+			font-weight: bold;
+			background-color: #FF0000;
+			text-decoration: none;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

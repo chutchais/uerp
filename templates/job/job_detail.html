@@ -1,0 +1,183 @@
+{% extends '../base.html' %}
+{% load recipe_tag %}
+
+{% block title %}
+Product detail
+{% endblock %}
+
+{% block content %}
+    
+    <div class="wrapper">
+    	<h2>Job Order : {{ object}} <a href="{% url 'job:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2> 
+            
+	    <section class="job">
+	    	<div class="general_info">
+		    	{{object.description}}<br>
+		    	Product : <a href="{{object.product.get_absolute_url}}">{{object.product}} </a>  Group:{{object.product.group}}<br>
+		    	Order : <a href="{{object.order.get_absolute_url}}">{{object.order|default:"Not Defined"}}</a><br>
+		    	
+		    	Qty : <span class="qty">{{object.qty}}</span><br>
+		    	Weight : {{object.weight}}  {{object.product.weight_unit}}<br>
+	    		Issued on :{{object.created_date}}<br>
+	    		Completed : {{object.completed}}<br>
+	    		Balance : {{object.balance}}
+	    	</div>
+
+	    	<div>
+	    		<h3>Building Plan</h3>
+	    		Start date : {{object.start_date}}<br>
+	    		Target date : {{object.stop_date}}<br>
+	    	</div>
+
+	    	
+
+	    	<div class="recipe">
+	    		<h3>Recipe Information</h3>
+
+	    		Recipe : <span><a href="{{object.recipe.get_absolute_url}}">{{object.recipe}}</a></span>
+		    	{% if object.recipe == None %}
+		    	<form method="POST" action="{% url 'job:recipe-update' object.slug %}?next={% url 'job:detail' object.slug %}">
+				      {% csrf_token %}
+	    			<select name="recipe">
+	    				{% for recipe in recipe_list %}
+					   <option value="{{recipe.slug}}">{{recipe}} -- {{recipe.description}}  </option>
+					  {% endfor %}
+					</select>
+					<input type="submit" value="Update Recipe">
+					</form>
+				{% else %}
+					<a href="{% url 'job:recipe-reset' object.slug %}?next={% url 'job:detail' object.slug %}">Change</a>
+				{% endif %}
+				<br>
+
+	    		{% if object.recipe %}
+	    			Weight/Mix : {{object.recipe.sum}} <br>
+	    			
+	    			{% total_mix object.weight object.recipe.sum as total_mix  %}
+	    			Total  Mix : {{total_mix}} <br><hr>
+	    			{% for rec in object.recipe.items.all|dictsort:"seq" %}
+	    				{% each_weight rec.ratio total_mix as total_each_weight %}
+	    				{{rec}} -- {{rec.ratio}} -- {{total_each_weight}} <br>
+	    			{% endfor %}
+	    		{% endif %}
+	    	</div>
+
+	    	<div>
+	    		<h3>Build Output Logs</h3>
+	    		{% if object.finished == False %}
+	    			<form method="POST" action="{% url 'job:complete-add' object.slug %}?next={% url 'job:detail' object.slug %}">
+				      {% csrf_token %}
+				      	Quantity :
+  						<input type="number" name="qty" min="1" max="{{object.qty}}" value="1">(between 1 and {{object.balance}})<br>
+	    				<textarea name="description" rows="3" cols="30"></textarea><br>
+						<input type="submit" value="Add Completed">
+					</form>
+	    		{% endif %}
+	    		<br>
+	    		{% if object.completes.count > 0 %}
+	    			Total  Build Completed : {{object.completed}} <br>
+	    			{% for complete in object.completes.all|dictsort:"stamp_date" %}
+	    				{{complete.stamp_date}} -- {{complete.qty}} -- {{complete.description}} -- 
+	    				{% if object.finished == False %}
+	    					<a href="{% url 'job:complete-delete' object.slug complete.pk %}?next={% url 'job:detail' object.slug %}">X</a>
+	    				{% endif %}
+	    				<br>
+	    			{% endfor %}
+	    		{% endif %}
+	    	</div>
+
+	    	<div>
+	    		<h3>Build Completed Update/Send to Quality</h3>
+	    		Finished : {{object.finished}}<br>
+	    		Finish date : {{object.finished_date}}<br>
+	    		{% if object.finished == False %}
+	    			Status : Working On Process
+	    			<form method="POST" action="{% url 'job:recipe-finish' object.slug %}?status=true&next={% url 'job:detail' object.slug %}">
+				      {% csrf_token %}
+	    			
+					<input type="submit" value="Finish Job/Send to Quality">
+					</form>
+				{% else %}
+					Status : Sent to Quality
+					{% if object.inspection.job != object %}
+						<form method="POST" action="{% url 'job:recipe-finish' object.slug %}?status=false&next={% url 'job:detail' object.slug %}">
+					      {% csrf_token %}
+		    			
+						<input type="submit" value="Reset finished Job">
+						</form>
+					{% endif %}
+	    		{% endif %}
+	    	</div>
+
+	    	<div>
+	    		<h3>Inspection by Quality</h3>
+	    		
+	    		
+	    		{% if object.inspection %}
+	  				Total Passed : {{object.inspection.passed}} <br>
+		    		Note :{{object.inspection.description}} <br>
+		    		Date :{{object.inspection.created_date}} <br>
+		    		Send to Warehouse : {{object.inspection.to_warehouse}} <br>
+		    		Send Date : {{object.inspection.to_date}} <br>
+					<form method="POST" action="{% url 'job:inspect-delete' object.slug %}?next={% url 'job:detail' object.slug %}">
+				      {% csrf_token %}
+	    			
+					<input type="submit" value="Cancel Inspection">
+					</form>
+	    		{% else %}
+	    			{% if object.finished %}
+	    			<form method="POST" action="{% url 'job:inspect-add' object.slug %}?next={% url 'job:detail' object.slug %}">
+				      {% csrf_token %}
+				      	Quantity :
+  						<input type="number" name="qty" min="1" max="{{object.qty}}" value="1">(between 1 and {{object.balance}})<br>
+	    				<textarea name="description" rows="3" cols="30"></textarea><br>
+						<input type="submit" value="Add to Warehouse">
+					</form>
+					{% endif %}
+	    		{% endif %}
+	    	</div>
+	    	
+	    	
+	    </section>
+
+
+	</div> <!-- End Wrapper -->
+
+   
+    
+   
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+
+	 	.wrapper{
+		    display:grid;
+		    grid-gap:20px;
+		}
+
+		.purchase{
+		    margin-top: 2rem;
+		    display: grid;
+		    grid-gap: 20px;
+		    grid-template-areas:
+		    'general_info product'
+		    'customer order';
+		}
+
+
+		h2,h3 {
+		    color: #C25100;
+		}
+
+
+
+		.qty,.weight {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

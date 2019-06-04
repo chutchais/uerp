@@ -1,0 +1,84 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    
+    <div class="wrapper">
+    	<h2>Product : {{ object}} <a href="{% url 'product:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2> 
+            
+	    <section class="product">
+
+	    	<div class="general_info">
+		    	Description : {{object.description}}<br>
+	    		Issued on :{{object.created_date}}<br>
+	    		Status : {{object.active}}<br>
+
+	    		Parent : 
+	    			{% if object.parent %}
+	    				<a href="{{object.parent.get_absolute_url}} ">{{object.parent}} </a>
+	    			{% endif %}
+	    			<br>
+	    		Group : {{object.group}}<br>
+	    		Customer : {{object.customer}}<br>
+	    		Type : {{object.crod_type}}<br>
+	    		Color : {{object.color}}<br><br>
+
+	    		<b>Child Product </b><br>
+		     	{% for product in object.products.all %}
+	    	
+			    	<a href="{{product.get_absolute_url}}">{{product}}</a> | {{product.qty}}
+			        <br>
+			    {% endfor %}
+	    	</div>
+	    	
+	    </section>
+
+
+
+
+	     <section class="warehouse">
+	     	<h3>Stock Information</h3>
+	     	Qty : {{object.qty}} <br>
+	     	Last in datetime : {{object.last_warehouse_date}}
+	     </section>
+
+	     <section class="order">
+	     	<h3>Product Order History </h3>
+	     	{% for order in object.orders.all %}
+    	
+		    	<a href="{{order.get_absolute_url}}">{{order}}</a> | {{order.qty}} | {{order.description}}| {{order.created_date}}
+		        <br>
+		    {% endfor %}
+	     </section>
+
+	     <section class="store">
+	     </section>
+
+
+	</div> <!-- End Wrapper 
+   
+    
+   
+{% endblock %}
+
+{% block stylesheet %}
+	 <style type="text/css">
+
+	 	
+		h2 {
+		    color: #C25100;
+		}
+
+		h3 {
+		    color: #C25100;
+		}
+
+
+
+		.qty {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

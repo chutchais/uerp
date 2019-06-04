@@ -1,0 +1,38 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    <h2>Order Item List</h2>
+
+    {% for object in object_list %}
+    	{{object.seq}}
+    	<a href="{{ object.order.get_absolute_url }}">
+    		{{object.order}}
+    	</a>
+        |<a href="{{object.po.get_absolute_url }}">
+            {{object.po}}
+        </a>
+    	|
+    	<a href="{{object.po.product.get_absolute_url}}">{{object.po.product}} </a>
+        | <span class="qty">{{object.qty}}</span> | <span class="qty">{{object.po.weight}}</span> | {{object.created_date}}| {{object.completed}}| {{object.balance}}<br>
+    {% endfor %}
+    
+   
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+		h2 h3 {
+		    color: #C25100;
+		}
+
+
+
+		.qty {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}
