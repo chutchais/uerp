@@ -8,12 +8,21 @@
 	    	<div class="general_info">
 		    	Description :{{object.description}}<br>
 		    	Address : {{object.address}}<br>
+		    	Delivery Address : {{object.delivery_address}}<br>
+		    	Tax : {{object.tax}}<br>
 	    		Issued on :{{object.created_date}}<br>
 	    	</div>
 
 	    	<div class="">
+	    		<h3>Contact list</h3>
+	    		 {% for contact in object.contacts.all %}
+    					{{contact.name}}|{{contact.position}}|{{contact.mobile}}|{{contact.telephone}}|{{contact.email}} <br>
+			    {% endfor %}
+	    	</div>
+
+	    	<div class="">
 	    		<h3>Purchase Order list</h3>
-	    		 {% for po in object.pos.all %}
+	    		 {% for po in object.pos.all|dictsortreversed:"created_date" %}
     					<a href="{{po.get_absolute_url}}">{{po}}</a> 
     					|{{po.order}}
     					|<a href="{{po.product.get_absolute_url}}">{{po.product}}</a>|{{po.qty}} |{{po.created_date}} |{{po.delivery_date}}|{{po.completed}}<br>

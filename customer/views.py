@@ -3,6 +3,14 @@ from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,
 
 # Create your views here.
 from .models import Customer
+
+def index(request):
+    fname = "customer/index.html"
+    return render(
+			request,
+			fname
+		)
+
 class CustomerListView(ListView):
 	model = Customer
 

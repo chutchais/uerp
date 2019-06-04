@@ -17,7 +17,7 @@
 	    		Total Weight :<span class="qty">{{object.weight}}</span><br>
 	    	</div>
 	    	<div class="customer">
-	    		{{object.customer}}<br>
+	    		<a href="{{object.customer.get_absolute_url}}">{{object.customer}}</a><br>
 		    	{{object.delivery_date}}<br>
 		    	{{object.delivery_address}}
 	    	</div>
