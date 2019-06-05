@@ -3,6 +3,16 @@
 {% block content %}
     <h2>Job List</h2>
 
+    <form class='form' method='GET' action='.'>
+                        Search :<input type='text' id='search' placeholder="" name="q" value='{{ request.GET.q}}'>
+                        <button class='btn btn-default' type='submit'>Search</button>
+                        <a href="{% url 'job:list'  %}">Clear result</a>
+    </form>
+                    
+   {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} record(s).
+
+   <br>
+
     {% for object in object_list %}
     	
     	<a href="{{ object.get_absolute_url }}">
@@ -14,6 +24,29 @@
          | <a href="{{object.recipe.get_absolute_url}}">{{object.recipe|default:"Recipe not defined"}}</a>
         | <span class="qty">{{object.qty}}</span> | <span class="qty">{{object.weight}}</span> | {{object.created_date}}| {{object.completed}}| {{object.balance}}<br>
     {% endfor %}
+
+    <br>
+    {% if is_paginated %}
+                  <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                      <li><a href="?q={{ request.GET.q}}&page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                      <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                      {% if page_obj.number == i %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                      {% else %}
+                        <li><a href="?q={{ request.GET.q}}&page={{ i }}">{{ i }}</a></li>
+                      {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                      <li><a href="?q={{ request.GET.q}}&page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                      <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                  </ul>
+    {% endif %}
     
    
 {% endblock %}

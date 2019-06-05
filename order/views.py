@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q,F
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,DeleteView
@@ -17,6 +18,16 @@ def index(request):
 
 class OrderListView(ListView):
 	model = Order
+	paginate_by = 100
+
+	def get_queryset(self):
+		query = self.request.GET.get('q')
+		if query :
+			return Order.objects.filter(Q(name__icontains=query) |
+									Q(description__icontains=query) |
+									Q(product__name__icontains=query)|
+									Q(product__description__icontains=query)).order_by('-created_date')
+		return Order.objects.all()
 
 
 class OrderDetailView(DetailView):

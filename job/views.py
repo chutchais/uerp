@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q,F
 from django.urls import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
@@ -18,6 +19,17 @@ def index(request):
 
 class JobListView(ListView):
 	model = Job
+	paginate_by = 100
+
+	def get_queryset(self):
+		query = self.request.GET.get('q')
+		if query :
+			return Job.objects.filter(Q(name__icontains=query) |
+									Q(description__icontains=query) |
+									Q(product__name__icontains=query)|
+									Q(product__description__icontains=query) |
+									Q(order__name__icontains=query)).order_by('-created_date')
+		return Job.objects.all()
 
 class JobDetailView(DetailView):
 	model = Job
