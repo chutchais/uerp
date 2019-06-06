@@ -39,23 +39,44 @@
 					<input type="submit" value="Add PO">
 					</form>
 				{% endif %}
+				<table class="table">
+			      <thead class="thead-dark">
+			        <tr>
+			          <th scope="col">Seq</th>
+			          <th scope="col">Po</th>
+			          <th scope="col">Product</th>
+			          <th scope="col">Qty</th>
+			          <th scope="col">Total Weight</th>
+			          <th scope="col">Note</th>
+			          <th scope="col">Issue Date</th>
+			          <th scope="col">Started</th>
+			          <th scope="col">Completed</th>
+			          <th scope="col">Action</th>
+			        </tr>
+			      </thead>
+			      <tbody>
+
 
 	    		 {% for po_object in object.orderitems.all %}
-    					{{po_object.seq}} 
-    					| <a href="{{po_object.po.get_absolute_url}}">{{po_object.po}}</a> 
-    					|<a href="{{po_object.po.product.get_absolute_url}}">{{po_object.po.product}}</a>
-    					|<span class="qty">{{po_object.po.qty}}</span>
-    					|{{po_object.po.weight}}
-    					|{{po_object.note}} 
-    					|{{po_object.created_date}}|{{ po_object.po.started }}|{{po_object.completed}}
-    					| 
-    					{% if po_object.po.started == False %}
-    					<a href="/order/items/{{po_object.pk}}/delete?next={{object.get_absolute_url}}">Delete</a>
-    					{% endif %}
-    					<br>
+    					<tr>
+				          <th scope="row">{{po_object.seq}}</th>
+				          <td><a href="{{po_object.po.get_absolute_url}}">{{po_object.po}}</a></td>
+				          <td><a href="{{po_object.po.product.get_absolute_url}}">{{po_object.po.product}}</a></td>
+				          <td><span class="qty">{{po_object.po.qty}}</td>
+				          <td>{{po_object.po.weight}}</td>
+				          <td>{{po_object.note}} </td>
+				          <td>{{po_object.created_date}}</td>
+				          <td>{{ po_object.po.started }}</td>
+				          <td>{{po_object.completed}}</td>
+				          <td>{% if po_object.po.started == False %}
+	    					<a href="/order/items/{{po_object.pk}}/delete?next={{object.get_absolute_url}}">Delete</a>
+	    					{% endif %}</td>
+					     </tr>
 	    			
 	    		
 			    {% endfor %}
+			    </tbody>
+  				</table>
 	    	</div>
 
 	    	<div>
@@ -68,15 +89,41 @@
 			      <input type="submit" value="Create Job">
 			    </form>
 			    {% endif %}
+
+			    <table class="table">
+			      <thead class="thead-dark">
+			        <tr>
+			          <th scope="col">Name</th>
+			          <th scope="col">Product</th>
+			          <th scope="col">Note</th>
+			          <th scope="col">Qty</th>
+			          <th scope="col">Start Date</th>
+			          <th scope="col">Recipe</th>
+			          <th scope="col">Completed</th>
+			          <th scope="col">Balance</th>
+			          <th scope="col">Action</th>
+			        </tr>
+			      </thead>
+			      <tbody>
 			    
 	    		{% for job in object.jobs.all %}
-	    			<a href="{{job.get_absolute_url}}">{{job.name}}</a> 
-	    			| {{job.product}}
-	    			| {{job.description}} | <span class="qty">{{job.qty}} </span>| {{job.start_date}} 
-	    			| <span class="{% if job.recipe == none %}nothing{% endif %}"><a href="{{job.recipe.get_absolute_url}}">{{job.recipe|default:"Recipe not defined"}}</a></span>
-	    			| {{job.completed}} | {{job.balance}} 
-	    			| <a href="/job/{{job.slug}}/delete?next={{object.get_absolute_url}}">Delete</a> <br>
+
+	    			<tr>
+				          <th scope="row"><a href="{{job.get_absolute_url}}">{{job.name}}</a></th>
+				          <td>{{job.product}}</td>
+				          <td>{{job.description}}</td>
+				          <td><span class="qty">{{job.qty}} </span></td>
+				          <td>{{job.start_date}} </td>
+				          <td><span class="{% if job.recipe == none %}nothing{% endif %}"><a href="{{job.recipe.get_absolute_url}}">{{job.recipe|default:"Recipe not defined"}}</a></span></td>
+				          <td>{{job.completed}}</td>
+				          <td>{{job.balance}}</td>
+				          <td><a href="/job/{{job.slug}}/delete?next={{object.get_absolute_url}}">Delete</a></td>
+					 </tr>
+
 	    		{% endfor %}
+
+	    		</tbody>
+  				</table>
 
 	    		{% if object.jobs.count > 0 %}
 	    		<form method="POST" action="{{object.slug}}/delete_job">

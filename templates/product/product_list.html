@@ -3,23 +3,52 @@
 {% block content %}
     <h2>Porduct List</h2>
 
-     <form class='form' method='GET' action='.'>
-                        Search :<input type='text' id='search' placeholder="" name="q" value='{{ request.GET.q}}'>
-                        <button class='btn btn-default' type='submit'>Search</button>
-                        <a href="{% url 'product:list'  %}">Clear result</a>
+     <form class="form-inline" method='GET' action='.'>
+        <div class="form-group row">
+
+            <div>
+              Search
+              <input type="text" id="search"  name="q" value='{{ request.GET.q}}'>
+              <button type="submit" class="btn btn-primary mb-2">Search</button>
+              <a href="{% url 'product:list'  %}">Clear result</a>
+            </div>
+        </div>
     </form>
                     
    {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} record(s).
 
    <br>
 
+   <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Finish Good</th>
+          <th scope="col">Description</th>
+          <th scope="col">Group</th>
+          <th scope="col">In Stock</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
     {% for object in object_list %}
+
+        <tr>
+          <th scope="row"><a href="{{ object.get_absolute_url }}">
+              {{object.name}}
+            </a>
+          </th>
+          <td>{{object.fg_name}}</td>
+          <td>{{object.description}}</td>
+          <td>{{object.group}}</td>
+          <td>{{object.qty}}</td>
+        </tr>
     	
-    	<a href="{{ object.get_absolute_url }}">
-    		{{object.name}}
-    	</a> | {{object.fg_name}} | {{object.description}} | {{object.group}} | {{object.qty}}
-        <br>
+    	
     {% endfor %}
+    </tbody>
+  </table>
 
 
     <br>

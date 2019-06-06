@@ -15,18 +15,58 @@
 
 	    	<div class="">
 	    		<h3>Contact list</h3>
+	    		<table class="table">
+			      <thead class="thead-dark">
+			        <tr>
+			          <th scope="col">Name</th>
+			          <th scope="col">Position</th>
+			          <th scope="col">Mobile</th>
+			          <th scope="col">Telephone</th>
+			          <th scope="col">Email</th>
+			        </tr>
+			      </thead>
+			      <tbody>
 	    		 {% for contact in object.contacts.all %}
-    					{{contact.name}}|{{contact.position}}|{{contact.mobile}}|{{contact.telephone}}|{{contact.email}} <br>
+    					<tr>
+				          <th scope="row">{{contact.name}}</th>
+				          <td>{{contact.position}}</td>
+				          <td>{{contact.mobile}}</td>
+				          <td>{{contact.telephone}}</td>
+				          <td>{{contact.email}}</td>
+				        </tr>
 			    {% endfor %}
+			    </tbody>
+  				</table>
 	    	</div>
 
 	    	<div class="">
 	    		<h3>Purchase Order list</h3>
+	    		<table class="table">
+			      <thead class="thead-dark">
+			        <tr>
+			          <th scope="col">Name</th>
+			          <th scope="col">Order</th>
+			          <th scope="col">Product</th>
+			          <th scope="col">Qty</th>
+			          <th scope="col">Issue Date</th>
+			          <th scope="col">Delivery Date</th>
+			          <th scope="col">Completed</th>
+			        </tr>
+			      </thead>
+			      <tbody>
 	    		 {% for po in object.pos.all|dictsortreversed:"created_date" %}
-    					<a href="{{po.get_absolute_url}}">{{po}}</a> 
-    					|{{po.order}}
-    					|<a href="{{po.product.get_absolute_url}}">{{po.product}}</a>|{{po.qty}} |{{po.created_date}} |{{po.delivery_date}}|{{po.completed}}<br>
+    					<tr>
+				          <th scope="row"><a href="{{po.get_absolute_url}}">{{po}}</a></th>
+				          <td>{{po.order}}</td>
+				          <td><a href="{{po.product.get_absolute_url}}">{{po.product}}</a></td>
+				          <td>{{po.qty}}</td>
+				          <td>{{po.created_date}}</td>
+				          <td>{{po.delivery_date}}</td>
+				          <td>{{po.completed}}</td>
+				        </tr>
 			    {% endfor %}
+			    </tbody>
+  				</table>
 	    	</div>
 
 	    </section>

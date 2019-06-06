@@ -3,25 +3,41 @@
 {% block content %}
     <h2>Build order List</h2>
 
-    <form class='form' method='GET' action='.'>
-                        Search :<input type='text' id='search' placeholder="" name="q" value='{{ request.GET.q}}'>
-                        <button class='btn btn-default' type='submit'>Search</button>
-                        <a href="{% url 'order:list'  %}">Clear result</a>
+    <form class="form-inline" method='GET' action='.'>
+        <div class="form-group row">
+
+            <div>
+              Search
+              <input type="text" id="search"  name="q" value='{{ request.GET.q}}'>
+              <button type="submit" class="btn btn-primary mb-2">Search</button>
+              <a href="{% url 'order:list'  %}">Clear result</a>
+            </div>
+        </div>
     </form>
                     
    {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} record(s).
 
-   <br>
+  <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Product</th>
+          <th scope="col">Qty</th>
+          <th scope="col">Total Weight</th>
+          <th scope="col">Date</th>
+        </tr>
+      </thead>
+      <tbody>
 
     {% for object in object_list %}
-    	
-    	<a href="{{ object.get_absolute_url }}">
-    		{{object.name}}
-    	</a>
-    	| {{object.order|default:"Order - Not Defined"}} 
-        | <span class="qty">{{object.qty}}</span>
-        | <span class="weight">{{object.weight}}</span>
-        | <a href="{{object.product.get_absolute_url}}">{{object.product}} </a>| {{object.created_date}}<br>
+         <tr>
+          <th scope="row"><a href="{{ object.get_absolute_url }}">{{object.name}}</a></th>
+          <td><a href="{{object.product.get_absolute_url}}">{{object.product}} </a></td>
+          <td><span class="qty">{{object.qty}}</span></td>
+          <td><span class="weight">{{object.weight}}</span></td>
+          <td>{{object.created_date}}</td>
+        </tr>
+
     {% endfor %}
 
     <br>
