@@ -35,6 +35,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['prod_type','group','color__name']
     list_display = ('name','fg_name','qty','parent','description','group','prod_type','prod_unit','color')
     readonly_fields = ['slug','last_warehouse_date']
+    ordering = ['name']
     fieldsets = [
         ('Basic Information',{'fields': [('name','prod_type'),'slug','description',('group','color')]}),
         ('Warehouse Information',{'fields': ['qty','last_warehouse_date']}),

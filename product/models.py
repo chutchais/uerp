@@ -127,7 +127,10 @@ class Product(models.Model):
 
 
 	def __str__(self):
-		return ('%s (%s)' % (self.name,self.description))
+		return ('%s' % (self.name))
+
+	# def __str__(self):
+	# 	return ('%s (%s)' % (self.name,self.description))
 
 	def weight_pending_build(self):
 		return 0

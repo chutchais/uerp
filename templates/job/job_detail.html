@@ -54,11 +54,30 @@ Product detail
 	    			Weight/Mix : {{object.recipe.sum}} <br>
 	    			
 	    			{% total_mix object.weight object.recipe.sum as total_mix  %}
-	    			Total  Mix : {{total_mix}} <br><hr>
+	    			Total  Mix : {{total_mix}} <br>
+
+	    			<table class="table">
+				      <thead class="thead-dark">
+				        <tr>
+				          <th scope="col">Item</th>
+				          <th scope="col">Weight Ratio</th>
+				          <th scope="col">Total Weight</th>
+				        </tr>
+				      </thead>
+				      <tbody>
+
 	    			{% for rec in object.recipe.items.all|dictsort:"seq" %}
 	    				{% each_weight rec.ratio total_mix as total_each_weight %}
-	    				{{rec}} -- {{rec.ratio}} -- {{total_each_weight}} <br>
+	    				<tr>
+				          <td>{{rec}}</td>
+				          <td>{{rec.ratio}}</td>
+				          <td>{{total_each_weight}}</td>
+				        </tr>
 	    			{% endfor %}
+
+		    		</tbody>
+		    	</table>
+
 	    		{% endif %}
 	    	</div>
 
@@ -76,13 +95,31 @@ Product detail
 	    		<br>
 	    		{% if object.completes.count > 0 %}
 	    			Total  Build Completed : {{object.completed}} <br>
+	    			<table class="table">
+				      <thead class="thead-dark">
+				        <tr>
+				          <th scope="col">Datetime</th>
+				          <th scope="col">Qty</th>
+				          <th scope="col">Description</th>
+				          <th scope="col">Action</th>
+				        </tr>
+				      </thead>
+				      <tbody>
+
 	    			{% for complete in object.completes.all|dictsort:"stamp_date" %}
-	    				{{complete.stamp_date}} -- {{complete.qty}} -- {{complete.description}} -- 
-	    				{% if object.finished == False %}
-	    					<a href="{% url 'job:complete-delete' object.slug complete.pk %}?next={% url 'job:detail' object.slug %}">X</a>
-	    				{% endif %}
-	    				<br>
+	    				
+	    				<tr>
+				          <td>{{complete.stamp_date}}</td>
+				          <td>{{complete.qty}}</td>
+				          <td>{{complete.description}}</td>
+				          <td>{% if object.finished == False %}
+	    					<a href="{% url 'job:complete-delete' object.slug complete.pk %}?next={% url 'job:detail' object.slug %}">Delete</a>
+	    				{% endif %}</td>
+				        </tr>
+
 	    			{% endfor %}
+	    			</tbody>
+	    			</table>
 	    		{% endif %}
 	    	</div>
 

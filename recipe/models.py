@@ -26,7 +26,7 @@ class Recipe(models.Model):
 		return self.items.count()
 
 	def sum(self):
-		return self.items.aggregate(Sum('ratio'))['ratio__sum']
+		return round(self.items.aggregate(Sum('ratio'))['ratio__sum'],3)
 
 	def get_absolute_url(self):
 		return reverse('recipe:detail', kwargs={'slug': self.slug})
@@ -50,7 +50,7 @@ class RecipeItem(models.Model):
 							blank=True,null=True,
 							on_delete=models.SET_NULL,
 							related_name = 'recipeintems')
-	ratio			= models.DecimalField(default=0,max_digits=8, decimal_places=4)
+	ratio			= models.DecimalField(default=0,max_digits=8, decimal_places=3)
 	created_date	= models.DateTimeField(auto_now_add=True)
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active			= models.BooleanField(default=True)

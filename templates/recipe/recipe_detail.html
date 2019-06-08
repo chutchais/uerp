@@ -14,10 +14,29 @@
 
 	    	<div>
 	    		<h3>Recipe items</h3>
+	    		 <table class="table">
+				      <thead class="thead-dark">
+				        <tr>
+				          <th scope="col">Seq</th>
+				          <th scope="col">Product</th>
+				          <th scope="col">Description</th>
+				          <th scope="col">Ratio</th>
+				          <th scope="col">last update</th>
+				        </tr>
+				      </thead>
+				      <tbody>
 	    		 {% for item in object.items.all %}
-    					{{item.seq}} 
-    					| <a href="{{item.product.get_absolute_url}}">{{item.product}}</a>|{{item.description}} |{{item.ratio}}||{{item.created_date}}|{{item.completed}}|{{item.active}}<br>
+    					
+    					<tr>
+				          <td>{{item.seq}}</td>
+				          <td><a href="{{item.product.get_absolute_url}}">{{item.product}}</a></td>
+				          <td>{{item.description}}</td>
+				          <td>{{item.ratio}}</td>
+				          <td>{{item.modified_date}}</td>
+				        </tr>
 			    {% endfor %}
+			    	</tbody>
+			    </table>
 	    	</div>
 
 	    	

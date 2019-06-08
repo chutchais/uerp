@@ -11,11 +11,11 @@ register = template.Library()
 
 @register.simple_tag
 def total_mix(total_weight,total_ratio):
-	return total_weight/total_ratio
+	return round(total_weight/total_ratio,2)
 
 @register.simple_tag
 def each_weight(each_ratio,total_mix):
-	return each_ratio*total_mix
+	return round(each_ratio*total_mix,2)
 
 # from schedule.models import Working
 
