@@ -66,8 +66,15 @@
 				          <td>{{po_object.po.weight}}</td>
 				          <td>{{po_object.note}} </td>
 				          <td>{{po_object.created_date}}</td>
-				          <td>{{ po_object.po.started }}</td>
-				          <td>{{po_object.completed}}</td>
+				         <!--  <td>{{ po_object.po.started }}</td>
+				          <td>{{po_object.completed}}</td> -->
+				         <!--  <td><i class="fa fa-circle {{po_object.po.started}}" aria-hidden="true"></i></td>
+          				  <td><i class="fa fa-circle {{po_object.completed}}" aria-hidden="true"></i></td> -->
+
+          				   <td><i class="fa {% if po_object.po.started %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{po_object.po.started}}" aria-hidden="true"></i></td>
+
+         					<td><i class="fa {% if po_object.completed %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{po_object.completed}}" aria-hidden="true"></i></td>
+
 				          <td>{% if po_object.po.started == False %}
 	    					<a href="/order/items/{{po_object.pk}}/delete?next={{object.get_absolute_url}}">Delete</a>
 	    					{% endif %}</td>
@@ -176,6 +183,13 @@
 		  color: white;
 		}
 
+		.true{
+	      color: #00FF00;
+	    }
+
+	    .false{
+	      color: #FF0000;
+	    }
 
 		.qty {
 			color: #FF0000;

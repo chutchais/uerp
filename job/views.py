@@ -104,6 +104,12 @@ def add_job_inspection(requets,slug):
 	# Increase Qty in Warehouse
 	product = job.product
 	product.increase_qty(int(qty))
+
+	# Update Qc check and Passed on Job
+	job.qc_checked = True
+	job.qc_date = timezone.now()
+	job.passed = qty
+	job.save()
 	# product.save()
 	return HttpResponseRedirect(redirect)
 
@@ -116,5 +122,10 @@ def delete_job_inspection(requets,slug):
 	# Decrease Qty in warehouse
 	product = job.product
 	product.decrease_qty(int(qty))
+
+	job.qc_checked = False
+	job.qc_date = None
+	job.passed = 0
+	job.save()
 
 	return HttpResponseRedirect(redirect)

@@ -62,7 +62,7 @@
 				          <td>{{po.qty}}</td>
 				          <td>{{po.created_date}}</td>
 				          <td>{{po.delivery_date}}</td>
-				          <td>{{po.completed}}</td>
+				          <td><i class="fa fa-circle {{po.completed}}" aria-hidden="true"></i></td>
 				        </tr>
 			    {% endfor %}
 			    </tbody>
@@ -107,6 +107,14 @@
 		h3 {
 		    color: #C25100;
 		}
+
+		 .true{
+		      color: #00FF00;
+		    }
+
+		    .false{
+		      color: #FF0000;
+		    }
 
 
 

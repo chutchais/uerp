@@ -22,12 +22,13 @@
           <th scope="col">Name</th>
           <th scope="col">Order</th>
           <th scope="col">Product</th>
-          <th scope="col">Recipe</th>
           <th scope="col">Qty</th>
-          <th scope="col">Total Weight</th>
-          <th scope="col">Date</th>
-          <th scope="col">Qty finished</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">Stop Date</th>
+          <th scope="col">Completed</th>
           <th scope="col">Balance</th>
+          <th scope="col">QC check</th>
+          <th scope="col">QC passed</th>
         </tr>
       </thead>
       <tbody>
@@ -37,12 +38,13 @@
           <th scope="row"><a href="{{ object.get_absolute_url }}">{{object.name}}</a></th>
           <td><a href="{{object.order.get_absolute_url}}">{{object.order|default:"Order not defined"}}</a></td>
           <td><a href="{{object.product.get_absolute_url}}">{{object.product}} </a></td>
-          <td><a href="{{object.recipe.get_absolute_url}}">{{object.recipe|default:""}}</a></td>
           <td><span class="qty">{{object.qty}}</span></td>
-          <td><span class="weight">{{object.weight}}</span></td>
-          <td>{{object.created_date}}</td>
+          <td>{{object.start_date|default:""}}</td>
+          <td>{{object.stop_date|default:""}}</td>
           <td>{{object.completed}}</td>
           <td>{{object.balance}}</td>
+          <td><i class="fa {% if object.qc_checked %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.qc_checked}}" aria-hidden="true"></i></td>
+          <td>{{object.passed}}</td>
         </tr>
 
     {% endfor %}
@@ -80,6 +82,14 @@
 		    color: #C25100;
 		}
 
+
+    .true{
+        color: #00FF00;
+      }
+
+      .false{
+        color: #FF0000;
+      }
 
 
 		.qty {

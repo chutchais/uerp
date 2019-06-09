@@ -60,6 +60,7 @@ Product detail
 				      <thead class="thead-dark">
 				        <tr>
 				          <th scope="col">Item</th>
+				          <th scope="col">Description</th>
 				          <th scope="col">Weight Ratio</th>
 				          <th scope="col">Total Weight</th>
 				        </tr>
@@ -70,6 +71,7 @@ Product detail
 	    				{% each_weight rec.ratio total_mix as total_each_weight %}
 	    				<tr>
 				          <td>{{rec}}</td>
+				          <td>{{rec.description}}</td>
 				          <td>{{rec.ratio}}</td>
 				          <td>{{total_each_weight}}</td>
 				        </tr>

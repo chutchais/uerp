@@ -75,17 +75,25 @@ def add_order_item(requets,slug):
 
 def create_job(request,slug):
 	order = Order.objects.get(slug=slug)
-
-
-	for part in order.product.products.all():
-		# print( part.group.slug if part.group else 'none')
-		job_name = '%s_%s_%s' % (part.group.slug if part.group else 'none',slug,part.slug)
+	print(order.product.products.count())
+	if order.product.products.count() == 0:
+		job_name = '%s_%s' % (order.slug,order.product.slug)
 		job,created = Job.objects.get_or_create(name=job_name,
-										description=order.description,
-										product=part,
-										order=order,
-										qty=order.qty())
-		# print (job_name,created)
+											description=order.description,
+											product=order.product,
+											order=order,
+											qty=order.qty())
+	else:
+	# Case FG product has Semi part
+		for part in order.product.products.all():
+			# print( part.group.slug if part.group else 'none')
+			job_name = '%s_%s_%s' % (slug,part.group.slug if part.group else 'none',part.slug)
+			job,created = Job.objects.get_or_create(name=job_name,
+											description=order.description,
+											product=part,
+											order=order,
+											qty=order.qty())
+			# print (job_name,created)
 
 	for item in order.orderitems.all().order_by('seq'):
 		po = item.po

@@ -25,6 +25,8 @@
           <th scope="col">Qty</th>
           <th scope="col">Total Weight</th>
           <th scope="col">Date</th>
+          <th scope="col">Draft</th>
+          <th scope="col">Complete?</th>
         </tr>
       </thead>
       <tbody>
@@ -36,6 +38,13 @@
           <td><span class="qty">{{object.qty}}</span></td>
           <td><span class="weight">{{object.weight}}</span></td>
           <td>{{object.created_date}}</td>
+          <!-- <td><i class="fa fa-circle {{object.draft}}" aria-hidden="true"></i></td>
+          <td><i class="fa fa-circle {{object.completed}}" aria-hidden="true"></i></td> -->
+
+           <td><i class="fa {% if object.draft %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.draft}}" aria-hidden="true"></i></td>
+
+          <td><i class="fa {% if object.completed %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.completed}}" aria-hidden="true"></i></td>
+          
         </tr>
 
     {% endfor %}
@@ -74,7 +83,13 @@
 		    color: #C25100;
 		}
 
+    .true{
+        color: #00FF00;
+      }
 
+      .false{
+        color: #FF0000;
+      }
 
 		.qty {
 			color: #FF0000;

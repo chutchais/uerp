@@ -29,12 +29,15 @@ class ProductInline(admin.TabularInline):
     model = Product
     fields = ['name','fg_name','group','prod_type']
     extra = 0
+    verbose_name = 'SEMI Part'
+    verbose_name_plural = 'SEMI Parts'
 
 class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name','description','group__name','fg_name']
     list_filter = ['prod_type','group','color__name']
     list_display = ('name','fg_name','qty','parent','description','group','prod_type','prod_unit','color')
     readonly_fields = ['slug','last_warehouse_date']
+    autocomplete_fields = ['parent']
     ordering = ['name']
     fieldsets = [
         ('Basic Information',{'fields': [('name','prod_type'),'slug','description',('group','color')]}),

@@ -12,9 +12,9 @@ class CompleteInline(admin.TabularInline):
 
 class JobAdmin(admin.ModelAdmin):
     search_fields 		= ['name','description','product__name','order__name']
-    list_filter 		= ['finished','product__name']
-    list_display 		= ('name','description','product','recipe','qty','completed',
-                            'balance','start_date','stop_date','active','finished')
+    list_filter 		= ['finished','qc_checked','product__name']
+    list_display 		= ('name','description','product','qty','start_date','stop_date','completed',
+                            'balance','finished','qc_checked','passed','active')
     readonly_fields 	= ['slug','completed','balance','finished_date']
     fieldsets = [
         ('Basic Information',{'fields': ['name','slug','description','product','active']}),

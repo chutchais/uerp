@@ -22,12 +22,27 @@
 	    		Type : {{object.crod_type}}<br>
 	    		Color : {{object.color}}<br><br>
 
-	    		<b>Child Product </b><br>
+	    		<h3>Semi Part </h3>
+	    		 <table class="table">
+			      <thead class="thead-dark">
+			        <tr>
+			          <th scope="col">Product</th>
+			          <th scope="col">Finish Goods</th>
+			          <th scope="col">Description</th>
+			          <th scope="col">In Stock</th>
+			        </tr>
+			      </thead>
+			      <tbody>
 		     	{% for product in object.products.all %}
-	    	
-			    	<a href="{{product.get_absolute_url}}">{{product}}</a> | {{product.qty}}
-			        <br>
+			        <tr>
+			          <th scope="row"><a href="{{product.get_absolute_url}}">{{product}}</a></th>
+			          <td>{{product.fg_name}}</td>
+			          <td>{{product.description}}</td>
+			          <td>{{product.qty}}</td>
+        			</tr>
 			    {% endfor %}
+					</tbody>
+				</table>
 	    	</div>
 	    	
 	    </section>
@@ -43,10 +58,25 @@
 
 	     <section class="order">
 	     	<h3>Product Order History </h3>
+
+	     	<table class="table">
+			      <thead class="thead-dark">
+			        <tr>
+			          <th scope="col">Order</th>
+			          <th scope="col">Qty</th>
+			          <th scope="col">Description</th>
+			          <th scope="col">Date</th>
+			        </tr>
+			      </thead>
+			      <tbody>
+
 	     	{% for order in object.orders.all %}
-    	
-		    	<a href="{{order.get_absolute_url}}">{{order}}</a> | {{order.qty}} | {{order.description}}| {{order.created_date}}
-		        <br>
+		         <tr>
+			          <th scope="row"><a href="{{order.get_absolute_url}}">{{order}}</a></th>
+			          <td>{{order.qty}}</td>
+			          <td>{{order.description}}</td>
+			          <td>{{order.created_date}}</td>
+        		</tr>
 		    {% endfor %}
 	     </section>
 
