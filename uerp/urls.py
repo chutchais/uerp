@@ -24,6 +24,7 @@ from django.contrib import admin
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('customer/',include(('customer.urls','customer'),namespace='customer')),
+    path('delivery/',include(('delivery.urls','delivery'),namespace='delivery')),
     path('job/',include(('job.urls','job'),namespace='job')),
     path('order/',include(('order.urls','order'),namespace='order')),
     path('recipe/',include(('recipe.urls','recipe'),namespace='recipe')),

@@ -57,7 +57,7 @@
 	    		 {% for po in object.pos.all|dictsortreversed:"created_date" %}
     					<tr>
 				          <th scope="row"><a href="{{po.get_absolute_url}}">{{po}}</a></th>
-				          <td>{{po.order}}</td>
+				          <td><a href="{{ po.orderitems.order.get_absolute_url }}">{{po.order}}</a></td>
 				          <td><a href="{{po.product.get_absolute_url}}">{{po.product}}</a></td>
 				          <td>{{po.qty}}</td>
 				          <td>{{po.created_date}}</td>

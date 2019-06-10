@@ -33,7 +33,7 @@ class PoAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'product':
             kwargs["queryset"] = Product.objects.filter(prod_type = 'FG').order_by('name')
-            print ('prodyuct......................')
+            # print ('prodyuct......................')
         return super(PoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
     # inlines = [JobInline]

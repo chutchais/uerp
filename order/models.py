@@ -78,6 +78,10 @@ class OrderItem(models.Model):
 	def qty(self):
 		return self.po.qty
 
+	# def get_absolute_url(self):
+	# 	# return 'test'
+	# 	return reverse('order:detail', kwargs={'slug': self.order.slug})
+
 
 
 # from django.db import models

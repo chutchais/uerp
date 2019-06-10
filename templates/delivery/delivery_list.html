@@ -1,7 +1,7 @@
 {% extends '../base.html' %}
 
 {% block content %}
-    <h2>Purchase Order List</h2>
+    <h2>Delivery List</h2>
 
     <form class="form-inline" method='GET' action='.'>
         <div class="form-group row">
@@ -10,7 +10,7 @@
               Search
               <input type="text" id="search"  name="q" value='{{ request.GET.q}}'>
               <button type="submit" class="btn btn-primary mb-2">Search</button>
-              <a href="{% url 'po:list'  %}">Clear result</a>
+              <a href="{% url 'delivery:list'  %}">Clear result</a>
             </div>
         </div>
     </form>
@@ -20,14 +20,11 @@
    <table class="table">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Order</th>
-          <th scope="col">Product</th>
+          <th scope="col">Invoice</th>
+          <th scope="col">Po</th>
           <th scope="col">Qty</th>
-          <th scope="col">Total Weight</th>
+          <th scope="col">Description</th>
           <th scope="col">Date</th>
-          <th scope="col">Started?</th>
-          <th scope="col">Completed?</th>
         </tr>
       </thead>
       <tbody>
@@ -35,17 +32,14 @@
     {% for object in object_list %}
       <tr>
           <th scope="row"><a href="{{ object.get_absolute_url }}">
-              {{object.name}}
+              {{object.invoice}}
             </a>
           </th>
-          <td><a href="{{ object.orderitems.order.get_absolute_url }}">{{object.order}}</a></td>
-          <td>{{object.product}}</td>
+          <td><a href="{{ object.po.get_absolute_url }}">{{object.po}}</a></td>
           <td><span class="qty">{{object.qty}}</span></td>
-          <td><span class="qty">{{object.weight}}</span></td>
-          <td>{{object.created_date}}</td>
-          <td><i class="fa {% if object.started %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.started}}" aria-hidden="true"></i></td>
-
-          <td><i class="fa {% if object.completed %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.completed}}" aria-hidden="true"></i></td>
+          <td>{{object.description}}</td>
+          <td>{{object.delivery_date}}</td>
+         
 
 
         </tr>
