@@ -50,6 +50,16 @@ class ProductColor(models.Model):
 		return ('%s (%s)' % (self.name,self.description))
 
 
+class ProductBrand(models.Model):
+	name 			= models.CharField(primary_key=True,max_length=50,null = False)
+	description 	= models.TextField(null = True,blank = True)
+	created_date	= models.DateTimeField(auto_now_add=True)
+	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
+	active			= models.BooleanField(default=True)
+
+	def __str__(self):
+		return ('%s' % (self.name))
+
 
 # Product Type
 CONSUMABLE		= 	'CON'
@@ -106,6 +116,10 @@ class Product(models.Model):
 							blank=True,null=True,
 							on_delete = models.SET_NULL,
 							related_name = 'products')
+	brand				= models.ForeignKey(ProductBrand,
+							blank=True,null=True,
+							on_delete = models.SET_NULL,
+							related_name = 'brands')
 	prod_type			= models.CharField(max_length=5,choices=PRODUCT_TYPE_CHOICES,default=RAW_MATERIAL)
 	prod_unit			= models.CharField(max_length=10,choices=PRODUCT_UNIT_CHOICES,default=PICE)
 	color 				= models.ForeignKey(ProductColor,
@@ -127,7 +141,7 @@ class Product(models.Model):
 
 
 	def __str__(self):
-		return ('%s' % (self.name))
+		return ('%s (%s)' % (self.name,self.fg_name))
 
 	# def __str__(self):
 	# 	return ('%s (%s)' % (self.name,self.description))

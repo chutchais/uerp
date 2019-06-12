@@ -3,7 +3,9 @@ from django.contrib import admin
 # Register your models here.
 from .models import (Product,
                     ProductGroup,
-                    ProductColor)
+                    ProductColor,ProductBrand)
+
+admin.site.register(ProductBrand)
 
 class ProductColorAdmin(admin.ModelAdmin):
     search_fields = ['name','description']
@@ -34,13 +36,14 @@ class ProductInline(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name','description','group__name','fg_name']
-    list_filter = ['prod_type','group','color__name']
-    list_display = ('name','fg_name','qty','parent','description','group','prod_type','prod_unit','color')
+    list_filter = ['prod_type','group','brand','color__name']
+    list_display = ('name','fg_name','qty','parent','description','brand','group','prod_type','prod_unit','color')
     readonly_fields = ['slug','last_warehouse_date']
     autocomplete_fields = ['parent']
     ordering = ['name']
     fieldsets = [
         ('Basic Information',{'fields': [('name','prod_type'),'slug','description',('group','color')]}),
+        ('Brand',{'fields': ['brand']}),
         ('Warehouse Information',{'fields': ['qty','last_warehouse_date']}),
         ('Bom Level Information',{'fields': ['parent']}),
         ('Finish Goods Information',{'fields': ['fg_name','customer',('weight','weight_runner','weight_unit'),('prod_unit','unit_per_pack','max_pack')]}),
