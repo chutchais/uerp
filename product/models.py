@@ -126,6 +126,8 @@ class Product(models.Model):
 							blank=True,null=True,
 							on_delete=models.SET_NULL,
 							related_name = 'products')
+	job_prefix 			= models.CharField(verbose_name='Job Prefix',max_length=10,blank=True,null=True)
+	min_order			= models.IntegerField(verbose_name='Minimum Order',default=0)
 	max_pack			= models.IntegerField(verbose_name='Pack per box',default=1)
 	unit_per_pack		= models.DecimalField(verbose_name='Unit per pack',default=1,max_digits=7, decimal_places=2)
 	weight				= models.DecimalField(verbose_name='Unit weight',default=0,max_digits=7, decimal_places=2)#Only Finish good weight
