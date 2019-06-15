@@ -15,4 +15,4 @@ quality/__pycache__/*.pyc
 # quality/migrations/*.py
 recipe/__pycache__/*.pyc
 # recipe/migrations/*.py
-# db.sqlite3
+db.sqlite3

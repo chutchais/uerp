@@ -63,6 +63,7 @@ Product detail
 				          <th scope="col">Description</th>
 				          <th scope="col">Weight Ratio</th>
 				          <th scope="col">Total Weight</th>
+				          <th scope="col">In Stock?</th>
 				        </tr>
 				      </thead>
 				      <tbody>
@@ -74,6 +75,7 @@ Product detail
 				          <td>{{rec.description}}</td>
 				          <td>{{rec.ratio}}</td>
 				          <td>{{total_each_weight}}</td>
+				          <td>{{rec.qty}}</td>
 				        </tr>
 	    			{% endfor %}
 
