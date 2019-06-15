@@ -20,12 +20,12 @@ from product.models import Product
 
 class PoAdmin(admin.ModelAdmin):
     search_fields 		= ['name','description','product__name']
-    list_filter 		= ['started','completed','product__group']
+    list_filter 		= ['started','completed','po_type','product__group']
     list_display 		= ('name','order','product','qty','weight','weight_unit','delivery_date','started','completed','active')
     readonly_fields 	= ['slug','order','weight','weight_unit']
     autocomplete_fields = ['product','customer']
     fieldsets = [
-        ('Basic Information',{'fields': ['name','slug','description','started','completed','active']}),
+        ('Basic Information',{'fields': ['name','slug','po_type','description','started','completed','active']}),
         ('Purchasing Information',{'fields': ['customer',('product','qty','weight','weight_unit'),'delivery_date','delivery_address']}),
         ('Build Order Information',{'fields': ['order']}),
     ]

@@ -8,6 +8,14 @@ from django.db.models import Sum
 from customer.models import Customer
 from product.models import Product
 
+BTO		=	'BUILD_TO_ORDER'
+BTS		=	'BUILD_TO_STOCK'
+PO_TYPE_CHOICE = (
+		(BTO,'Build to Order'),
+		(BTS,'Build to Stock')
+	)
+
+
 class Po(models.Model):
 	name 			= models.CharField(primary_key=True,max_length=50,null = False)
 	slug 			= models.SlugField(unique=True,blank=True, null=True)
@@ -21,6 +29,7 @@ class Po(models.Model):
 							blank=True,null=True,
 							on_delete=models.SET_NULL,
 							related_name = 'pos')
+	po_type 		= models.CharField(max_length=20,choices=PO_TYPE_CHOICE,default=BTO)
 	delivery_date	= models.DateTimeField(blank=True, null=True)
 	delivery_address= models.TextField(null = True,blank = True)
 	created_date	= models.DateTimeField(auto_now_add=True)
