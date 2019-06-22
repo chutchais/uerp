@@ -3,6 +3,7 @@ from django.db.models import Q,F
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,DeleteView
+from datetime import datetime
 
 # Create your views here.
 from .models import Order,OrderItem
@@ -73,11 +74,21 @@ def add_order_item(requets,slug):
 	po.save()
 	return HttpResponseRedirect(reverse('order:detail',kwargs={ 'slug': slug }))
 
+def get_job_seq(year,month,product_group):
+	job = Job.objects.filter(product__group = product_group,
+							created_date__year = year,
+							created_date__month = month)
+	# print (year,month,product_group)
+	return '{:03}'.format(job.count()+1)
+
 def create_job(request,slug):
 	order = Order.objects.get(slug=slug)
-	print(order.product.products.count())
 	if order.product.products.count() == 0:
-		job_name = '%s_%s' % (order.slug,order.product.slug)
+		# job_name = '%s_%s' % (order.slug,order.product.slug)
+		product_group = order.product.group.name if order.product.group else 'XX'
+		job_prefix = order.product.job_prefix if order.product.job_prefix else 'JC%s' % product_group
+		job_name = '%s%s-%s' % (job_prefix,datetime.now().strftime('%y%m'),
+							get_job_seq(datetime.now().year,datetime.now().month,order.product.group))
 		job,created = Job.objects.get_or_create(name=job_name,
 											description=order.description,
 											product=order.product,
@@ -86,8 +97,12 @@ def create_job(request,slug):
 	else:
 	# Case FG product has Semi part
 		for part in order.product.products.all():
-			# print( part.group.slug if part.group else 'none')
-			job_name = '%s_%s_%s' % (slug,part.group.slug if part.group else 'none',part.slug)
+			product_group = part.group.name if part.group else 'XX'
+			job_prefix = order.product.job_prefix if order.product.job_prefix else 'JC%s' % product_group
+			job_name = '%s%s-%s' % (job_prefix,datetime.now().strftime('%y%m'),
+							get_job_seq(datetime.now().year,datetime.now().month,part.group))
+
+
 			job,created = Job.objects.get_or_create(name=job_name,
 											description=order.description,
 											product=part,
