@@ -32,6 +32,6 @@ urlpatterns = [
     path('po/',include(('po.urls','po'),namespace='po')),
 ]
 
-admin.site.site_header = 'Nobel - ERP system'
-admin.site.site_title = "Nobel Admin"
-admin.site.index_title = "Welcome to Nobel ERP Portal"
+admin.site.site_header = 'uProduction - ERP system'
+admin.site.site_title = "uProduction Admin"
+admin.site.index_title = "Welcome to uProduction ERP Portal"

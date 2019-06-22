@@ -16,16 +16,21 @@ from machine.models import Machine
 
 class JobForm(ModelForm):
     def __init__(self, *args, **kwargs):
+        # self.instance = kwargs.pop('instance', None)
         super(JobForm, self).__init__(*args, **kwargs)
-        self.fields['machine'].queryset = Machine.objects.filter(productgroup = self.instance.product.group)
+        # if self.instance.product :
+        #     self.fields['machine'].queryset = Machine.objects.filter(productgroup = self.instance.product.group)
 
 class JobAdmin(admin.ModelAdmin):
     search_fields 		= ['name','description','product__name','order__name']
-    list_filter 		= ['finished','qc_checked','product__name']
-    list_display 		= ('name','description','product','qty','start_date','stop_date','completed',
+    list_filter 		= ('finished','qc_checked',('product',admin.RelatedOnlyFieldListFilter))
+    list_display 		= ('name','order','product','qty','start_date','stop_date','completed',
                             'balance','finished','qc_checked','passed','active')
     readonly_fields 	= ['slug','completed','balance','finished_date']
-    # autocomplete_fields = ['machine']
+    autocomplete_fields = ['machine']
+    list_display_links  = ['name','order','product']
+    date_hierarchy      = 'created_date'
+    # save_on_top         = True
     fieldsets = [
         ('Basic Information',{'fields': ['name','slug','description','product','active']}),
         ('Build Order',{'fields': [('order')]}),

@@ -36,11 +36,12 @@ class ProductInline(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name','description','group__name','fg_name']
-    list_filter = ['prod_type','group','brand','color__name']
+    list_filter = ('prod_type',('group',admin.RelatedOnlyFieldListFilter),'brand','color__name')
     list_display = ('name','fg_name','qty','parent','description','brand','group','prod_type','prod_unit','color')
     readonly_fields = ['slug','last_warehouse_date']
     autocomplete_fields = ['parent']
     ordering = ['name']
+    list_display_links  = ['name','parent']
     fieldsets = [
         ('Basic Information',{'fields': [('name','prod_type'),'slug','description',('group','color')]}),
         ('Brand',{'fields': ['brand']}),

@@ -24,6 +24,8 @@ class PoAdmin(admin.ModelAdmin):
     list_display 		= ('name','order','product','qty','weight','weight_unit','delivery_date','started','completed','active')
     readonly_fields 	= ['slug','order','weight','weight_unit']
     autocomplete_fields = ['product','customer']
+    list_display_links  = ['name','order','product']
+    date_hierarchy      = 'created_date'
     fieldsets = [
         ('Basic Information',{'fields': ['name','slug','po_type','description','started','completed','active']}),
         ('Purchasing Information',{'fields': ['customer',('product','qty','weight','weight_unit'),'delivery_date','delivery_address']}),

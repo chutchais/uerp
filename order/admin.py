@@ -40,10 +40,12 @@ class OrderItemInline(admin.TabularInline):
 
 class OrderAdmin(admin.ModelAdmin):
     search_fields 		= ['name','product__name','product__fg_name','description']
-    list_filter 		= ['draft','completed','product']
+    list_filter 		= ('draft','completed',('product',admin.RelatedOnlyFieldListFilter))
     list_display 		= ('name','description','product','pos','weight','created_date','draft','completed')
     readonly_fields 	= ['slug','weight']
     autocomplete_fields = ['product']
+    list_display_links  = ['name','product']
+    date_hierarchy      = 'created_date'
     fieldsets = [
         ('Basic Information',{'fields': ['name','slug','description','product','draft','completed']}),
         # ('Purchase Order',{'fields': ['pos']}),
