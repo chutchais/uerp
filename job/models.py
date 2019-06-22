@@ -9,6 +9,8 @@ from product.models 	import Product
 from po.models 			import Po
 from order.models 		import Order
 from recipe.models 		import Recipe 
+from machine.models 	import Machine
+
 class Job(models.Model):
 	name 			= models.CharField(primary_key=True,max_length=50,null = False)
 	slug 			= models.SlugField(unique=True,blank=True, null=True)
@@ -25,6 +27,11 @@ class Job(models.Model):
 							blank=True,null=True,
 							on_delete=models.SET_NULL,
 							related_name = 'jobs')
+	machine			= models.ForeignKey(Machine,
+							blank=True,null=True,
+							on_delete=models.SET_NULL,
+							related_name = 'jobs')
+
 	start_date		= models.DateTimeField(blank=True, null=True)
 	stop_date		= models.DateTimeField(blank=True, null=True)
 	created_date	= models.DateTimeField(auto_now_add=True)

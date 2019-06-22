@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'customer',
     'delivery',
     'quality',
+    'machine',
     'order',
     'product',
     'po',

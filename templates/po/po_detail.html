@@ -9,7 +9,8 @@
 	    	<div class="general_info">
 		    	{{object.description}}<br>
 	    		Issued on :{{object.created_date}}<br>
-	    		Status : {{object.completed}}
+	    		Status : {{object.completed}}<br>
+	    		Type :  {{object.po_type}}<br>
 	    	</div>
 	    	<div class="product">
 	    		Product : <a href="{{object.product.get_absolute_url}}">{{object.product}}</a><br>
