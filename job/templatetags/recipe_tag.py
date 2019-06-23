@@ -17,6 +17,17 @@ def total_mix(total_weight,total_ratio):
 def each_weight(each_ratio,total_mix):
 	return round(each_ratio*total_mix,2)
 
+
+@register.simple_tag
+def is_over24hours(date_in):
+	import datetime
+	diff 	= datetime.datetime.now() - date_in 
+	hours 	= int(diff.seconds // (60 * 60))
+	# hour int(diff.seconds // (60 * 60))
+	# min int((diff.seconds // 60) % 60)
+	# print (date_in,diff,hours)
+	return True if hours > 24 else False
+
 # from schedule.models import Working
 
 # @register.simple_tag

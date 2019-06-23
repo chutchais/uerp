@@ -143,7 +143,7 @@ class Product(models.Model):
 
 
 	def __str__(self):
-		return ('%s (%s)' % (self.name,self.fg_name))
+		return '%s (%s)' % (self.name,self.fg_name) if self.fg_name else '%s' % self.name
 
 	# def __str__(self):
 	# 	return ('%s (%s)' % (self.name,self.description))

@@ -86,3 +86,28 @@ class Complete(models.Model):
 	def __str__(self):
 		return ('%s-%s' % (self.job,self.qty))
 
+
+
+# To collect RAW mat of Job.
+from recipe.models import RecipeItem
+class RawMaterialUsage(models.Model):
+	job			= models.ForeignKey(Job,
+							on_delete=models.CASCADE,
+							related_name = 'rawusages')
+	recipeitem	= models.ForeignKey(RecipeItem,
+							null = True,blank = True,
+							on_delete=models.SET_NULL,
+							related_name = 'rawusages')
+	planed		= models.DecimalField(default=0,max_digits=8, decimal_places=3)
+	actual		= models.DecimalField(default=0,max_digits=8, decimal_places=3)
+	created_date	= models.DateTimeField(auto_now_add=True)
+	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
+	active			= models.BooleanField(default=True)
+
+	def __str__(self):
+		return ('%s-%s' % (self.job,self.recipeitem))
+
+
+
+
+

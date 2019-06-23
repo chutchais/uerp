@@ -2,9 +2,11 @@ from django.contrib import admin
 from django.forms import ModelForm
 
 # Register your models here.
-from .models import Job,Complete
+from .models import Job,Complete,RawMaterialUsage
 from machine.models import Machine
 from product.models import Product
+from recipe.models import RecipeItem
+
 
 class CompleteInline(admin.TabularInline):
     model = Complete
@@ -13,6 +15,41 @@ class CompleteInline(admin.TabularInline):
     extra = 0
 
 from machine.models import Machine
+
+
+class RawMaterialUsageInline(admin.TabularInline):
+    model = RawMaterialUsage
+    readonly_fields=['created_date']
+    # autocomplete_fields = ['recipeitem']
+    fields = ['recipeitem','planed','actual','active']
+    extra = 0
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "recipeitem":
+            job = self.get_object(request,Job)
+            if job :
+                kwargs["queryset"] = RecipeItem.objects.filter(recipe=job.recipe,).order_by('product')
+        return super(RawMaterialUsageInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_object(self, request, model):
+        if request.META['PATH_INFO'].strip('/').split('/')[-1] == 'add':
+            return None
+        object_id = request.META['PATH_INFO'].strip('/').split('/')[-2]
+        print (object_id)
+        return model.objects.get(pk=object_id)
+
+
+class RawMaterialUsageAdmin(admin.ModelAdmin):
+    search_fields       = ['job','recipeitem']
+    list_filter         = ['recipeitem']
+    list_display        = ('job','recipeitem','planed','actual','created_date','active')
+    autocomplete_fields = ['job','recipeitem']
+    readonly_fields     = ['created_date']
+    fieldsets = [
+        ('Basic Information',{'fields': ['job','recipeitem','planed','actual','created_date','active']}),
+    ]
+
+admin.site.register(RawMaterialUsage,RawMaterialUsageAdmin)
 
 class JobForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -39,7 +76,7 @@ class JobAdmin(admin.ModelAdmin):
         ('Plan Schedule',{'fields': [('qty','completed','balance'),('start_date','stop_date')]}),
         ('Job Finished',{'fields': ['finished','finished_date']}),
     ]
-    inlines =[CompleteInline]
+    inlines =[RawMaterialUsageInline,CompleteInline]
     form = JobForm
 
     # def formfield_for_foreignkey(self, db_field, request, **kwargs):
@@ -53,3 +90,6 @@ class JobAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Job,JobAdmin)
+
+
+

@@ -163,13 +163,24 @@ Product detail
 	  				Total Passed : {{object.inspection.passed}} <br>
 		    		Note :{{object.inspection.description}} <br>
 		    		Date :{{object.inspection.created_date}} <br>
-		    		Send to Warehouse : {{object.inspection.to_warehouse}} <br>
-		    		Send Date : {{object.inspection.to_date}} <br>
+		    		Send to Warehouse :  
+		    		<i class="fa {% if object.inspection.to_warehouse %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.inspection.to_warehouse}}" aria-hidden="true"></i>
+		    		<br>
+		    		Send Date : {{object.inspection.to_date}}  ( {{ object.inspection.to_date|timesince }} )<br>
+					
+					
+					{% is_over24hours object.inspection.to_date as is_over24 %}
+
+					{% if is_over24 %}
+						<span class="notice">If send to Warehouse over 24 hours , system will not allow to Cancel Inspection</span>
+					{% else %}
 					<form method="POST" action="{% url 'job:inspect-delete' object.slug %}?next={% url 'job:detail' object.slug %}">
 				      {% csrf_token %}
-	    			
-					<input type="submit" value="Cancel Inspection">
+						<input type="submit" value="Cancel Inspection">
 					</form>
+					{% endif %}
+					
+
 	    		{% else %}
 	    			{% if object.finished %}
 	    			<form method="POST" action="{% url 'job:inspect-add' object.slug %}?next={% url 'job:detail' object.slug %}">
@@ -217,9 +228,18 @@ Product detail
 		    color: #C25100;
 		}
 
+		.true{
+        color: #00FF00;
+      }
 
+      .false{
+        color: #FF0000;
+      }
 
 		.qty,.weight {
+			color: #FF0000;
+		}
+		.notice {
 			color: #FF0000;
 		}
 

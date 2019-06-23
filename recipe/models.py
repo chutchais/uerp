@@ -20,7 +20,7 @@ class Recipe(models.Model):
 
 
 	def __str__(self):
-		return ('%s (%s)' % (self.name,self.description))
+		return ('%s' % (self.name))
 
 	def count(self):
 		return self.items.count()
