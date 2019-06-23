@@ -91,15 +91,16 @@ class Complete(models.Model):
 # To collect RAW mat of Job.
 from recipe.models import RecipeItem
 class RawMaterialUsage(models.Model):
-	job			= models.ForeignKey(Job,
+	job				= models.ForeignKey(Job,
 							on_delete=models.CASCADE,
 							related_name = 'rawusages')
-	recipeitem	= models.ForeignKey(RecipeItem,
+	recipeitem		= models.ForeignKey(RecipeItem,
 							null = True,blank = True,
 							on_delete=models.SET_NULL,
 							related_name = 'rawusages')
-	planed		= models.DecimalField(default=0,max_digits=8, decimal_places=3)
-	actual		= models.DecimalField(default=0,max_digits=8, decimal_places=3)
+	planed			= models.DecimalField(default=0,max_digits=8, decimal_places=3)
+	actual			= models.DecimalField(default=0,max_digits=8, decimal_places=3)
+	lot 			= models.CharField(max_length=50,null = True,blank = True)
 	created_date	= models.DateTimeField(auto_now_add=True)
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active			= models.BooleanField(default=True)

@@ -21,7 +21,7 @@ class RawMaterialUsageInline(admin.TabularInline):
     model = RawMaterialUsage
     readonly_fields=['created_date']
     # autocomplete_fields = ['recipeitem']
-    fields = ['recipeitem','planed','actual','active']
+    fields = ['recipeitem','lot','planed','actual','active']
     extra = 0
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
@@ -40,13 +40,13 @@ class RawMaterialUsageInline(admin.TabularInline):
 
 
 class RawMaterialUsageAdmin(admin.ModelAdmin):
-    search_fields       = ['job','recipeitem']
+    search_fields       = ['job__name','recipeitem__product__name','lot']
     list_filter         = ['recipeitem']
-    list_display        = ('job','recipeitem','planed','actual','created_date','active')
+    list_display        = ('job','recipeitem','lot','planed','actual','created_date','active')
     autocomplete_fields = ['job','recipeitem']
     readonly_fields     = ['created_date']
     fieldsets = [
-        ('Basic Information',{'fields': ['job','recipeitem','planed','actual','created_date','active']}),
+        ('Basic Information',{'fields': ['job','recipeitem','lot','planed','actual','created_date','active']}),
     ]
 
 admin.site.register(RawMaterialUsage,RawMaterialUsageAdmin)
