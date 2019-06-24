@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'machine',
     'order',
     'product',
+    'production',
     'po',
     'job',
     'recipe'

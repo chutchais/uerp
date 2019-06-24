@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.forms import ModelForm
 
 # Register your models here.
-from .models import Job,Complete,RawMaterialUsage
+from .models import Job,Complete
 from machine.models import Machine
 from product.models import Product
 from recipe.models import RecipeItem
@@ -17,39 +17,39 @@ class CompleteInline(admin.TabularInline):
 from machine.models import Machine
 
 
-class RawMaterialUsageInline(admin.TabularInline):
-    model = RawMaterialUsage
-    readonly_fields=['created_date']
-    # autocomplete_fields = ['recipeitem']
-    fields = ['recipeitem','lot','planed','actual','active']
-    extra = 0
+# class RawMaterialUsageInline(admin.TabularInline):
+#     model = RawMaterialUsage
+#     readonly_fields=['created_date']
+#     # autocomplete_fields = ['recipeitem']
+#     fields = ['recipeitem','lot','planed','actual','active']
+#     extra = 0
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "recipeitem":
-            job = self.get_object(request,Job)
-            if job :
-                kwargs["queryset"] = RecipeItem.objects.filter(recipe=job.recipe,).order_by('product')
-        return super(RawMaterialUsageInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+#     def formfield_for_foreignkey(self, db_field, request, **kwargs):
+#         if db_field.name == "recipeitem":
+#             job = self.get_object(request,Job)
+#             if job :
+#                 kwargs["queryset"] = RecipeItem.objects.filter(recipe=job.recipe,).order_by('product')
+#         return super(RawMaterialUsageInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
-    def get_object(self, request, model):
-        if request.META['PATH_INFO'].strip('/').split('/')[-1] == 'add':
-            return None
-        object_id = request.META['PATH_INFO'].strip('/').split('/')[-2]
-        print (object_id)
-        return model.objects.get(pk=object_id)
+#     def get_object(self, request, model):
+#         if request.META['PATH_INFO'].strip('/').split('/')[-1] == 'add':
+#             return None
+#         object_id = request.META['PATH_INFO'].strip('/').split('/')[-2]
+#         print (object_id)
+#         return model.objects.get(pk=object_id)
 
 
-class RawMaterialUsageAdmin(admin.ModelAdmin):
-    search_fields       = ['job__name','recipeitem__product__name','lot']
-    list_filter         = ['recipeitem']
-    list_display        = ('job','recipeitem','lot','planed','actual','created_date','active')
-    autocomplete_fields = ['job','recipeitem']
-    readonly_fields     = ['created_date']
-    fieldsets = [
-        ('Basic Information',{'fields': ['job','recipeitem','lot','planed','actual','created_date','active']}),
-    ]
+# class RawMaterialUsageAdmin(admin.ModelAdmin):
+#     search_fields       = ['job__name','recipeitem__product__name','lot']
+#     list_filter         = ['recipeitem']
+#     list_display        = ('job','recipeitem','lot','planed','actual','created_date','active')
+#     autocomplete_fields = ['job','recipeitem']
+#     readonly_fields     = ['created_date']
+#     fieldsets = [
+#         ('Basic Information',{'fields': ['job','recipeitem','lot','planed','actual','created_date','active']}),
+#     ]
 
-admin.site.register(RawMaterialUsage,RawMaterialUsageAdmin)
+# admin.site.register(RawMaterialUsage,RawMaterialUsageAdmin)
 
 class JobForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -64,7 +64,7 @@ class JobAdmin(admin.ModelAdmin):
     list_display 		= ('name','order','product','qty','start_date','stop_date','completed',
                             'balance','finished','qc_checked','passed','active')
     readonly_fields 	= ['slug','completed','balance','finished_date']
-    autocomplete_fields = ['machine']
+    autocomplete_fields = []
     list_display_links  = ['name','order','product']
     date_hierarchy      = 'created_date'
     # save_on_top         = True
@@ -72,11 +72,10 @@ class JobAdmin(admin.ModelAdmin):
         ('Basic Information',{'fields': ['name','slug','description','product','active']}),
         ('Build Order',{'fields': [('order')]}),
         ('Recipe',{'fields': ['recipe']}),
-        ('Machine',{'fields': ['machine']}),
         ('Plan Schedule',{'fields': [('qty','completed','balance'),('start_date','stop_date')]}),
         ('Job Finished',{'fields': ['finished','finished_date']}),
     ]
-    inlines =[RawMaterialUsageInline,CompleteInline]
+    inlines =[CompleteInline]
     form = JobForm
 
     # def formfield_for_foreignkey(self, db_field, request, **kwargs):
