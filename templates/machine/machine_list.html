@@ -1,0 +1,101 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    <h2>Machine List</h2>
+
+    <form class="form-inline" method='GET' action='.'>
+        <div class="form-group row">
+
+            <div>
+              Search
+              <input type="text" id="search"  name="q" value='{{ request.GET.q}}'>
+              <button type="submit" class="btn btn-primary mb-2">Search</button>
+              <a href="{% url 'machine:list'  %}">Clear result</a>
+            </div>
+        </div>
+    </form>
+                    
+   {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} record(s).
+
+   <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Product Group</th>
+          <th scope="col">Date</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+
+    {% for object in object_list %}
+      <tr>
+          <th scope="row"><a href="{{ object.get_absolute_url }}">
+              {{object.name}}
+            </a>
+          </th>
+          
+          <td>{{object.description}}</td>
+           <td>{{object.productgroup}}</td>
+           <td>{{object.created_date}}</td>
+
+          <td><i class="fa {% if object.active %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.active}}" aria-hidden="true"></i></td>
+
+          
+
+
+        </tr>
+
+    {% endfor %}
+    <br>
+
+    {% if is_paginated %}
+                  <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                      <li><a href="?q={{ request.GET.q}}&page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                      <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                      {% if page_obj.number == i %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                      {% else %}
+                        <li><a href="?q={{ request.GET.q}}&page={{ i }}">{{ i }}</a></li>
+                      {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                      <li><a href="?q={{ request.GET.q}}&page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                      <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                  </ul>
+                {% endif %}
+    
+   
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+		h2,h3 {
+            color: #C25100;
+        }
+
+
+    .true{
+      color: #00FF00;
+    }
+
+    .false{
+      color: #FF0000;
+    }
+
+		.qty {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

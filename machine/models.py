@@ -27,6 +27,9 @@ class Machine(models.Model):
 	def __str__(self):
 		return ('%s' % self.name)
 
+	def get_absolute_url(self):
+		return reverse('machine:detail', kwargs={'slug': self.slug})
+
 def create_machine_slug(instance, new_slug=None):
     slug = slugify(instance.name)
     if new_slug is not None:

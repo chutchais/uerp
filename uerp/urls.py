@@ -30,6 +30,7 @@ urlpatterns = [
     path('recipe/',include(('recipe.urls','recipe'),namespace='recipe')),
     path('product/',include(('product.urls','product'),namespace='product')),
     path('po/',include(('po.urls','po'),namespace='po')),
+    path('machine/',include(('machine.urls','machine'),namespace='machine')),
 ]
 
 admin.site.site_header = 'uProduction - ERP system'
