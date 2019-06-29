@@ -1,1 +1,5 @@
 https://www.codementor.io/jamesezechukwu/how-to-deploy-django-app-on-heroku-dtsee04d4
+
+herogu login
+git push heroku master
+heroku run python manage.py migrate
