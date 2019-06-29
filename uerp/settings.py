@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'production',
     'po',
     'job',
-    'recipe'
+    'recipe',
+    'scrap',
+    'waste'
 ]
 
 MIDDLEWARE = [

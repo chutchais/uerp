@@ -1,8 +1,78 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Production,RawMaterialUsage,ProductionHour
+from .models import Production,RawMaterialUsage,ProductionHour,ScrapHour,WasteHour
 from recipe.models import RecipeItem
+from scrap.models import Scrap
+from waste.models import Waste
+
+
+class ScrapHourAdmin(admin.ModelAdmin):
+    list_display        = ['productionhour','scrap','qty','note']
+    list_filter         = ['scrap']
+    date_hierarchy      = 'created_date'
+    fieldsets = [
+        ('Basic Information',{'fields': ['productionhour','scrap','qty','note']}),
+    ]
+admin.site.register(ScrapHour,ScrapHourAdmin)
+
+
+class ScrapHourInline(admin.TabularInline):
+    model = ScrapHour
+    readonly_fields=['created_date']
+    # autocomplete_fields = ['recipeitem']
+    fields = ['scrap','qty','note']
+    extra = 0
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "scrap":
+            productionhour = self.get_object(request,ProductionHour)
+            if productionhour :
+                kwargs["queryset"] = Scrap.objects.filter(productgroup=productionhour.production.job.product.group).order_by('name')
+                # print(productionhour)
+            # kwargs["queryset"] = Scrap.objects.filter(productgroup=self.production.job.product.productgroup)
+        return super(ScrapHourInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_object(self, request, model):
+        if request.META['PATH_INFO'].strip('/').split('/')[-1] == 'add':
+            return None
+        object_id = request.META['PATH_INFO'].strip('/').split('/')[-2]
+        print (object_id)
+        return model.objects.get(pk=object_id)
+
+class WasteHourAdmin(admin.ModelAdmin):
+    list_display        = ['productionhour','waste','qty','note']
+    list_filter         = ['waste']
+    date_hierarchy      = 'created_date'
+    fieldsets = [
+        ('Basic Information',{'fields': ['productionhour','waste','qty','note']}),
+    ]
+admin.site.register(WasteHour,WasteHourAdmin)
+
+
+class WasteHourInline(admin.TabularInline):
+    model = WasteHour
+    readonly_fields=['created_date']
+    # autocomplete_fields = ['recipeitem']
+    fields = ['waste','qty','note']
+    extra = 0
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "waste":
+            productionhour = self.get_object(request,ProductionHour)
+            if productionhour :
+                kwargs["queryset"] = Waste.objects.filter(productgroup=productionhour.production.job.product.group).order_by('name')
+
+        return super(WasteHourInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_object(self, request, model):
+        if request.META['PATH_INFO'].strip('/').split('/')[-1] == 'add':
+            return None
+        object_id = request.META['PATH_INFO'].strip('/').split('/')[-2]
+        # print (object_id)
+        return model.objects.get(pk=object_id)
+
+
 
 class RawMaterialUsageInline(admin.TabularInline):
     model = RawMaterialUsage
@@ -49,11 +119,13 @@ class ProductionHourInline(admin.TabularInline):
     show_change_link = True
 
 class ProductionHourAdmin(admin.ModelAdmin):
-    list_display        = ['hour','line','product_code','weight_roll','roll_min','qty','note']
+    list_filter         = ['production__job__product__group','production__machine']
+    list_display        = ['production','hour','line','product_code','weight_roll','roll_min','qty','note']
     date_hierarchy      = 'created_date'
     fieldsets = [
-        ('Basic Information',{'fields': ['hour','line','product_code','weight_roll','roll_min','qty','note']}),
+        ('Basic Information',{'fields': ['production','hour','line','product_code','weight_roll','roll_min','qty','note']}),
     ]
+    inlines = [ScrapHourInline,WasteHourInline]
 admin.site.register(ProductionHour,ProductionHourAdmin)
 
 class ProductionAdmin(admin.ModelAdmin):

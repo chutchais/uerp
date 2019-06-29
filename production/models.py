@@ -97,7 +97,7 @@ LINE_TYPE_CHOICE = (
 )
 
 class ProductionHour(models.Model):
-	production			= models.ForeignKey(Production,
+	production		= models.ForeignKey(Production,
 							blank=True,null=True,
 							on_delete=models.CASCADE,
 							related_name = 'hours')
@@ -114,6 +114,47 @@ class ProductionHour(models.Model):
 
 	def __str__(self):
 		return ('%s on %s' % (self.production,self.hour))
+
+# Scrap per Hour
+from scrap.models import Scrap
+class ScrapHour(models.Model):
+	productionhour 	= models.ForeignKey(ProductionHour,
+							blank=True,null=True,
+							on_delete=models.CASCADE,
+							related_name = 'scraps')
+	scrap 			= models.ForeignKey(Scrap,
+							blank=True,null=True,
+							on_delete=models.CASCADE,
+							related_name = 'scraps')
+	qty				= models.DecimalField(verbose_name='Scrap Qty',default=1,max_digits=7, decimal_places=2)
+	note 			= models.CharField(max_length=100,null = True,blank = True)
+	created_date	= models.DateTimeField(auto_now_add=True)
+	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
+	active			= models.BooleanField(default=True)
+
+	def __str__(self):
+		return ('%s on %s' % (self.productionhour,self.scrap)) 
+
+# Scrap per Hour
+from waste.models import Waste
+class WasteHour(models.Model):
+	productionhour 	= models.ForeignKey(ProductionHour,
+							blank=True,null=True,
+							on_delete=models.CASCADE,
+							related_name = 'wastes')
+	waste 			= models.ForeignKey(Waste,
+							blank=True,null=True,
+							on_delete=models.CASCADE,
+							related_name = 'wastes')
+	qty				= models.DecimalField(verbose_name='Waste Qty',default=1,max_digits=7, decimal_places=2)
+	note 			= models.CharField(max_length=100,null = True,blank = True)
+	created_date	= models.DateTimeField(auto_now_add=True)
+	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
+	active			= models.BooleanField(default=True)
+
+	def __str__(self):
+		return ('%s on %s' % (self.productionhour,self.waste)) 
+
 
 
 from recipe.models import RecipeItem
@@ -136,6 +177,9 @@ class RawMaterialUsage(models.Model):
 
 	def __str__(self):
 		return ('%s-%s' % (self.production,self.recipeitem))
+
+
+
 
 # class Po(models.Model):
 # 	name 			= models.CharField(primary_key=True,max_length=50,null = False)
