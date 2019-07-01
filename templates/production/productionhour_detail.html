@@ -1,0 +1,117 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    
+    <div class="wrapper">
+    	<h2>On Hour : {{ object}} <a href="{% url 'production:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2> 
+            
+	    <section class="production">
+	    	<div class="general_info">
+		    	{{object.description}}<br>
+	    		Created on :{{object.created_date}}<br>
+	    	</div>
+
+	    </section>
+
+	    <section class="scrap">
+	    	{% if object.scraps.all %}
+	    	<table class="table">
+	    		<h3>Scrap Information</h3>
+				      <thead class="thead-dark">
+				        <tr>
+				          <th scope="col">Name</th>
+				          <th scope="col">Qty</th>
+				          <th scope="col">Note</th>
+				          <th scope="col">created_date</th>
+				        </tr>
+				      </thead>
+				      <tbody>
+
+	    	{% for scrap in object.scraps.all|dictsort:"created_date" %}
+	    				<tr>
+
+				          <td>{{scrap}}</td>
+				          <td>{{scrap.qty}}</td>
+				          <td>{{scrap.note}}</td>
+				          <td>{{scrap.created_date}}</td>
+				        </tr>
+	    	{% endfor %}
+
+	    	</tbody>
+		    	</table>
+		    	{% endif %}
+	    </section>
+
+	    <section class="waste">
+	    	{% if object.wastes.all %}
+	    	<table class="table">
+	    		<h3>Waste Information</h3>
+				      <thead class="thead-dark">
+				        <tr>
+				          <th scope="col">Name</th>
+				          <th scope="col">Qty</th>
+				          <th scope="col">Note</th>
+				          <th scope="col">created_date</th>
+				        </tr>
+				      </thead>
+				      <tbody>
+
+	    	{% for waste in object.wastes.all|dictsort:"created_date" %}
+	    				<tr>
+
+				          <td>{{waste}}</td>
+				          <td>{{waste.qty}}</td>
+				          <td>{{waste.note}}</td>
+				          <td>{{waste.created_date}}</td>
+				        </tr>
+			{% empty %}
+					No waste recorded.
+
+	    	{% endfor %}
+
+	    	</tbody>
+		    	</table>
+		    {% endif %}
+	    </section>
+
+
+	</div> <!-- End Wrapper -->
+
+   
+    
+   
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+
+	 	.wrapper{
+		    display:grid;
+		    grid-gap:20px;
+		}
+
+		.purchase{
+		    margin-top: 2rem;
+		    display: grid;
+		    grid-gap: 20px;
+		    grid-template-areas:
+		    'general_info product'
+		    'customer order';
+		}
+
+
+		h2 {
+		    color: #C25100;
+		}
+
+
+
+		.qty {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

@@ -1,0 +1,189 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    
+    <div class="wrapper">
+    	<h2>Production : {{ object}} <a href="{% url 'production:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2> 
+            
+	    <section class="production">
+	    	<div class="general_info">
+		    	{{object.description}}<br>
+	    		Created on :{{object.created_date}}<br>
+	    	</div>
+
+	    </section>
+
+	    <section class="hour">
+	    	<table class="table">
+	    		<h3>Material Usage</h3>
+				      <thead class="thead-dark">
+				        <tr>
+				          <th scope="col">Item</th>
+				          <th scope="col">Planed</th>
+				          <th scope="col">Actual</th>
+				          <th scope="col">Lot</th>
+				          <th scope="col">Note</th>
+				          <th scope="col">created_date</th>
+				        </tr>
+				      </thead>
+				      <tbody>
+
+	    	{% for item in object.rawusages.all|dictsort:"recipeitem" %}
+	    				<tr>
+				          <td>{{item}}</td>
+				          <td>{{item.planed}}</td>
+				          <td>{{item.actual}}</td>
+				          <td>{{item.lot}}</td>
+				          <td>{{item.note}}</td>
+				          <td>{{item.created_date}}</td>
+				        </tr>
+	    	{% endfor %}
+
+	    	</tbody>
+		    	</table>
+
+	    </section>
+
+
+	    <section class="hour">
+	    	<table class="table">
+	    		<h3>Hourly Output</h3>
+				      <thead class="thead-dark">
+				        <tr>
+				          <th scope="col">Hour</th>
+				          <th scope="col">Line</th>
+				          <th scope="col">Production Code</th>
+				          <th scope="col">Weight/Roll</th>
+				          <th scope="col">Roll/Min</th>
+				          <th scope="col">Qty</th>
+				          <th scope="col">Note</th>
+				          <th scope="col">created_date</th>
+				        </tr>
+				      </thead>
+				      <tbody>
+
+	    	{% for prodhour in object.hours.all|dictsort:"hour" %}
+	    				<tr>
+				          <td><a href="{{ prodhour.get_absolute_url }}">{{prodhour.hour}}</a></td>
+				          <td>{{prodhour.line}}</td>
+				          <td>{{prodhour.product_code}}</td>
+				          <td>{{prodhour.weight_roll}}</td>
+				          <td>{{prodhour.roll_min}}</td>
+				          <td>{{prodhour.qty}}</td>
+				          <td>{{prodhour.note}}</td>
+				          <td>{{prodhour.created_date}}</td>
+				        </tr>
+	    	{% endfor %}
+
+	    	</tbody>
+		    	</table>
+
+	    </section>
+
+	     <section class="scrap">
+	    	<table class="table">
+	    		<h3>Scraps</h3>
+				      <thead class="thead-dark">
+				        <tr>
+				          <th scope="col">Hour</th>
+				          <th scope="col">Name</th>
+				          <th scope="col">Qty</th>
+				          <th scope="col">Note</th>
+				          <th scope="col">created_date</th>
+				        </tr>
+				      </thead>
+				      <tbody>
+
+	    	{% for prodhour in object.hours.all|dictsort:"hour" %}
+	    				{% for scrap in prodhour.scraps.all|dictsort:"created_date" %}
+	    				<tr>
+	    				  <td>{{prodhour.hour}}</td>
+				          <td>{{scrap}}</td>
+				          <td>{{scrap.qty}}</td>
+				          <td>{{scrap.note}}</td>
+				          <td>{{scrap.created_date}}</td>
+				        </tr>
+	    				{% endfor %}
+	    	{% endfor %}
+
+	    	</tbody>
+		    	</table>
+
+	    </section>
+
+	    <section class="waste">
+	    	<table class="table">
+	    		<h3>Wastes</h3>
+				      <thead class="thead-dark">
+				        <tr>
+				          <th scope="col">Hour</th>
+				          <th scope="col">Name</th>
+				          <th scope="col">Qty</th>
+				          <th scope="col">Note</th>
+				          <th scope="col">created_date</th>
+				        </tr>
+				      </thead>
+				      <tbody>
+
+	    	{% for prodhour in object.hours.all|dictsort:"hour" %}
+	    				{% for waste in prodhour.wastes.all|dictsort:"created_date" %}
+	    				<tr>
+	    				  <td>{{prodhour.hour}}</td>
+				          <td>{{waste}}</td>
+				          <td>{{waste.qty}}</td>
+				          <td>{{waste.note}}</td>
+				          <td>{{waste.created_date}}</td>
+				        </tr>
+	    				{% endfor %}
+	    	{% endfor %}
+
+	    	</tbody>
+		    	</table>
+
+	    </section>
+
+
+	    
+
+
+
+	</div> <!-- End Wrapper -->
+
+   
+    
+   
+{% endblock %}
+
+
+{% block stylesheet %}
+	 <style type="text/css">
+
+	 	.wrapper{
+		    display:grid;
+		    grid-gap:20px;
+		}
+
+		.purchase{
+		    margin-top: 2rem;
+		    display: grid;
+		    grid-gap: 20px;
+		    grid-template-areas:
+		    'general_info product'
+		    'customer order';
+		}
+
+
+		h2 {
+		    color: #C25100;
+		}
+
+
+
+		.qty {
+			color: #FF0000;
+		}
+
+
+	</style>
+
+{% endblock stylesheet %}

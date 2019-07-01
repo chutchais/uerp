@@ -1,4 +1,8 @@
 from django.db import models
+from django.urls import reverse
+from django.utils.text import slugify
+from django.db.models.signals import pre_save
+from django.utils import timezone
 
 # Create your models here.
 
@@ -38,6 +42,9 @@ class Production(models.Model):
 
 	def __str__(self):
 		return ('%s on %s' % (self.job,self.shifts))
+
+	def get_absolute_url(self):
+		return reverse('production:detail', kwargs={'pk': self.pk})
 # Detail
 S1 = 1
 S2 = 2
@@ -115,6 +122,9 @@ class ProductionHour(models.Model):
 	def __str__(self):
 		return ('%s on %s' % (self.production,self.hour))
 
+	def get_absolute_url(self):
+		return reverse('production:hour', kwargs={'pk': self.pk})
+
 # Scrap per Hour
 from scrap.models import Scrap
 class ScrapHour(models.Model):
@@ -133,7 +143,7 @@ class ScrapHour(models.Model):
 	active			= models.BooleanField(default=True)
 
 	def __str__(self):
-		return ('%s on %s' % (self.productionhour,self.scrap)) 
+		return ('%s' % (self.scrap)) 
 
 # Scrap per Hour
 from waste.models import Waste
@@ -153,7 +163,31 @@ class WasteHour(models.Model):
 	active			= models.BooleanField(default=True)
 
 	def __str__(self):
-		return ('%s on %s' % (self.productionhour,self.waste)) 
+		return ('%s' % (self.waste)) 
+
+# Downtime per Hour
+from downtime.models import Downtime
+class DowntimeHour(models.Model):
+	productionhour 	= models.ForeignKey(ProductionHour,
+							blank=True,null=True,
+							on_delete=models.CASCADE,
+							related_name = 'downtimes')
+	downtime 		= models.ForeignKey(Downtime,
+							blank=True,null=True,
+							on_delete=models.CASCADE,
+							related_name = 'downtimes')
+	start			= models.TimeField(blank=True, null=True)
+	stop			= models.TimeField(blank=True, null=True)
+	usage_time		= models.DecimalField(verbose_name='Usage time (min)',default=0,max_digits=7, decimal_places=2)
+	scrap_weight 	= models.DecimalField(verbose_name='Scrap weight',default=0,max_digits=7, decimal_places=2)
+	waste_weight  	= models.DecimalField(verbose_name='Waste weight',default=0,max_digits=7, decimal_places=2)
+	note 			= models.CharField(max_length=100,null = True,blank = True)
+	created_date	= models.DateTimeField(auto_now_add=True)
+	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
+	active			= models.BooleanField(default=True)
+
+	def __str__(self):
+		return ('%s' % (self.downtime)) 
 
 
 
@@ -176,7 +210,7 @@ class RawMaterialUsage(models.Model):
 	active			= models.BooleanField(default=True)
 
 	def __str__(self):
-		return ('%s-%s' % (self.production,self.recipeitem))
+		return ('%s' % (self.recipeitem))
 
 
 

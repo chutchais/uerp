@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'job',
     'recipe',
     'scrap',
-    'waste'
+    'waste',
+    'downtime'
 ]
 
 MIDDLEWARE = [

@@ -1,10 +1,11 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Production,RawMaterialUsage,ProductionHour,ScrapHour,WasteHour
+from .models import Production,RawMaterialUsage,ProductionHour,ScrapHour,WasteHour,DowntimeHour
 from recipe.models import RecipeItem
 from scrap.models import Scrap
 from waste.models import Waste
+from downtime.models import Downtime
 
 
 class ScrapHourAdmin(admin.ModelAdmin):
@@ -73,6 +74,37 @@ class WasteHourInline(admin.TabularInline):
         return model.objects.get(pk=object_id)
 
 
+class DowntimeHourAdmin(admin.ModelAdmin):
+    list_display        = ['productionhour','downtime','start','stop','usage_time','scrap_weight','waste_weight','created_date']
+    list_filter         = ['downtime']
+    date_hierarchy      = 'created_date'
+    fieldsets = [
+        ('Basic Information',{'fields': ['productionhour','downtime','start','stop','usage_time','scrap_weight','waste_weight','note']}),
+    ]
+admin.site.register(DowntimeHour,DowntimeHourAdmin)
+
+class DowntimeHourInline(admin.TabularInline):
+    model = DowntimeHour
+    readonly_fields=['created_date']
+    # autocomplete_fields = ['recipeitem']
+    fields = ['downtime','start','stop','usage_time','scrap_weight','waste_weight','note']
+    extra = 0
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "downtime":
+            productionhour = self.get_object(request,ProductionHour)
+            if productionhour :
+                kwargs["queryset"] = Downtime.objects.filter(productgroup=productionhour.production.job.product.group).order_by('name')
+
+        return super(DowntimeHourInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_object(self, request, model):
+        if request.META['PATH_INFO'].strip('/').split('/')[-1] == 'add':
+            return None
+        object_id = request.META['PATH_INFO'].strip('/').split('/')[-2]
+        # print (object_id)
+        return model.objects.get(pk=object_id)
+
 
 class RawMaterialUsageInline(admin.TabularInline):
     model = RawMaterialUsage
@@ -125,7 +157,7 @@ class ProductionHourAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Basic Information',{'fields': ['production','hour','line','product_code','weight_roll','roll_min','qty','note']}),
     ]
-    inlines = [ScrapHourInline,WasteHourInline]
+    inlines = [ScrapHourInline,WasteHourInline,DowntimeHourInline]
 admin.site.register(ProductionHour,ProductionHourAdmin)
 
 class ProductionAdmin(admin.ModelAdmin):

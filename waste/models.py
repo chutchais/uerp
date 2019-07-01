@@ -20,7 +20,7 @@ class Waste(models.Model):
 
 
 	def __str__(self):
-		return ('%s-%s' % (self.name,self.productgroup))
+		return ('%s' % (self.name))
 
 
 def create_waste_slug(instance, new_slug=None):
