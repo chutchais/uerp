@@ -18,6 +18,9 @@ class Recipe(models.Model):
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active			= models.BooleanField(default=True)
 
+	class Meta:
+		verbose_name = 'Recipe'
+		verbose_name_plural = 'Recipe (Master Data)'
 
 	def __str__(self):
 		return ('%s' % (self.name))
@@ -55,6 +58,9 @@ class RecipeItem(models.Model):
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active			= models.BooleanField(default=True)
 
+	class Meta:
+		verbose_name = 'Recipe Item'
+		verbose_name_plural = 'Recipe Item (Master Data)'
 
 	def __str__(self):
 		return ('%s' % self.product)

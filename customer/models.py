@@ -15,6 +15,10 @@ class Customer(models.Model):
 	modified_date		= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active				= models.BooleanField(default=True)
 
+	class Meta:
+		verbose_name = 'Customer'
+		verbose_name_plural = 'Customer (Master Data)'
+
 	def __str__(self):
 		return ('%s' % self.name)
 

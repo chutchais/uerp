@@ -31,6 +31,9 @@ class Downtime(models.Model):
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active			= models.BooleanField(default=True)
 
+	class Meta:
+		verbose_name = 'Downtime'
+		verbose_name_plural = 'Downtime (Master Data)'
 
 	def __str__(self):
 		return ('%s' % (self.name))

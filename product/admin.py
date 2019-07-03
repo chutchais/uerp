@@ -5,7 +5,15 @@ from .models import (Product,
                     ProductGroup,
                     ProductColor,ProductBrand)
 
-admin.site.register(ProductBrand)
+
+class ProductBrandAdmin(admin.ModelAdmin):
+    search_fields = ['name','description']
+    list_filter = []
+    list_display = ('name','description','created_date')
+    fieldsets = [
+        ('Basic Information',{'fields': ['name','description']}),
+    ]
+admin.site.register(ProductBrand,ProductBrandAdmin)
 
 class ProductColorAdmin(admin.ModelAdmin):
     search_fields = ['name','description']

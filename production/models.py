@@ -40,6 +40,7 @@ class Production(models.Model):
 	class Meta:
 		unique_together = [['job', 'shifts']]
 
+
 	def __str__(self):
 		return ('%s on %s' % (self.job,self.shifts))
 
@@ -119,6 +120,10 @@ class ProductionHour(models.Model):
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active			= models.BooleanField(default=True)
 
+	class Meta:
+		verbose_name = 'Hour - Output'
+		verbose_name_plural = 'Productions Hour - Outputs'
+
 	def __str__(self):
 		return ('%s on %s' % (self.production,self.hour))
 
@@ -142,6 +147,10 @@ class ScrapHour(models.Model):
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active			= models.BooleanField(default=True)
 
+	class Meta:
+		verbose_name = 'Hour - Scrap'
+		verbose_name_plural = 'Productions Hour - Scraps'
+
 	def __str__(self):
 		return ('%s' % (self.scrap)) 
 
@@ -161,6 +170,10 @@ class WasteHour(models.Model):
 	created_date	= models.DateTimeField(auto_now_add=True)
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active			= models.BooleanField(default=True)
+
+	class Meta:
+		verbose_name = 'Hour - Waste'
+		verbose_name_plural = 'Productions Hour - Wastes'
 
 	def __str__(self):
 		return ('%s' % (self.waste)) 
@@ -186,6 +199,10 @@ class DowntimeHour(models.Model):
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active			= models.BooleanField(default=True)
 
+	class Meta:
+		verbose_name = 'Hour - Downtime'
+		verbose_name_plural = 'Productions Hour - Downtimes'
+
 	def __str__(self):
 		return ('%s' % (self.downtime)) 
 
@@ -208,6 +225,10 @@ class RawMaterialUsage(models.Model):
 	created_date	= models.DateTimeField(auto_now_add=True)
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active			= models.BooleanField(default=True)
+
+	class Meta:
+		verbose_name = 'Material Usage'
+		verbose_name_plural = 'Productions - Material Usage'
 
 	def __str__(self):
 		return ('%s' % (self.recipeitem))

@@ -23,6 +23,9 @@ class Machine(models.Model):
 	draft			= models.BooleanField(default=True)
 	active			= models.BooleanField(default=True)
 
+	class Meta:
+		verbose_name = 'Machine'
+		verbose_name_plural = 'Machine (Master Data)'
 
 	def __str__(self):
 		return ('%s' % self.name)
