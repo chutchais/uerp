@@ -42,6 +42,8 @@
 		    	{% endif %}
 	    </section>
 
+	    <!-- Waste -->
+
 	    <section class="waste">
 	    	{% if object.wastes.all %}
 	    	<table class="table">
@@ -66,6 +68,50 @@
 				        </tr>
 			{% empty %}
 					No waste recorded.
+
+	    	{% endfor %}
+
+	    	</tbody>
+		    	</table>
+		    {% endif %}
+	    </section>
+
+
+	</div> <!-- End Wrapper -->
+
+	<!-- Downtime -->
+	    <section class="downtime">
+	    	{% if object.downtimes.all %}
+	    	<table class="table">
+	    		<h3>Downtime Information</h3>
+				      <thead class="thead-dark">
+				        <tr>
+				          <th scope="col">Name</th>
+				          <th scope="col">Start</th>
+				          <th scope="col">Stop</th>
+				          <th scope="col">Usage (min)</th>
+				          <th scope="col">Scrap (Kg)</th>
+				          <th scope="col">Waste (Kg)</th>
+				          <th scope="col">Note</th>
+				          <th scope="col">created_date</th>
+				        </tr>
+				      </thead>
+				      <tbody>
+
+	    	{% for downtime in object.downtimes.all|dictsort:"created_date" %}
+	    				<tr>
+
+				          <td>{{downtime}}</td>
+				          <td>{{downtime.start}}</td>
+				          <td>{{downtime.stop}}</td>
+				          <td>{{downtime.usage_time}}</td>
+				          <td>{{downtime.scrap_weight}}</td>
+				          <td>{{downtime.waste_weight}}</td>
+				          <td>{{downtime.note}}</td>
+				          <td>{{downtime.created_date}}</td>
+				        </tr>
+			{% empty %}
+					No Downtime recorded.
 
 	    	{% endfor %}
 
