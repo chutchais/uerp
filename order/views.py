@@ -4,12 +4,15 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,DeleteView
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 from .models import Order,OrderItem
 from job.models import Job
 from po.models import Po
 
+@login_required
 def index(request):
     fname = "order/index.html"
     return render(
@@ -17,7 +20,7 @@ def index(request):
 			fname
 		)
 
-class OrderListView(ListView):
+class OrderListView(LoginRequiredMixin,ListView):
 	model = Order
 	paginate_by = 100
 
@@ -31,7 +34,7 @@ class OrderListView(ListView):
 		return Order.objects.all()
 
 
-class OrderDetailView(DetailView):
+class OrderDetailView(LoginRequiredMixin,DetailView):
 	model = Order
 	def get_context_data(self, **kwargs):
 		context     		= super().get_context_data(**kwargs)
@@ -41,13 +44,13 @@ class OrderDetailView(DetailView):
 		return context
 
 
-class OrderItemCreateView(CreateView):
+class OrderItemCreateView(LoginRequiredMixin,CreateView):
 	model = OrderItem
 
-class OrderItemListView(ListView):
+class OrderItemListView(LoginRequiredMixin,ListView):
 	model = OrderItem
 
-class OrderItemDeleteView(DeleteView):
+class OrderItemDeleteView(LoginRequiredMixin,DeleteView):
 	model = OrderItem
 	def get_success_url(self):
 		redirect = self.request.GET.get('next')
@@ -65,6 +68,7 @@ class OrderItemDeleteView(DeleteView):
   #       else:
   #           raise Http404("Object you are looking for doesn't exist")
 
+@login_required
 def add_order_item(requets,slug):
 	order 	= Order.objects.get(slug=slug)
 	po 		= Po.objects.get(slug=requets.POST.get('po'))
@@ -74,6 +78,7 @@ def add_order_item(requets,slug):
 	po.save()
 	return HttpResponseRedirect(reverse('order:detail',kwargs={ 'slug': slug }))
 
+@login_required
 def get_job_seq(year,month,product_group):
 	job = Job.objects.filter(product__group = product_group,
 							created_date__year = year,
@@ -81,6 +86,7 @@ def get_job_seq(year,month,product_group):
 	# print (year,month,product_group)
 	return '{:03}'.format(job.count()+1)
 
+@login_required
 def create_job(request,slug):
 	order = Order.objects.get(slug=slug)
 	if order.product.products.count() == 0:
@@ -117,6 +123,7 @@ def create_job(request,slug):
 
 	return HttpResponseRedirect(reverse('order:detail',kwargs={ 'slug': slug }))
 
+@login_required
 def delete_job(request,slug):
 	order = Order.objects.get(slug=slug)
 	ois = OrderItem.objects.filter(order=order)

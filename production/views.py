@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.db.models import Q,F
 from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,DeleteView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
-
+@login_required
 def index(request):
     fname = "production/index.html"
     return render(
@@ -14,7 +16,7 @@ def index(request):
 from .models import (Production,
 					ProductionHour)
 
-class ProductionListView(ListView):
+class ProductionListView(LoginRequiredMixin,ListView):
 	model = Production
 	paginate_by = 100
 
@@ -26,11 +28,11 @@ class ProductionListView(ListView):
 									Q(description__icontains=query) ).order_by('-created_date')
 		return Production.objects.all()
 
-class ProductionDetailView(DetailView):
+class ProductionDetailView(LoginRequiredMixin,DetailView):
 	model = Production
 
 
-class ProductionHourDetailView(DetailView):
+class ProductionHourDetailView(LoginRequiredMixin,DetailView):
 	model = ProductionHour
 
 

@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.db.models import Q,F
 from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,DeleteView
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
+@login_required
 def index(request):
     fname = "product/index.html"
     return render(
@@ -12,7 +14,8 @@ def index(request):
 		)
 
 from .models import Product,ProductGroup
-class ProductListView(ListView):
+
+class ProductListView(LoginRequiredMixin,ListView):
 	model = Product
 	paginate_by = 100
 
@@ -27,12 +30,12 @@ class ProductListView(ListView):
 									Q(group__name__icontains=query) ).order_by('-created_date')
 		return Product.objects.all()
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin,DetailView):
 	model = Product
 
 
-class ProductGroupListView(ListView):
+class ProductGroupListView(LoginRequiredMixin,ListView):
 	model = ProductGroup
 
-class ProductGroupDetailView(DetailView):
+class ProductGroupDetailView(LoginRequiredMixin,DetailView):
 	model = ProductGroup

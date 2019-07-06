@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}Uproduction - Home{% endblock %}
+
+{% block content %}
+    <h1>Uproduction ERP System</h1>
+
+    <div class="row">
+        <h2 class="col-12">Production</h2>
+            <!-- Start Item -->
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                    <div class="card" style="width: 15rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Purchase Order</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Purchase Order</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="{% url 'po:index' %}" class="card-link">Summary</a>
+                        <a href="{% url 'po:list' %}" class="card-link">List</a>
+                      </div>
+                    </div>
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                    <div class="card" style="width: 15rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Build Order</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Build Order</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="{% url 'order:index' %}" class="card-link">Summary</a>
+                        <a href="{% url 'order:list' %}" class="card-link">List</a>
+                      </div>
+                    </div>
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                    <div class="card" style="width: 15rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Job Order</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Job Order</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="{% url 'job:index' %}" class="card-link">Summary</a>
+                        <a href="{% url 'job:list' %}" class="card-link">List</a>
+                      </div>
+                    </div>
+                  
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                    <div class="card" style="width: 15rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Purchase Order</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="{% url 'po:index' %}" class="card-link">Summary</a>
+                        <a href="{% url 'po:list' %}" class="card-link">List</a>
+                      </div>
+                    </div>
+                  
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                    <div class="card" style="width: 15rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Production</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Production Hour Output</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="{% url 'production:index' %}" class="card-link">Summary</a>
+                        <a href="{% url 'production:list' %}" class="card-link">List</a>
+                      </div>
+                    </div>
+                  
+              </div>
+
+              
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                    <div class="card" style="width: 15rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Delivery</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Product delivery</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="{% url 'delivery:index' %}" class="card-link">Summary</a>
+                        <a href="{% url 'delivery:list' %}" class="card-link">List</a>
+                      </div>
+                    </div>
+                  
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                    <div class="card" style="width: 15rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Machine</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Machine Utilization</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="{% url 'machine:index' %}" class="card-link">Summary</a>
+                        <a href="{% url 'machine:list' %}" class="card-link">List</a>
+                      </div>
+                    </div>
+                  
+              </div>
+
+            <!-- End Item-->
+    </div>
+
+    <div class="row">
+        <h2 class="col-12">Configuration</h2>
+        <!-- Start Item -->
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                    <div class="card" style="width: 15rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Customer</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Purchase Order</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="{% url 'customer:index' %}" class="card-link">Summary</a>
+                        <a href="{% url 'customer:list' %}" class="card-link">List</a>
+                      </div>
+                    </div>
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                    <div class="card" style="width: 15rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Product</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Product Part number</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="{% url 'product:index' %}" class="card-link">Summary</a>
+                        <a href="{% url 'product:list' %}" class="card-link">List</a>
+                      </div>
+                    </div>
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                    <div class="card" style="width: 15rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">Recipe</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Recipe Info</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="{% url 'recipe:index' %}" class="card-link">Summary</a>
+                        <a href="{% url 'recipe:list' %}" class="card-link">List</a>
+                      </div>
+                    </div>
+              </div>
+        <!-- End Item -->
+
+    </div>
+
+
+     
+{% endblock %}
+
+
+{% block stylesheet %}
+
+{% endblock stylesheet %}

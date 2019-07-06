@@ -10,6 +10,10 @@ from .models import Job,Complete
 from recipe.models import Recipe
 from quality.models import Inspection
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+@login_required
 def index(request):
     fname = "job/index.html"
     return render(
@@ -17,7 +21,7 @@ def index(request):
 			fname
 		)
 
-class JobListView(ListView):
+class JobListView(LoginRequiredMixin,ListView):
 	model = Job
 	paginate_by = 100
 
@@ -31,7 +35,7 @@ class JobListView(ListView):
 									Q(order__name__icontains=query)).order_by('-created_date')
 		return Job.objects.all()
 
-class JobDetailView(DetailView):
+class JobDetailView(LoginRequiredMixin,DetailView):
 	model = Job
 	def get_context_data(self, **kwargs):
 		context     			= super().get_context_data(**kwargs)
@@ -40,7 +44,7 @@ class JobDetailView(DetailView):
 		# print(context['recipe_list'])
 		return context
 
-class JobDeleteView(DeleteView):
+class JobDeleteView(LoginRequiredMixin,DeleteView):
 	model = Job
 	# success_url = reverse_lazy('job:list')
 	def get_success_url(self):
@@ -48,6 +52,7 @@ class JobDeleteView(DeleteView):
 		# print (redirect)
 		return redirect
 
+@login_required
 def update_job_finished(requets,slug):
 	job 		= Job.objects.get(slug=slug)
 	redirect	= requets.GET.get('next')
@@ -59,7 +64,7 @@ def update_job_finished(requets,slug):
 
 
 
-
+@login_required
 def update_recipe(requets,slug):
 	job 		= Job.objects.get(slug=slug)
 	recipe 		= Recipe.objects.get(slug=requets.POST.get('recipe'))
@@ -68,6 +73,8 @@ def update_recipe(requets,slug):
 	job.save()
 	return HttpResponseRedirect(redirect)
 
+
+@login_required
 def reset_recipe(requets,slug):
 	redirect	= requets.GET.get('next')
 	job 		= Job.objects.get(slug=slug)
@@ -76,7 +83,7 @@ def reset_recipe(requets,slug):
 	print(redirect)
 	return HttpResponseRedirect(redirect)
 
-
+@login_required
 def add_job_complete(requets,slug):
 	job 		= Job.objects.get(slug=slug)
 	redirect	= requets.GET.get('next')
@@ -86,13 +93,14 @@ def add_job_complete(requets,slug):
 	Complete.objects.create(job=job,qty=qty,description=description,stamp_date=timezone.now())
 	return HttpResponseRedirect(redirect)
 
+@login_required
 def delete_job_complete(requets,slug,pk):
 	redirect	= requets.GET.get('next')
 	c=Complete.objects.get(pk=pk)
 	c.delete()
 	return HttpResponseRedirect(redirect)
 
-
+@login_required
 def add_job_inspection(requets,slug):
 	job 		= Job.objects.get(slug=slug)
 	redirect	= requets.GET.get('next')
@@ -113,6 +121,7 @@ def add_job_inspection(requets,slug):
 	# product.save()
 	return HttpResponseRedirect(redirect)
 
+@login_required
 def delete_job_inspection(requets,slug):
 	redirect	= requets.GET.get('next')
 	job 		= Job.objects.get(slug=slug)

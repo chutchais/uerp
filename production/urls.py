@@ -8,7 +8,7 @@ from .views import (ProductionListView,
 					index)
 
 urlpatterns = [
-    path('', index, name='list'),
+    path('', index, name='index'),
     path('list/', ProductionListView.as_view(), name='list'),
     path('<int:pk>', ProductionDetailView.as_view(), name='detail'),
     path('hour/<int:pk>', ProductionHourDetailView.as_view(), name='hour'),

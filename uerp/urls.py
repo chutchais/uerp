@@ -18,10 +18,15 @@ from django.urls import path
 from django.conf.urls import include, url
 
 from django.contrib import admin
+from .views import index,LoginForm
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LoginView,LogoutView
+
 
 
 
 urlpatterns = [
+    path('', index),
     path('admin/', admin.site.urls),
     path('customer/',include(('customer.urls','customer'),namespace='customer')),
     path('delivery/',include(('delivery.urls','delivery'),namespace='delivery')),
@@ -32,6 +37,12 @@ urlpatterns = [
     path('po/',include(('po.urls','po'),namespace='po')),
     path('machine/',include(('machine.urls','machine'),namespace='machine')),
     path('production/',include(('production.urls','production'),namespace='production')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    url(r'^login/', LoginView.as_view(),name='login'),
+    url(r'^logout/', LogoutView.as_view(),name='logout'),
+    # url(r'^login/', auth_views.login, {'template_name': 'accounts/login.html', 'authentication_form': LoginForm} , name='login'),
+    # path('accounts/login/', auth_views.LoginView.as_view(template_name='accounts/login.html',names='login')),
+    # path(r'logout/', auth_views.logout, {'next_page': '/login'},namespace='logout'),
 ]
 
 admin.site.site_header = 'uProduction - ERP system'

@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.db.models import Q,F
 from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,DeleteView
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 from .models import Customer
 
+@login_required
 def index(request):
     fname = "customer/index.html"
     return render(
@@ -12,7 +14,7 @@ def index(request):
 			fname
 		)
 
-class CustomerListView(ListView):
+class CustomerListView(LoginRequiredMixin,ListView):
 	model = Customer
 	paginate_by = 100
 
@@ -26,5 +28,5 @@ class CustomerListView(ListView):
 									Q(tax__icontains=query)).order_by('-created_date')
 		return Customer.objects.all()
 
-class CustomerDetailView(DetailView):
+class CustomerDetailView(LoginRequiredMixin,DetailView):
 	model = Customer
