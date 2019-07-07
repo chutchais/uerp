@@ -15,7 +15,20 @@
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-dark">{{ object.product.group }}</li>
              {% endifchanged %}
-            <li class="list-group-item"><a href="{{object.get_absolute_url}}">{{object}}</a>  <i>({{object.created_date}})</i> </li>
+            <li class="list-group-item"><a href="{{object.get_absolute_url}}">{{object}}</a>  <i>{{object.description}}({{object.created_date}})</i> 
+
+            <button type="button" class="btn btn-secondary">
+              Qty <span class="badge badge-light">{{object.qty}}</span>
+              <span class="sr-only">unread messages</span>
+            </button>
+            <button type="button" class="btn btn-secondary">
+              Weight <span class="badge badge-light">{{object.weight}} g</span>
+              <span class="sr-only">unread messages</span>
+            </button>
+
+            Draft :<i class="fa {% if object.draft %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.draft}}" aria-hidden="true"></i>
+
+            </li>
         {% endfor %}
 
     </div>

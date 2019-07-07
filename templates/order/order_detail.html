@@ -22,8 +22,8 @@
 		    	Qty : <span class="qty">{{object.qty}}</span><br>
 		    	Weight : {{object.weight}} {{object.product.weight_unit}}<br>
 	    		Issued on :{{object.created_date}}<br>
-	    		Status : {{object.completed}}<br>
-	    		Draft : {{object.draft}}
+	    		Status : <i class="fa {% if object.completed %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.completed}}" aria-hidden="true"></i><br>
+	    		Draft : <i class="fa {% if object.draft %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.draft}}" aria-hidden="true"></i>
 	    	</div>
 
 	    	<div>

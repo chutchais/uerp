@@ -34,7 +34,7 @@ class OrderItemInline(admin.TabularInline):
         if request.META['PATH_INFO'].strip('/').split('/')[-1] == 'add':
             return None
         object_id = request.META['PATH_INFO'].strip('/').split('/')[-2]
-        print (object_id)
+        print ('Key =%s' % object_id)
         return model.objects.get(pk=object_id)
 
 

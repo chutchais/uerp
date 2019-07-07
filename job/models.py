@@ -27,10 +27,9 @@ class Job(models.Model):
 							blank=True,null=True,
 							on_delete=models.SET_NULL,
 							related_name = 'jobs')
-	# machine			= models.ForeignKey(Machine,
-	# 						blank=True,null=True,
-	# 						on_delete=models.SET_NULL,
-	# 						related_name = 'jobs')
+	parent 			= models.ForeignKey('self', null=True,blank = True,
+						on_delete=models.SET_NULL,
+						related_name='jobs')
 
 	start_date		= models.DateTimeField(blank=True, null=True)
 	stop_date		= models.DateTimeField(blank=True, null=True)
