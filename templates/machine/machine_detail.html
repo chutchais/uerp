@@ -1,5 +1,7 @@
 {% extends '../base.html' %}
 
+{% block title %}Machine - {{ object.name}}{% endblock title %}
+
 {% block content %}
     <div class="wrapper">
     	<h1>Machine : {{ object}} <a href="{% url 'machine:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h1> 
