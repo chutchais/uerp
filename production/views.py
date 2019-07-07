@@ -8,9 +8,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 @login_required
 def index(request):
     fname = "production/index.html"
+    production_list 	= Production.objects.filter(
+    						active= True ,finished = False
+    					).order_by('job__product__group','created_date')
     return render(
 			request,
-			fname
+			fname,
+			{
+				'object_list' : production_list
+			}
 		)
 
 from .models import (Production,

@@ -11,9 +11,15 @@ from .models import Machine
 @login_required
 def index(request):
     fname = "Machine/index.html"
+    machine_list = Machine.objects.filter(
+    					active = True
+    					).order_by('productgroup','name')
     return render(
 			request,
-			fname
+			fname,
+			{
+				'object_list' : machine_list
+			}
 		)
 
 class MachineListView(LoginRequiredMixin,ListView):

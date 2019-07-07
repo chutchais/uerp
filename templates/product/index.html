@@ -1,9 +1,21 @@
 {% extends '../base.html' %}
 
 {% block content %}
-    <h2>Product Information <a href="{% url 'product:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2>
+    <h1>Product Information</h1>
+     <a href="{% url 'product:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a><br>
 
+     List of product on last 30 days<br>
     
+     {% for object in object_list %}
+            {% ifchanged object.group %}
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-dark">{{ object.group }}</li>
+             {% endifchanged %}
+            <li class="list-group-item"><a href="{{object.get_absolute_url}}">{{object}}</a>  
+            	<i>{{object.description}}  ({{object.modified_date}})</i>  
+            </li>
+        {% endfor %}
+
 
 
      
@@ -11,18 +23,7 @@
 
 
 {% block stylesheet %}
-	 <style type="text/css">
-		h2,h3 {
-            color: #C25100;
-        }
 
 
-
-		.qty {
-			color: #FF0000;
-		}
-
-
-	</style>
 
 {% endblock stylesheet %}

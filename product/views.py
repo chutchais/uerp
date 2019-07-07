@@ -4,13 +4,20 @@ from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
+import datetime
 
 @login_required
 def index(request):
     fname = "product/index.html"
+    product_list = Product.objects.filter(
+    					active = True,modified_date__gt= datetime.datetime.today()-datetime.timedelta(days=30)
+    					).order_by('group','name')
     return render(
 			request,
-			fname
+			fname,
+			{
+				'object_list' : product_list
+			}
 		)
 
 from .models import Product,ProductGroup

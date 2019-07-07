@@ -10,9 +10,15 @@ from .models import Recipe
 @login_required
 def index(request):
     fname = "recipe/index.html"
+    recipe_list = Recipe.objects.filter(
+    					active = True
+    					).order_by('prod_group','name')
     return render(
 			request,
-			fname
+			fname,
+			{
+				'object_list' : recipe_list
+			}
 		)
 
 class RecipeListView(LoginRequiredMixin,ListView):

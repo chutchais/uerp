@@ -1,37 +1,29 @@
 {% extends '../base.html' %}
 
+{% block title %}Purchase Order - Home{% endblock %}
+
 {% block content %}
-    <h2>Purchase Order Information <a href="{% url 'po:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2>
+    <h1>Purchase Order Information </h1> <a href="{% url 'po:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a>
 
     <div>
-        <h3>New Purchase Order (waiting for Assign Building Order)</h3>
+        <h3>Pending or On Progress</h3>
+
+        {% for po in po_list %}
+            {% ifchanged po.product.group %}
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-dark">{{ po.product.group }}</li>
+             {% endifchanged %}
+            <li class="list-group-item"><a href="{{po.get_absolute_url}}">{{po}}</a>  <i>({{po.created_date}})</i> </li>
+        {% endfor %}
+
     </div>
 
-    <div>
-        <h3>On progress</h3>
-    </div>
-
-      <div>
-        <h3>Completed/Delivery</h3>
-    </div>
+   
 
      
 {% endblock %}
 
 
 {% block stylesheet %}
-	 <style type="text/css">
-		h2,h3 {
-            color: #C25100;
-        }
-
-
-
-		.qty {
-			color: #FF0000;
-		}
-
-
-	</style>
 
 {% endblock stylesheet %}

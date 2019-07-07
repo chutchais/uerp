@@ -7,13 +7,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 from .models import Po
+from product.models import ProductGroup
 
 @login_required
 def index(request):
     fname = "po/index.html"
+    po_list 	= Po.objects.filter(
+    						active= True ,
+    						completed = False
+    					).order_by('product__group','created_date')
     return render(
 			request,
-			fname
+			fname,
+			{
+				'po_list' : po_list
+			}
 		)
 
 class PoListView(LoginRequiredMixin,ListView):

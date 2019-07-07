@@ -1,26 +1,28 @@
 {% extends '../base.html' %}
 
 {% block content %}
-    <h2>Production Information <a href="{% url 'production:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2>
+    <h2>Production Information <a href="{% url 'production:list' %}"></h2>
+    	<i class="fa fa-list" aria-hidden="true"></i></a>
 
-   
+   <div>
+        <h3>Pending or On Progress</h3>
+
+        {% for object in object_list %}
+            {% ifchanged object.job.product.group %}
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-dark">{{ object.job.product.group }}</li>
+             {% endifchanged %}
+            <li class="list-group-item"><a href="{{object.get_absolute_url}}">{{object}}</a>  
+            	<i>({{object.created_date}})</i>  
+            </li>
+        {% endfor %}
+
+    </div>
+
      
 {% endblock %}
 
 
 {% block stylesheet %}
-	 <style type="text/css">
-		h2,h3 {
-            color: #C25100;
-        }
-
-
-
-		.qty {
-			color: #FF0000;
-		}
-
-
-	</style>
-
+	
 {% endblock stylesheet %}

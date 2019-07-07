@@ -3,7 +3,7 @@
 {% block content %}
     
     <div class="wrapper">
-    	<h2>Recipe : {{ object.name}} <a href="{% url 'recipe:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2> 
+    	<h1>Recipe : {{ object.name}} <a href="{% url 'recipe:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h1> 
 	    <section class="recipe">
 	    	<div class="general_info">
 		    	Description :{{object.description}}<br>
@@ -53,38 +53,6 @@
 
 
 {% block stylesheet %}
-	 <style type="text/css">
-
-	 	.wrapper{
-		    display:grid;
-		    grid-gap:20px;
-		}
-
-		.purchase{
-		    margin-top: 2rem;
-		    display: grid;
-		    grid-gap: 20px;
-		    grid-template-areas:
-		    'general_info product'
-		    'customer order';
-		}
-
-
-		h2 {
-		    color: #C25100;
-		}
-
-		h3 {
-		    color: #C25100;
-		}
-
-
-
-		.qty {
-			color: #FF0000;
-		}
-
-
-	</style>
+	
 
 {% endblock stylesheet %}

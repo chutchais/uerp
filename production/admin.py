@@ -163,12 +163,12 @@ admin.site.register(ProductionHour,ProductionHourAdmin)
 class ProductionAdmin(admin.ModelAdmin):
     search_fields       = ['job__name']
     list_filter         = ['shifts','job__product__group']
-    list_display        = ('job','shifts','machine','description','machine','production_date','created_date','active')
+    list_display        = ('job','shifts','machine','description','machine','production_date','created_date','active','finished')
     autocomplete_fields = ['job','machine']
     readonly_fields     = ['created_date']
     date_hierarchy      = 'production_date'
     fieldsets = [
-        ('Basic Information',{'fields': ['job','shifts','description','machine','created_date','active']}),
+        ('Basic Information',{'fields': ['job','shifts','description','machine','created_date','active','finished']}),
         ('Build Information',{'fields': ['production_date','order_qty','stock_qty','final_qty']}),
     ]
     inlines =[RawMaterialUsageInline,ProductionHourInline]

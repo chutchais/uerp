@@ -133,9 +133,45 @@
 
          
 
-          {% block stylesheet %}
-          {% endblock stylesheet %}
+          <style type="text/css">
+              h2,h3 {
+                    color: #C25100;
+                }
 
+              a:link {
+                text-decoration: none;
+              }
+
+
+              .qty {
+                color: #FF0000;
+              }
+
+               .true{
+                color: #00FF00;
+              }
+
+              .false{
+                color: #FF0000;
+              }
+
+              .nothing{
+              color: #FFFFFF;
+              font-weight: bold;
+              background-color: #FF0000;
+              text-decoration: none;
+            }
+
+            .weight {
+              color: #FF0000;
+            }
+            .notice {
+              color: #FF0000;
+            }
+
+            {% block stylesheet %}
+            {% endblock stylesheet %}
+          </style>
           
           {% block content %}
           {% endblock content %}

@@ -16,9 +16,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 @login_required
 def index(request):
     fname = "job/index.html"
+    job_list 	= Job.objects.filter(
+    						active= True ,
+    						finished = False
+    					).order_by('product__group','created_date')
     return render(
 			request,
-			fname
+			fname,
+			{
+				'object_list' : job_list
+			}
 		)
 
 class JobListView(LoginRequiredMixin,ListView):

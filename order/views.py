@@ -15,9 +15,16 @@ from po.models import Po
 @login_required
 def index(request):
     fname = "order/index.html"
+    order_list 	= Order.objects.filter(
+    						active= True ,
+    						completed = False
+    					).order_by('product__group','created_date')
     return render(
 			request,
-			fname
+			fname,
+			{
+				'object_list' : order_list
+			}
 		)
 
 class OrderListView(LoginRequiredMixin,ListView):

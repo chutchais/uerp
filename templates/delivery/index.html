@@ -1,8 +1,22 @@
 {% extends '../base.html' %}
 
 {% block content %}
-    <h2>Delivery Information <a href="{% url 'delivery:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2>
+    <h1>Delivery Information <a href="{% url 'delivery:list' %}"></h1><i class="fa fa-list" aria-hidden="true"></i></a>
 
+    <div>
+        <h3>Pending or On Progress</h3>
+
+        {% for object in object_list %}
+            {% ifchanged object.po.product.group %}
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-dark">{{ object.po.product.group }}</li>
+             {% endifchanged %}
+            <li class="list-group-item"><a href="{{object.get_absolute_url}}">{{object}}</a>  
+            	<i>({{object.created_date}})</i>  
+            </li>
+        {% endfor %}
+
+    </div>
    
 
      
@@ -10,18 +24,6 @@
 
 
 {% block stylesheet %}
-	 <style type="text/css">
-		h2,h3 {
-            color: #C25100;
-        }
-
-
-
-		.qty {
-			color: #FF0000;
-		}
-
-
-	</style>
+	
 
 {% endblock stylesheet %}

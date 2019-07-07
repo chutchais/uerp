@@ -1,27 +1,24 @@
 {% extends '../base.html' %}
 
 {% block content %}
-    <h2>Recipe Information <a href="{% url 'recipe:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2>
+    <h1>Recipe Information <a href="{% url 'recipe:list' %}"></h1>
+    	<i class="fa fa-list" aria-hidden="true"></i></a>
 
     
+    {% for object in object_list %}
+            {% ifchanged object.prod_group %}
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-dark">{{ object.prod_group }}</li>
+             {% endifchanged %}
+            <li class="list-group-item"><a href="{{object.get_absolute_url}}">{{object}}</a>  
+            	<i>({{object.created_date}})</i>  
+            </li>
+        {% endfor %}
 
      
 {% endblock %}
 
 
 {% block stylesheet %}
-	 <style type="text/css">
-		h2,h3 {
-            color: #C25100;
-        }
-
-
-
-		.qty {
-			color: #FF0000;
-		}
-
-
-	</style>
-
+	
 {% endblock stylesheet %}

@@ -1,7 +1,7 @@
 {% extends '../base.html' %}
 
 {% block content %}
-    <h2>Order Item List</h2>
+    <h1>Order Item List</h1>
 
     {% for object in object_list %}
     	{{object.seq}}
@@ -21,18 +21,5 @@
 
 
 {% block stylesheet %}
-	 <style type="text/css">
-		h2 h3 {
-		    color: #C25100;
-		}
-
-
-
-		.qty {
-			color: #FF0000;
-		}
-
-
-	</style>
-
+	 
 {% endblock stylesheet %}

@@ -36,6 +36,7 @@ class Production(models.Model):
 	created_date	= models.DateTimeField(auto_now_add=True)
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active			= models.BooleanField(default=True)
+	finished	 	= models.BooleanField(default=False)
 
 	class Meta:
 		unique_together = [['job', 'shifts']]

@@ -8,7 +8,7 @@ Product detail
 {% block content %}
     
     <div class="wrapper">
-    	<h2>Job Order : {{ object}} <a href="{% url 'job:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h2> 
+    	<h1>Job Order : {{ object}} <a href="{% url 'job:list' %}"><i class="fa fa-list" aria-hidden="true"></i></a></h1> 
             
 	    <section class="job">
 	    	<div class="general_info">
@@ -207,43 +207,6 @@ Product detail
 
 
 {% block stylesheet %}
-	 <style type="text/css">
-
-	 	.wrapper{
-		    display:grid;
-		    grid-gap:20px;
-		}
-
-		.purchase{
-		    margin-top: 2rem;
-		    display: grid;
-		    grid-gap: 20px;
-		    grid-template-areas:
-		    'general_info product'
-		    'customer order';
-		}
-
-
-		h2,h3 {
-		    color: #C25100;
-		}
-
-		.true{
-        color: #00FF00;
-      }
-
-      .false{
-        color: #FF0000;
-      }
-
-		.qty,.weight {
-			color: #FF0000;
-		}
-		.notice {
-			color: #FF0000;
-		}
-
-
-	</style>
+	
 
 {% endblock stylesheet %}

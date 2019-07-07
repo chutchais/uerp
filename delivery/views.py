@@ -11,9 +11,15 @@ from .models import Delivery
 @login_required
 def index(request):
     fname = "delivery/index.html"
+    delivery_list 	= Delivery.objects.filter(
+    						active= True
+    					).order_by('po__product__group','created_date')
     return render(
 			request,
-			fname
+			fname,
+			{
+				'object_list' : delivery_list
+			}
 		)
 
 class DeliveryListView(LoginRequiredMixin,ListView):
