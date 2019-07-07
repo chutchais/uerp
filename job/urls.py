@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-
+from django.contrib.auth.decorators import login_required, permission_required
 
 from .views import (JobListView,JobDetailView,JobDeleteView,
 					update_recipe,reset_recipe,update_job_finished,

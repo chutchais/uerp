@@ -5,9 +5,13 @@
 {% block content %}
     <h1>Uproduction ERP System</h1>
 
+
+    {% if user.is_authenticated %}
     <div class="row">
         <h2 class="col-12">Production</h2>
             <!-- Start Item -->
+              
+              {% if perms.po %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card" style="width: 15rem;">
                       <div class="card-body">
@@ -19,7 +23,9 @@
                       </div>
                     </div>
               </div>
+              {% endif %}
 
+              {% if perms.order %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card" style="width: 15rem;">
                       <div class="card-body">
@@ -31,7 +37,9 @@
                       </div>
                     </div>
               </div>
+              {% endif %}
 
+              {% if perms.job %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card" style="width: 15rem;">
                       <div class="card-body">
@@ -42,9 +50,10 @@
                         <a href="{% url 'job:list' %}" class="card-link">List</a>
                       </div>
                     </div>
-                  
               </div>
+              {% endif %}
 
+              {% if perms.po %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card" style="width: 15rem;">
                       <div class="card-body">
@@ -55,9 +64,11 @@
                         <a href="{% url 'po:list' %}" class="card-link">List</a>
                       </div>
                     </div>
-                  
               </div>
+              {% endif %}
 
+
+              {% if perms.production %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card" style="width: 15rem;">
                       <div class="card-body">
@@ -70,8 +81,10 @@
                     </div>
                   
               </div>
+              {% endif %}
 
               
+              {% if perms.delivery %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card" style="width: 15rem;">
                       <div class="card-body">
@@ -84,7 +97,10 @@
                     </div>
                   
               </div>
+              {% endif %}
 
+
+              {% if perms.machine %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card" style="width: 15rem;">
                       <div class="card-body">
@@ -97,13 +113,17 @@
                     </div>
                   
               </div>
+              {% endif %}
 
             <!-- End Item-->
     </div>
 
+
+
     <div class="row">
         <h2 class="col-12">Configuration</h2>
         <!-- Start Item -->
+          {% if perms.customer %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card" style="width: 15rem;">
                       <div class="card-body">
@@ -115,7 +135,9 @@
                       </div>
                     </div>
               </div>
+              {% endif %}
 
+              {% if perms.product %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card" style="width: 15rem;">
                       <div class="card-body">
@@ -127,7 +149,9 @@
                       </div>
                     </div>
               </div>
+              {% endif %}
 
+              {% if perms.recipe %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card" style="width: 15rem;">
                       <div class="card-body">
@@ -139,9 +163,11 @@
                       </div>
                     </div>
               </div>
+              {% endif %}
         <!-- End Item -->
 
     </div>
+    {% endif %}
 
 
      

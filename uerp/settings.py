@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['uerp.herokuapp.com','127.0.0.1']
 
 LOGIN_URL = '/login'
 LOGOUT_REDIRECT_URL =  '/login'
+LOGIN_REDIRECT_URL = '/'
 # Application definition
 
 INSTALLED_APPS = [

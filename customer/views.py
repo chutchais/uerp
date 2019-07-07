@@ -3,10 +3,12 @@ from django.db.models import Q,F
 from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import permission_required
 # Create your views here.
 from .models import Customer
 
 @login_required
+# @permission_required('customer.can_view')
 def index(request):
     fname = "customer/index.html"
     return render(
@@ -30,3 +32,8 @@ class CustomerListView(LoginRequiredMixin,ListView):
 
 class CustomerDetailView(LoginRequiredMixin,DetailView):
 	model = Customer
+
+
+# permission_required = 'polls.can_vote'
+#     # Or multiple of permissions:
+# permission_required = ('polls.can_open', 'polls.can_edit')
