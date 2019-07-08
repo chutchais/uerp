@@ -30,16 +30,25 @@
 	    		<h3>Purchase Order items</h3>
 	    			
 	    		{% if po_list.count > 0 %}
-	    			<form method="POST" action="{{object.slug}}/items/add">
-				      {% csrf_token %}
-				     Select PO :
-	    			<select name="po">
-	    				{% for po in po_list %}
-					   <option value="{{po.slug}}">{{po}}  Qty : {{po.qty}} ({{po.created_date}})</option>
-					  {% endfor %}
-					</select>
-					<input type="submit" value="Add PO">
-					</form>
+
+	    			
+		    			<form method="POST" action="{{object.slug}}/items/add">
+					      {% csrf_token %}
+					     Select PO :
+		    			<select name="po">
+		    				{% for po in po_list %}
+						   <option value="{{po.slug}}">{{po}}  Qty : {{po.qty}} ({{po.created_date}})</option>
+						  {% endfor %}
+						</select>
+						{% if object.draft and perms.order.can_add_po %}
+							<input type="submit" value="Add PO">
+						{% else %}
+							<input type="submit" value="Add PO" disabled >
+							<span class="notice">* To Add Po to order , you must have authorize and Order still be Draft</span>
+						{% endif %}
+
+						</form>
+					
 				{% endif %}
 				<table class="table">
 			      <thead class="thead-dark">
@@ -68,17 +77,19 @@
 				          <td>{{po_object.po.weight}}</td>
 				          <td>{{po_object.note}} </td>
 				          <td>{{po_object.created_date}}</td>
-				         <!--  <td>{{ po_object.po.started }}</td>
-				          <td>{{po_object.completed}}</td> -->
-				         <!--  <td><i class="fa fa-circle {{po_object.po.started}}" aria-hidden="true"></i></td>
-          				  <td><i class="fa fa-circle {{po_object.completed}}" aria-hidden="true"></i></td> -->
+
 
           				   <td><i class="fa {% if po_object.po.started %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{po_object.po.started}}" aria-hidden="true"></i></td>
 
          					<td><i class="fa {% if po_object.completed %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{po_object.completed}}" aria-hidden="true"></i></td>
 
-				          <td>{% if po_object.po.started == False %}
-	    					<a href="/order/items/{{po_object.pk}}/delete?next={{object.get_absolute_url}}">Delete</a>
+				          <td>
+				          	{% if po_object.po.started == False %}
+				          		{% if perms.order.can_remove_po %}
+	    							<a href="/order/items/{{po_object.pk}}/delete?next={{object.get_absolute_url}}">Delete</a>
+				          		{% else %}
+				          			Delete
+				          		{% endif %}
 	    					{% endif %}</td>
 					     </tr>
 	    			
@@ -95,7 +106,12 @@
 	    		<form method="POST" action="{{object.slug}}/create_job">
 			      {% csrf_token %}
 			      <input type="hidden" name="order_slug" value="{{ object.slug }}">
-			      <input type="submit" value="Create Job">
+			      {% if object.draft and perms.order.can_create_job %}
+			      	<input type="submit" value="Create Job">
+			      {% else %}
+			      	<input type="submit" value="Create Job" disabled>
+			      	<span class="notice">* To Create Job , you must have authorize and Order still be Draft.</span>
+			      {% endif %}
 			    </form>
 			    {% endif %}
 
@@ -110,7 +126,7 @@
 			          <th scope="col">Recipe</th>
 			          <th scope="col">Completed</th>
 			          <th scope="col">Balance</th>
-			          <th scope="col">Action</th>
+			          <!-- <th scope="col">Action</th> -->
 			        </tr>
 			      </thead>
 			      <tbody>
@@ -126,7 +142,11 @@
 				          <td><span class="{% if job.recipe == none %}nothing{% endif %}"><a href="{{job.recipe.get_absolute_url}}">{{job.recipe|default:"Recipe not defined"}}</a></span></td>
 				          <td>{{job.completed}}</td>
 				          <td>{{job.balance}}</td>
-				          <td><a href="/job/{{job.slug}}/delete?next={{object.get_absolute_url}}">Delete</a></td>
+				          <!-- <td>
+				          	{% if perms.order.can_delete_job %}
+				          		<a href="/job/{{job.slug}}/delete?next={{object.get_absolute_url}}">Delete</a>
+				          	{% endif %}
+				          </td> -->
 					 </tr>
 
 	    		{% endfor %}
@@ -135,10 +155,17 @@
   				</table>
 
 	    		{% if object.jobs.count > 0 %}
+
 	    		<form method="POST" action="{{object.slug}}/delete_job">
 			      {% csrf_token %}
 			      <input type="hidden" name="order_slug" value="{{ object.slug }}">
-			      <input type="submit" value="Delete all Jobs">
+			      {% if perms.order.can_delete_job %}
+			      	<input type="submit" value="Delete all Jobs">
+			      {% else %}
+			      	<input type="submit" value="Delete all Jobs" disabled>
+			      	<span class="notice">* To Delete/Cancel Job , you must have authorize.</span>
+			      {% endif %}
+
 			    </form>
 			    {% endif %}
 	    	</div>
@@ -155,6 +182,4 @@
 
 
 {% block stylesheet %}
-	
-
 {% endblock stylesheet %}

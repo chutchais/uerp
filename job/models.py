@@ -43,6 +43,11 @@ class Job(models.Model):
 	qc_checked		= models.BooleanField(default=False)
 	qc_date			= models.DateTimeField(blank=True, null=True)
 	passed			= models.IntegerField(default=0)
+
+	class Meta:
+		permissions = [('can_change_recipe', 'Can change Recipe'),
+					   ('can_add_output', 'Can add Output')
+						]
 	
 
 

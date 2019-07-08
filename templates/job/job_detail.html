@@ -46,10 +46,21 @@
 					   <option value="{{recipe.slug}}">{{recipe}} -- {{recipe.description}}  </option>
 					  {% endfor %}
 					</select>
-					<input type="submit" value="Update Recipe">
+					{% if perms.job.can_change_recipe %}
+						<input type="submit" value="Update Recipe">
+					{% else %}
+						<input type="submit" value="Update Recipe" disabled>
+						<span class="notice">* To Change recipe , you must have authorize</span>
+					{% endif %}
 					</form>
 				{% else %}
-					<a href="{% url 'job:recipe-reset' object.slug %}?next={% url 'job:detail' object.slug %}">Change</a>
+					
+					{% if perms.job.can_change_recipe %}
+						<a href="{% url 'job:recipe-reset' object.slug %}?next={% url 'job:detail' object.slug %}">Change</a>
+					{% else %}
+						Change
+						<span class="notice">* To Change recipe , you must have authorize</span>
+					{% endif %}
 				{% endif %}
 				<br>
 
@@ -96,7 +107,13 @@
 				      	Quantity :
   						<input type="number" name="qty" min="1" max="{{object.qty}}" value="1">(between 1 and {{object.balance}})<br>
 	    				<textarea name="description" rows="3" cols="30"></textarea><br>
-						<input type="submit" value="Add Completed">
+						
+						{% if perms.job.can_add_output %}
+							<input type="submit" value="Add Completed">
+						{% else %}
+							<input type="submit" value="Add Completed" disabled>
+							<span class="notice">* To Change recipe , you must have authorize</span>
+						{% endif %}
 					</form>
 	    		{% endif %}
 	    		<br>
@@ -120,7 +137,9 @@
 				          <td>{{complete.qty}}</td>
 				          <td>{{complete.description}}</td>
 				          <td>{% if object.finished == False %}
-	    					<a href="{% url 'job:complete-delete' object.slug complete.pk %}?next={% url 'job:detail' object.slug %}">Delete</a>
+				          	{% if perms.job.can_add_output %}
+	    						<a href="{% url 'job:complete-delete' object.slug complete.pk %}?next={% url 'job:detail' object.slug %}">Delete</a>
+	    					{% endif %}
 	    				{% endif %}</td>
 				        </tr>
 

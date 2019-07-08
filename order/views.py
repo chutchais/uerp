@@ -85,7 +85,7 @@ def add_order_item(requets,slug):
 	po.save()
 	return HttpResponseRedirect(reverse('order:detail',kwargs={ 'slug': slug }))
 
-@login_required
+# @login_required
 def get_job_seq(year,month,product_group):
 	job = Job.objects.filter(product__group = product_group,
 							created_date__year = year,
@@ -93,9 +93,10 @@ def get_job_seq(year,month,product_group):
 	# print (year,month,product_group)
 	return '{:03}'.format(job.count()+1)
 
-@login_required
+# @login_required
 def create_job(request,slug):
 	order = Order.objects.get(slug=slug)
+	print ('Create job of Order %s' % slug)
 	if order.product.products.count() == 0:
 		# job_name = '%s_%s' % (order.slug,order.product.slug)
 		product_group = order.product.group.name if order.product.group else 'XX'
@@ -127,10 +128,14 @@ def create_job(request,slug):
 		po = item.po
 		po.started = True
 		po.save()
+	print ('Update Order draft to False')
+	order.draft = False
+	order.save()
+
 
 	return HttpResponseRedirect(reverse('order:detail',kwargs={ 'slug': slug }))
 
-@login_required
+# @login_required
 def delete_job(request,slug):
 	order = Order.objects.get(slug=slug)
 	ois = OrderItem.objects.filter(order=order)
@@ -143,6 +148,10 @@ def delete_job(request,slug):
 	jobs = Job.objects.filter(order=order)
 	for job in jobs:
 		job.delete()
+
+	order.draft = True
+	order.save()
+
 
 
 

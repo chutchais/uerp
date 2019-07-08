@@ -24,9 +24,15 @@ class Order(models.Model):
 	# 						through_fields=('order', 'po'))
 	created_date	= models.DateTimeField(auto_now_add=True)
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
-	draft			= models.BooleanField(default=True)
+	draft			= models.BooleanField(default=True) #if False = Started.
 	active			= models.BooleanField(default=True)
 	completed		= models.BooleanField(default=False)
+
+	class Meta:
+		permissions = [('can_add_po', 'Can add PO to Order'),
+						('can_remove_po','Can remove po from Order'),
+						('can_create_job','Can Create/Start Job'),
+						('can_delete_job','Can Delete Job')]
 
 
 	def __str__(self):
