@@ -10,7 +10,7 @@ from .models import Machine
 
 @login_required
 def index(request):
-    fname = "Machine/index.html"
+    fname = "machine/index.html"
     machine_list = Machine.objects.filter(
     					active = True
     					).order_by('productgroup','name')
