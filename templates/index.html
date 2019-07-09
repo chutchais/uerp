@@ -13,9 +13,9 @@
               
               {% if perms.po %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                    <div class="card" style="width: 15rem;">
+                    <div class="card" >
                       <div class="card-body">
-                        <h5 class="card-title">Purchase Order</h5>
+                        <h5 class="card-title bg-info text-white">Purchase Order</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Purchase Order</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <a href="{% url 'po:index' %}" class="card-link">Summary</a>
@@ -27,9 +27,9 @@
 
               {% if perms.order %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                    <div class="card" style="width: 15rem;">
+                    <div class="card">
                       <div class="card-body">
-                        <h5 class="card-title">Build Order</h5>
+                        <h5 class="card-title bg-info text-white">Build Order</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Build Order</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <a href="{% url 'order:index' %}" class="card-link">Summary</a>
@@ -41,9 +41,9 @@
 
               {% if perms.job %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                    <div class="card" style="width: 15rem;">
+                    <div class="card">
                       <div class="card-body">
-                        <h5 class="card-title">Job Order</h5>
+                        <h5 class="card-title bg-info text-white">Job Order</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Job Order</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <a href="{% url 'job:index' %}" class="card-link">Summary</a>
@@ -55,9 +55,9 @@
 
               {% if perms.po %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                    <div class="card" style="width: 15rem;">
-                      <div class="card-body">
-                        <h5 class="card-title">Purchase Order</h5>
+                    <div class="card">
+                      <div class="card-body ">
+                        <h5 class="card-title bg-info text-white">Purchase Order</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <a href="{% url 'po:index' %}" class="card-link">Summary</a>
@@ -70,9 +70,9 @@
 
               {% if perms.production %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                    <div class="card" style="width: 15rem;">
+                    <div class="card">
                       <div class="card-body">
-                        <h5 class="card-title">Production</h5>
+                        <h5 class="card-title bg-info text-white">Production</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Production Hour Output</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <a href="{% url 'production:index' %}" class="card-link">Summary</a>
@@ -86,9 +86,9 @@
               
               {% if perms.delivery %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                    <div class="card" style="width: 15rem;">
+                    <div class="card">
                       <div class="card-body">
-                        <h5 class="card-title">Delivery</h5>
+                        <h5 class="card-title bg-info text-white">Delivery</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Product delivery</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <a href="{% url 'delivery:index' %}" class="card-link">Summary</a>
@@ -102,9 +102,9 @@
 
               {% if perms.machine %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                    <div class="card" style="width: 15rem;">
+                    <div class="card">
                       <div class="card-body">
-                        <h5 class="card-title">Machine</h5>
+                        <h5 class="card-title bg-info text-white">Machine</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Machine Utilization</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <a href="{% url 'machine:index' %}" class="card-link">Summary</a>
@@ -125,9 +125,9 @@
         <!-- Start Item -->
           {% if perms.customer %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                    <div class="card" style="width: 15rem;">
+                    <div class="card">
                       <div class="card-body">
-                        <h5 class="card-title">Customer</h5>
+                        <h5 class="card-title bg-secondary text-white">Customer</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Purchase Order</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <a href="{% url 'customer:index' %}" class="card-link">Summary</a>
@@ -139,9 +139,9 @@
 
               {% if perms.product %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                    <div class="card" style="width: 15rem;">
+                    <div class="card">
                       <div class="card-body">
-                        <h5 class="card-title">Product</h5>
+                        <h5 class="card-title bg-secondary text-white">Product</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Product Part number</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <a href="{% url 'product:index' %}" class="card-link">Summary</a>
@@ -153,9 +153,9 @@
 
               {% if perms.recipe %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                    <div class="card" style="width: 15rem;">
+                    <div class="card">
                       <div class="card-body">
-                        <h5 class="card-title">Recipe</h5>
+                        <h5 class="card-title bg-secondary text-white">Recipe</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Recipe Info</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <a href="{% url 'recipe:index' %}" class="card-link">Summary</a>
