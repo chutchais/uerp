@@ -174,6 +174,7 @@
 				          <th scope="col">Finished Date</th>
 				          <th scope="col">QA Checked?</th>
 				          <th scope="col">Passed</th>
+				          <th scope="col">Stock</th>
 
 				        </tr>
 				      </thead>
@@ -196,6 +197,7 @@
 				          <td><i class="fa {% if job.qc_checked %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{job.qc_checked}}" aria-hidden="true"></i></td>
 
 				          <td>{{job.passed}}</td>
+				          <td>{{job.product.qty}}</td>
 				          <!-- <td>
 				          	{% if perms.order.can_delete_job %}
 				          		<a href="/job/{{job.slug}}/delete?next={{object.get_absolute_url}}">Delete</a>
@@ -266,7 +268,7 @@
 	    			<form method="POST" action="{% url 'job:inspect-add' object.slug %}?next={% url 'job:detail' object.slug %}">
 				      {% csrf_token %}
 				      	Quantity :
-  						<input type="number" name="qty" min="1" max="{{object.qty}}" value="1">(between 1 and {{object.balance}})<br>
+  						<input type="number" name="qty" min="1" max="{{object.qty}}" value="1">(between 1 and {{object.completed}})<br>
 	    				<textarea name="description" rows="3" cols="30"></textarea><br>
 						<input type="submit" value="Add to Warehouse">
 					</form>

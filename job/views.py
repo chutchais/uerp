@@ -66,6 +66,39 @@ def update_job_finished(requets,slug):
 	status		= requets.GET.get('status')
 	job.finished = True if status =='true' else False
 	job.finished_date = timezone.now() if status =='true' else None
+	
+# To Merge chile to master
+	if job.master and status =='true':
+		# Find Mimimux number
+		job_qty = job.qty
+		msg  =''
+		for j in job.jobs.all():
+			msg = msg +' ' + ('%s qty: %s ,' % (j,j.product.qty) )
+			if j.product.qty <= job_qty:
+				job_qty = j.product.qty
+		print('Complete Qty : %s' % job_qty)
+
+		# Adjust stock for each semi part , and master part
+		for j in job.jobs.all():
+			j.product.qty = j.product.qty - job_qty
+			j.product.save()
+
+		print(msg)
+		Complete.objects.create(job=job,qty=job_qty,
+					description=msg,
+					stamp_date=timezone.now())
+# To cancel
+	if job.master and status =='false':
+		job_qty = job.completed()
+		print ('Reset job qty : %s' % job_qty )
+		Complete.objects.filter(job=job).delete()
+
+		for j in job.jobs.all():
+			j.product.qty = j.product.qty + job_qty
+			j.product.save()
+
+
+
 	job.save()
 	return HttpResponseRedirect(redirect)
 

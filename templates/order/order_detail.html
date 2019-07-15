@@ -9,12 +9,12 @@
 	    <section class="order">
 	    	<div class="general_info">
 		    	Description :{{object.description}}<br>
-		    	Product :<a href="{{object.product.get_absolute_url}}">{{object.product}} </a><br>
+		    	Product :<a href="{{object.product.get_absolute_url}}">{{object.product}} </a> <i>(stock : {{object.product.qty}} )</i><br>
 		    	<!-- Show Child Product -->
 		    	{% if object.product.products %}
 			    	<ul>
 			    	{% for product in object.product.products.all %}
-			    		<li><a href="{{product.get_absolute_url}}">{{product}}</a></li>
+			    		<li><a href="{{product.get_absolute_url}}">{{product}}</a> <i>(stock : {{product.qty}} )</i></li>
 			    	{% endfor %}
 			    	</ul>
 		    	{% endif %}
