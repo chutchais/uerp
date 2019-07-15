@@ -27,6 +27,7 @@ class Job(models.Model):
 							blank=True,null=True,
 							on_delete=models.SET_NULL,
 							related_name = 'jobs')
+	master 			= models.BooleanField(default=False)
 	parent 			= models.ForeignKey('self', null=True,blank = True,
 						on_delete=models.SET_NULL,
 						related_name='jobs')

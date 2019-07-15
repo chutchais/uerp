@@ -61,7 +61,7 @@ class JobForm(ModelForm):
 class JobAdmin(admin.ModelAdmin):
     search_fields 		= ['name','description','product__name','order__name']
     list_filter 		= ('finished','qc_checked',('product',admin.RelatedOnlyFieldListFilter))
-    list_display 		= ('name','order','product','qty','parent','start_date','stop_date','completed',
+    list_display 		= ('name','order','product','qty','master','parent','start_date','stop_date','completed',
                             'balance','finished','qc_checked','passed','active')
     readonly_fields 	= ['slug','completed','balance','finished_date','parent']
     autocomplete_fields = []
@@ -69,7 +69,7 @@ class JobAdmin(admin.ModelAdmin):
     date_hierarchy      = 'created_date'
     # save_on_top         = True
     fieldsets = [
-        ('Basic Information',{'fields': ['name','slug','description','product','parent','active']}),
+        ('Basic Information',{'fields': ['name','slug','description','product','master','parent','active']}),
         ('Build Order',{'fields': [('order')]}),
         ('Recipe',{'fields': ['recipe']}),
         ('Plan Schedule',{'fields': [('qty','completed','balance'),('start_date','stop_date')]}),

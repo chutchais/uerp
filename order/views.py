@@ -97,18 +97,51 @@ def get_job_seq(year,month,product_group):
 def create_job(request,slug):
 	order = Order.objects.get(slug=slug)
 	print ('Create job of Order %s' % slug)
-	if order.product.products.count() == 0:
-		# job_name = '%s_%s' % (order.slug,order.product.slug)
-		product_group = order.product.group.name if order.product.group else 'XX'
-		job_prefix = order.product.job_prefix if order.product.job_prefix else 'JC%s' % product_group
-		job_name = '%s%s-%s' % (job_prefix,datetime.now().strftime('%y%m'),
-							get_job_seq(datetime.now().year,datetime.now().month,order.product.group))
-		job,created = Job.objects.get_or_create(name=job_name,
-											description=order.description,
-											product=order.product,
-											order=order,
-											qty=order.qty())
-	else:
+
+	# Must create master job First
+	# ----------------------------
+
+
+	# if order.product.products.count() == 0: #Single/Master Job
+	# 	# job_name = '%s_%s' % (order.slug,order.product.slug)
+	# 	product_group = order.product.group.name if order.product.group else 'XX'
+	# 	job_prefix = order.product.job_prefix if order.product.job_prefix else 'JC%s' % product_group
+	# 	job_name = '%s%s-%s' % (job_prefix,datetime.now().strftime('%y%m'),
+	# 						get_job_seq(datetime.now().year,datetime.now().month,order.product.group))
+	# 	job,created = Job.objects.get_or_create(name=job_name,
+	# 										description=order.description,
+	# 										product=order.product,
+	# 										order=order,
+	# 										qty=order.qty())
+	# else:
+	# # Case FG product has Semi part
+	# 	for part in order.product.products.all():
+	# 		product_group = part.group.name if part.group else 'XX'
+	# 		job_prefix = order.product.job_prefix if order.product.job_prefix else 'JC%s' % product_group
+	# 		job_name = '%s%s-%s' % (job_prefix,datetime.now().strftime('%y%m'),
+	# 						get_job_seq(datetime.now().year,datetime.now().month,part.group))
+
+
+	# 		job,created = Job.objects.get_or_create(name=job_name,
+	# 										description=order.description,
+	# 										product=part,
+	# 										order=order,
+	# 										qty=order.qty())
+
+	# Single Or Master Job
+	product_group = order.product.group.name if order.product.group else 'XX'
+	job_prefix = order.product.job_prefix if order.product.job_prefix else 'JC%s' % product_group
+	job_name = '%s%s-%s' % (job_prefix,datetime.now().strftime('%y%m'),
+						get_job_seq(datetime.now().year,datetime.now().month,order.product.group))
+	master_job,created = Job.objects.get_or_create(name=job_name,
+										description=order.description,
+										product=order.product,
+										order=order,
+										qty=order.qty())
+	
+	if order.product.products.count() > 0:
+		master_job.master = True
+		master_job.save()
 	# Case FG product has Semi part
 		for part in order.product.products.all():
 			product_group = part.group.name if part.group else 'XX'
@@ -121,7 +154,8 @@ def create_job(request,slug):
 											description=order.description,
 											product=part,
 											order=order,
-											qty=order.qty())
+											qty=order.qty(),
+											parent=master_job)
 			# print (job_name,created)
 
 	for item in order.orderitems.all().order_by('seq'):

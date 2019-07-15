@@ -14,7 +14,11 @@
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-dark">{{ object.product.group }}</li>
              {% endifchanged %}
-            <li class="list-group-item"><a href="{{object.get_absolute_url}}">{{object}}</a>  
+            <li class="list-group-item">
+                 {% if object.master  %}
+                    <i class="fa fa-tags" aria-hidden="true"></i>
+                 {% endif %}
+                <a href="{{object.get_absolute_url}}">{{object}}</a>  
             	<i>({{object.created_date}})</i>  -- Start on :{{object.start_date}} , Target on : {{object.stop_date}}
             </li>
         {% endfor %}

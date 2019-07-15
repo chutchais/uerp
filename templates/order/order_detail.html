@@ -133,6 +133,7 @@
 			    
 	    		{% for job in object.jobs.all %}
 
+	    			{% if job.master == False %}
 	    			<tr>
 				          <th scope="row"><a href="{{job.get_absolute_url}}">{{job.name}}</a></th>
 				          <td>{{job.product}}</td>
@@ -148,6 +149,7 @@
 				          	{% endif %}
 				          </td> -->
 					 </tr>
+					 {% endif %}
 
 	    		{% endfor %}
 

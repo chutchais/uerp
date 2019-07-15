@@ -19,6 +19,11 @@
 	    		Issued on :{{object.created_date}}<br>
 	    		Completed : {{object.completed}}<br>
 	    		Balance : {{object.balance}}
+
+	    		{% if object.parent %}
+	    		<br>
+	    			Parent Job : <a href="{{object.parent.get_absolute_url}}">{{object.parent}}</a>
+	    		{% endif %}
 	    	</div>
 
 	    	<div>
@@ -33,7 +38,7 @@
 	    	</div> -->
 
 	    	
-
+	    	{% if object.master == False %}
 	    	<div class="recipe">
 	    		<h3>Recipe Information</h3>
 
@@ -98,55 +103,113 @@
 
 	    		{% endif %}
 	    	</div>
-
 	    	<div>
-	    		<h3>Build Output Logs</h3>
-	    		{% if object.finished == False %}
-	    			<form method="POST" action="{% url 'job:complete-add' object.slug %}?next={% url 'job:detail' object.slug %}">
-				      {% csrf_token %}
-				      	Quantity :
-  						<input type="number" name="qty" min="1" max="{{object.qty}}" value="1">(between 1 and {{object.balance}})<br>
-	    				<textarea name="description" rows="3" cols="30"></textarea><br>
-						
-						{% if perms.job.can_add_output %}
-							<input type="submit" value="Add Completed">
-						{% else %}
-							<input type="submit" value="Add Completed" disabled>
-							<span class="notice">* To Change recipe , you must have authorize</span>
-						{% endif %}
-					</form>
 	    		{% endif %}
 	    		<br>
-	    		{% if object.completes.count > 0 %}
-	    			Total  Build Completed : {{object.completed}} <br>
-	    			<table class="table">
+	    		
+	    		{% if object.master == False %}
+	    			<h3>Build Output Logs</h3>
+		    		{% if object.finished == False %}
+		    			<form method="POST" action="{% url 'job:complete-add' object.slug %}?next={% url 'job:detail' object.slug %}">
+					      {% csrf_token %}
+					      	Quantity :
+	  						<input type="number" name="qty" min="1" max="{{object.qty}}" value="1">(between 1 and {{object.balance}})<br>
+		    				<textarea name="description" rows="3" cols="30"></textarea><br>
+							
+							{% if perms.job.can_add_output %}
+								<input type="submit" value="Add Completed">
+							{% else %}
+								<input type="submit" value="Add Completed" disabled>
+								<span class="notice">* To Change recipe , you must have authorize</span>
+							{% endif %}
+						</form>
+		    		{% endif %}
+		    		<br>
+		    		{% if object.completes.count > 0 %}
+		    			Total  Build Completed : {{object.completed}} <br>
+		    			<table class="table">
+					      <thead class="thead-dark">
+					        <tr>
+					          <th scope="col">Datetime</th>
+					          <th scope="col">Qty</th>
+					          <th scope="col">Description</th>
+					          <th scope="col">Action</th>
+					        </tr>
+					      </thead>
+					      <tbody>
+
+		    			{% for complete in object.completes.all|dictsort:"stamp_date" %}
+		    				
+		    				<tr>
+					          <td>{{complete.stamp_date}}</td>
+					          <td>{{complete.qty}}</td>
+					          <td>{{complete.description}}</td>
+					          <td>{% if object.finished == False %}
+					          	{% if perms.job.can_add_output %}
+		    						<a href="{% url 'job:complete-delete' object.slug complete.pk %}?next={% url 'job:detail' object.slug %}">Delete</a>
+		    					{% endif %}
+		    				{% endif %}</td>
+					        </tr>
+
+		    			{% endfor %}
+		    			</tbody>
+		    			</table>
+		    		{% endif %}
+	    		{% endif %}
+
+	    		<!-- Child Output -->
+	    		{% if object.master %}
+	    		<h3>Child Job Output</h3>
+	    		<table class="table">
 				      <thead class="thead-dark">
 				        <tr>
-				          <th scope="col">Datetime</th>
+				          <th scope="col">Name</th>
+				          <th scope="col">Product</th>
 				          <th scope="col">Qty</th>
-				          <th scope="col">Description</th>
-				          <th scope="col">Action</th>
+				          <th scope="col">Start Date</th>
+				          <!-- <th scope="col">Recipe</th> -->
+				          <th scope="col">Completed</th>
+				          <!-- <th scope="col">Balance</th> -->
+				          <th scope="col">Finished?</th>
+				          <th scope="col">Finished Date</th>
+				          <th scope="col">QA Checked?</th>
+				          <th scope="col">Passed</th>
+
 				        </tr>
 				      </thead>
 				      <tbody>
+	    		{% for job in object.jobs.all %}
 
-	    			{% for complete in object.completes.all|dictsort:"stamp_date" %}
-	    				
-	    				<tr>
-				          <td>{{complete.stamp_date}}</td>
-				          <td>{{complete.qty}}</td>
-				          <td>{{complete.description}}</td>
-				          <td>{% if object.finished == False %}
-				          	{% if perms.job.can_add_output %}
-	    						<a href="{% url 'job:complete-delete' object.slug complete.pk %}?next={% url 'job:detail' object.slug %}">Delete</a>
-	    					{% endif %}
-	    				{% endif %}</td>
-				        </tr>
 
-	    			{% endfor %}
-	    			</tbody>
-	    			</table>
+	    			{% if job.master == False %}
+	    			<tr>
+				          <th scope="row"><a href="{{job.get_absolute_url}}">{{job.name}}</a></th>
+				          <td>{{job.product}}</td>
+				          <td><span class="qty">{{job.qty}} </span></td>
+				          <td>{{job.start_date}} </td>
+				         <!--  <td><span class="{% if job.recipe == none %}nothing{% endif %}"><a href="{{job.recipe.get_absolute_url}}">{{job.recipe|default:"Recipe not defined"}}</a></span></td> -->
+				          
+				          <td>{{job.completed}}</td>
+				          <!-- <td>{{job.balance}}</td> -->
+				          <td><i class="fa {% if job.finished %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{job.finished}}" aria-hidden="true"></i></td>
+				          <td>{{job.finished_date}}</td>
+				          <td><i class="fa {% if job.qc_checked %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{job.qc_checked}}" aria-hidden="true"></i></td>
+
+				          <td>{{job.passed}}</td>
+				          <!-- <td>
+				          	{% if perms.order.can_delete_job %}
+				          		<a href="/job/{{job.slug}}/delete?next={{object.get_absolute_url}}">Delete</a>
+				          	{% endif %}
+				          </td> -->
+					 </tr>
+							 {% endif %}
+
+			    		{% endfor %}
+			    	</tbody>
+			    </table>
 	    		{% endif %}
+	    		<!-- End child Out put -->
+
 	    	</div>
 
 	    	<div>
