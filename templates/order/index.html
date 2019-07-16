@@ -28,6 +28,8 @@
 
             Draft :<i class="fa {% if object.draft %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.draft}}" aria-hidden="true"></i>
 
+            Completed :<i class="fa {% if object.completed %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.completed}}" aria-hidden="true"></i>
+
             </li>
         {% endfor %}
 

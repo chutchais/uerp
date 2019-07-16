@@ -216,7 +216,9 @@
 
 	    	<div>
 	    		<h3>Build Completed Update/Send to Quality</h3>
-	    		Finished : {{object.finished}}<br>
+	    		Finished :
+	    			<i class="fa {% if object.finished %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.finished}}" aria-hidden="true"></i>
+	    		<br>
 	    		Finish date : {{object.finished_date}}<br>
 	    		{% if object.finished == False %}
 	    			Status : Working On Process

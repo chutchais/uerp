@@ -159,6 +159,11 @@ def add_job_inspection(requets,slug):
 	job.passed = qty
 	job.save()
 	# product.save()
+
+	# Update Order
+	job.order.completed = True
+	job.order.save()
+
 	return HttpResponseRedirect(redirect)
 
 @login_required
@@ -176,5 +181,9 @@ def delete_job_inspection(requets,slug):
 	job.qc_date = None
 	job.passed = 0
 	job.save()
+
+	# Close Job's Order
+	job.order.completed = False
+	job.order.save()
 
 	return HttpResponseRedirect(redirect)

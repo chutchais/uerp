@@ -22,8 +22,9 @@
 		    	Qty : <span class="qty">{{object.qty}}</span><br>
 		    	Weight : {{object.weight}} {{object.product.weight_unit}}<br>
 	    		Issued on :{{object.created_date}}<br>
-	    		Status : <i class="fa {% if object.completed %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.completed}}" aria-hidden="true"></i><br>
-	    		Draft : <i class="fa {% if object.draft %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.draft}}" aria-hidden="true"></i>
+	    		
+	    		Draft : <i class="fa {% if object.draft %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.draft}}" aria-hidden="true"></i><br>
+	    		Completed : <i class="fa {% if object.completed %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.completed}}" aria-hidden="true"></i>
 	    	</div>
 
 	    	<div>
@@ -55,7 +56,7 @@
 			        <tr>
 			          <th scope="col">Seq</th>
 			          <th scope="col">Po</th>
-			          <th scope="col">Product</th>
+			          <!-- <th scope="col">Product</th> -->
 			          <th scope="col">Qty</th>
 			          <th scope="col">Total Weight</th>
 			          <th scope="col">Note</th>
@@ -72,7 +73,7 @@
     					<tr>
 				          <th scope="row">{{po_object.seq}}</th>
 				          <td><a href="{{po_object.po.get_absolute_url}}">{{po_object.po}}</a></td>
-				          <td><a href="{{po_object.po.product.get_absolute_url}}">{{po_object.po.product}}</a></td>
+				          <!-- <td><a href="{{po_object.po.product.get_absolute_url}}">{{po_object.po.product}}</a></td> -->
 				          <td><span class="qty">{{po_object.po.qty}}</td>
 				          <td>{{po_object.po.weight}}</td>
 				          <td>{{po_object.note}} </td>
@@ -156,19 +157,22 @@
 	    		</tbody>
   				</table>
 
-	    		{% if object.jobs.count > 0 %}
 
-	    		<form method="POST" action="{{object.slug}}/delete_job">
-			      {% csrf_token %}
-			      <input type="hidden" name="order_slug" value="{{ object.slug }}">
-			      {% if perms.order.can_delete_job %}
-			      	<input type="submit" value="Delete all Jobs">
-			      {% else %}
-			      	<input type="submit" value="Delete all Jobs" disabled>
-			      	<span class="notice">* To Delete/Cancel Job , you must have authorize.</span>
-			      {% endif %}
+  				{% if object.completed == False %}
+		    		{% if object.jobs.count > 0 %}
 
-			    </form>
+			    		<form method="POST" action="{{object.slug}}/delete_job">
+					      {% csrf_token %}
+					      <input type="hidden" name="order_slug" value="{{ object.slug }}">
+					      {% if perms.order.can_delete_job %}
+					      	<input type="submit" value="Delete all Jobs">
+					      {% else %}
+					      	<input type="submit" value="Delete all Jobs" disabled>
+					      	<span class="notice">* To Delete/Cancel Job , you must have authorize.</span>
+					      {% endif %}
+
+					    </form>
+				    {% endif %}
 			    {% endif %}
 	    	</div>
 	    	

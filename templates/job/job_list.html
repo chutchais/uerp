@@ -31,6 +31,7 @@
           <th scope="col">Balance</th>
           <th scope="col">QC check</th>
           <th scope="col">QC passed</th>
+          <th scope="col">Stock?</th>
         </tr>
       </thead>
       <tbody>
@@ -52,6 +53,7 @@
           <td>{{object.balance}}</td>
           <td><i class="fa {% if object.qc_checked %} ' fa-check-circle '  {% else %} ' fa-times-circle ' {% endif %} {{object.qc_checked}}" aria-hidden="true"></i></td>
           <td>{{object.passed}}</td>
+          <td>{{object.product.qty}}</td>
         </tr>
 
     {% endfor %}
