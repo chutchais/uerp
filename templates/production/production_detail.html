@@ -9,7 +9,8 @@
             
 	    <section class="production">
 	    	<div class="general_info">
-		    	{{object.description}}<br>
+		    	Description : {{object.description}}<br>
+		    	Job : <a href="{{object.job.get_absolute_url}}">{{object.job}}</a> <br>
 	    		Created on :{{object.created_date}}<br>
 	    	</div>
 
@@ -30,7 +31,7 @@
 				      </thead>
 				      <tbody>
 
-	    	{% for item in object.rawusages.all|dictsort:"recipeitem" %}
+	    	{% for item in object.rawusages.all %}
 	    				<tr>
 				          <td>{{item}}</td>
 				          <td>{{item.planed}}</td>
@@ -84,7 +85,7 @@
 
 	     <section class="scrap">
 	    	<table class="table">
-	    		<h3>Scraps</h3>
+	    		<h3>Scraps summary (0-24 hour)</h3>
 				      <thead class="thead-dark">
 				        <tr>
 				          <th scope="col">Hour</th>
@@ -109,13 +110,13 @@
 	    	{% endfor %}
 
 	    	</tbody>
-		    	</table>
+		   </table>
 
 	    </section>
 
 	    <section class="waste">
 	    	<table class="table">
-	    		<h3>Wastes</h3>
+	    		<h3>Wastes summary (0-24 hour)</h3>
 				      <thead class="thead-dark">
 				        <tr>
 				          <th scope="col">Hour</th>
@@ -146,7 +147,7 @@
 
 	    <section class="waste">
 	    	<table class="table">
-	    		<h3>Downtime</h3>
+	    		<h3>Downtime summary (0-24 hour)</h3>
 				      <thead class="thead-dark">
 				        <tr>
 				          <th scope="col">Hour</th>

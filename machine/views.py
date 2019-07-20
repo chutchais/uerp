@@ -2,13 +2,17 @@ from django.shortcuts import render
 from django.db.models import Q,F
 from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,DeleteView
 from django.http import HttpResponse,HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.decorators import login_required,permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+
+ 
 
 # Create your views here.
 from .models import Machine
 
 @login_required
+@permission_required('machine.can_view')
 def index(request):
     fname = "machine/index.html"
     machine_list = Machine.objects.filter(
@@ -22,9 +26,10 @@ def index(request):
 			}
 		)
 
-class MachineListView(LoginRequiredMixin,ListView):
+class MachineListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model 		= Machine
 	paginate_by = 100
+	permission_required = ('machine.can_view','machine.can_edit','machine.can_add')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -33,7 +38,8 @@ class MachineListView(LoginRequiredMixin,ListView):
 									Q(description__icontains=query)).order_by('-created_date')
 		return Machine.objects.all()
 
-class MachineDetailView(LoginRequiredMixin,DetailView):
+class MachineDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Machine
+	permission_required = ('machine.can_view','machine.can_edit','machine.can_add')
 
 

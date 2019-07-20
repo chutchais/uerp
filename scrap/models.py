@@ -19,6 +19,7 @@ class Scrap(models.Model):
 	active			= models.BooleanField(default=True)
 
 	class Meta:
+		# unique_together = [['name', 'productgroup']]
 		verbose_name = 'Scrap'
 		verbose_name_plural = 'Scrap (Master Data)'
 

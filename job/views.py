@@ -10,10 +10,11 @@ from .models import Job,Complete
 from recipe.models import Recipe
 from quality.models import Inspection
 
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required,permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 
 @login_required
+@permission_required('job.can_view')
 def index(request):
     fname = "job/index.html"
     job_list 	= Job.objects.filter(
@@ -28,9 +29,10 @@ def index(request):
 			}
 		)
 
-class JobListView(LoginRequiredMixin,ListView):
+class JobListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model = Job
 	paginate_by = 100
+	permission_required = ('job.can_view','job.can_edit','job.can_add')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -42,8 +44,10 @@ class JobListView(LoginRequiredMixin,ListView):
 									Q(order__name__icontains=query)).order_by('-created_date')
 		return Job.objects.all()
 
-class JobDetailView(LoginRequiredMixin,DetailView):
+class JobDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Job
+	permission_required = ('job.can_view','job.can_edit','job.can_add')
+
 	def get_context_data(self, **kwargs):
 		context     			= super().get_context_data(**kwargs)
 		job 					= self.get_object()

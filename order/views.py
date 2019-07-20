@@ -4,8 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,DeleteView
 from datetime import datetime
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.decorators import login_required,permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 
 # Create your views here.
 from .models import Order,OrderItem
@@ -13,6 +14,7 @@ from job.models import Job
 from po.models import Po
 
 @login_required
+@permission_required('order.can_view')
 def index(request):
     fname = "order/index.html"
     order_list 	= Order.objects.filter(
@@ -27,9 +29,10 @@ def index(request):
 			}
 		)
 
-class OrderListView(LoginRequiredMixin,ListView):
+class OrderListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model = Order
 	paginate_by = 100
+	permission_required = ('order.can_view','order.can_edit','order.can_add')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -41,8 +44,10 @@ class OrderListView(LoginRequiredMixin,ListView):
 		return Order.objects.all()
 
 
-class OrderDetailView(LoginRequiredMixin,DetailView):
+class OrderDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Order
+	permission_required = ('order.can_view','order.can_edit','order.can_add')
+
 	def get_context_data(self, **kwargs):
 		context     		= super().get_context_data(**kwargs)
 		order 				= self.get_object()

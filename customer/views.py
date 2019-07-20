@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from django.db.models import Q,F
 from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,DeleteView
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import permission_required
+
+from django.contrib.auth.decorators import login_required,permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 # Create your views here.
 from .models import Customer
 
 @login_required
-# @permission_required('customer.can_view')
+@permission_required('customer.can_view')
 def index(request):
     fname = "customer/index.html"
     return render(
@@ -16,9 +16,10 @@ def index(request):
 			fname
 		)
 
-class CustomerListView(LoginRequiredMixin,ListView):
+class CustomerListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model = Customer
 	paginate_by = 100
+	permission_required = ('customer.can_view','customer.can_edit','customer.can_add')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -30,8 +31,9 @@ class CustomerListView(LoginRequiredMixin,ListView):
 									Q(tax__icontains=query)).order_by('-created_date')
 		return Customer.objects.all()
 
-class CustomerDetailView(LoginRequiredMixin,DetailView):
+class CustomerDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Customer
+	permission_required = ('customer.can_view','customer.can_edit','customer.can_add')
 
 
 # permission_required = 'polls.can_vote'

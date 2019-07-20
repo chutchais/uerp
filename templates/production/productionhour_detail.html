@@ -9,7 +9,13 @@
             
 	    <section class="production">
 	    	<div class="general_info">
-		    	{{object.description}}<br>
+	    		Production : <a href="{{object.production.get_absolute_url}}">{{object.production}}</a> <br>
+		    	Note : {{object.note}}<br>
+		    	Line : {{object.line}}<br>
+		    	Product Code : {{object.product_code}}<br>
+		    	Weight per Roll : {{object.weight_roll}}<br>
+		    	Roll per min : {{object.roll_min}}<br>
+		    	Qty : {{object.qty}}<br>
 	    		Created on :{{object.created_date}}<br>
 	    	</div>
 
@@ -29,9 +35,8 @@
 				      </thead>
 				      <tbody>
 
-	    	{% for scrap in object.scraps.all|dictsort:"created_date" %}
+	    	{% for scrap in object.scraps.all %}
 	    				<tr>
-
 				          <td>{{scrap}}</td>
 				          <td>{{scrap.qty}}</td>
 				          <td>{{scrap.note}}</td>

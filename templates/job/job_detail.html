@@ -39,76 +39,88 @@
 
 	    	
 	    	{% if object.master == False %}
-	    	<div class="recipe">
-	    		<h3>Recipe Information</h3>
+				    	<div class="recipe">
+				    		<h3>Recipe Information</h3>
 
-	    		Recipe : <span><a href="{{object.recipe.get_absolute_url}}">{{object.recipe}}</a></span>
-		    	{% if object.recipe == None %}
-		    	<form method="POST" action="{% url 'job:recipe-update' object.slug %}?next={% url 'job:detail' object.slug %}">
-				      {% csrf_token %}
-	    			<select name="recipe">
-	    				{% for recipe in recipe_list %}
-					   <option value="{{recipe.slug}}">{{recipe}} -- {{recipe.description}}  </option>
-					  {% endfor %}
-					</select>
-					{% if perms.job.can_change_recipe %}
-						<input type="submit" value="Update Recipe">
-					{% else %}
-						<input type="submit" value="Update Recipe" disabled>
-						<span class="notice">* To Change recipe , you must have authorize</span>
-					{% endif %}
-					</form>
-				{% else %}
-					
-					{% if perms.job.can_change_recipe %}
-						<a href="{% url 'job:recipe-reset' object.slug %}?next={% url 'job:detail' object.slug %}">Change</a>
-					{% else %}
-						Change
-						<span class="notice">* To Change recipe , you must have authorize</span>
-					{% endif %}
-				{% endif %}
-				<br>
+				    		Recipe : <span><a href="{{object.recipe.get_absolute_url}}">{{object.recipe}}</a></span>
+					    	{% if object.recipe == None %}
+					    	<form method="POST" action="{% url 'job:recipe-update' object.slug %}?next={% url 'job:detail' object.slug %}">
+							      {% csrf_token %}
+				    			<select name="recipe">
+				    				{% for recipe in recipe_list %}
+								   <option value="{{recipe.slug}}">{{recipe}} -- {{recipe.description}}  </option>
+								  {% endfor %}
+								</select>
+								{% if perms.job.can_change_recipe %}
+									<input type="submit" value="Update Recipe">
+								{% else %}
+									<input type="submit" value="Update Recipe" disabled>
+									<span class="notice">* To Change recipe , you must have authorize</span>
+								{% endif %}
+								</form>
+							{% else %}
+								
+								{% if perms.job.can_change_recipe %}
+									<a href="{% url 'job:recipe-reset' object.slug %}?next={% url 'job:detail' object.slug %}">Change</a>
+								{% else %}
+									Change
+									<span class="notice">* To Change recipe , you must have authorize</span>
+								{% endif %}
+							{% endif %}
+							<br>
 
-	    		{% if object.recipe %}
-	    			Weight/Mix : {{object.recipe.sum}} <br>
-	    			
-	    			{% total_mix object.weight object.recipe.sum as total_mix  %}
-	    			Total  Mix : {{total_mix}} <br>
+				    		{% if object.recipe %}
+				    			Weight/Mix : {{object.recipe.sum}} <br>
+				    			
+				    			{% total_mix object.weight object.recipe.sum as total_mix  %}
+				    			Total  Mix : {{total_mix}} <br>
 
-	    			<table class="table">
-				      <thead class="thead-dark">
-				        <tr>
-				          <th scope="col">Item</th>
-				          <th scope="col">Description</th>
-				          <th scope="col">Weight Ratio</th>
-				          <th scope="col">Total Weight</th>
-				          <th scope="col">In Stock?</th>
-				        </tr>
-				      </thead>
-				      <tbody>
+				    			<table class="table">
+							      <thead class="thead-dark">
+							        <tr>
+							          <th scope="col">Item</th>
+							          <th scope="col">Description</th>
+							          <th scope="col">Weight Ratio</th>
+							          <th scope="col">Total Weight</th>
+							          <th scope="col">In Stock?</th>
+							        </tr>
+							      </thead>
+							      <tbody>
 
-	    			{% for rec in object.recipe.items.all|dictsort:"seq" %}
-	    				{% each_weight rec.ratio total_mix as total_each_weight %}
-	    				<tr>
-				          <td>{{rec}}</td>
-				          <td>{{rec.description}}</td>
-				          <td>{{rec.ratio}}</td>
-				          <td>{{total_each_weight}}</td>
-				          <td>{{rec.product.qty}}</td>
-				        </tr>
-	    			{% endfor %}
+				    			{% for rec in object.recipe.items.all|dictsort:"seq" %}
+				    				{% each_weight rec.ratio total_mix as total_each_weight %}
+				    				<tr>
+							          <td>{{rec}}</td>
+							          <td>{{rec.description}}</td>
+							          <td>{{rec.ratio}}</td>
+							          <td>{{total_each_weight}}</td>
+							          <td>{{rec.product.qty}}</td>
+							        </tr>
+				    			{% endfor %}
 
-		    		</tbody>
-		    	</table>
+					    		</tbody>
+					    	</table>
 
-	    		{% endif %}
-	    	</div>
-	    	<div>
-	    		{% endif %}
-	    		<br>
+				    		{% endif %}
+				    	</div>
+				    	<div>
+	    			{% endif %}
+
+
+	    			<div class="producion">
+	    				<h3>Production Information</h3>
+
+	    				{% for production in object.productions.all %}
+	    					<a href="{{production.get_absolute_url }}">{{production}}</a> <br>
+	    				{% endfor %}
+
+	    			</div>
+
+
 	    		
 	    		{% if object.master == False %}
-	    			<h3>Build Output Logs</h3>
+	    		<div class="output">
+	    			<h3>Build Output Information</h3>
 		    		{% if object.finished == False %}
 		    			<form method="POST" action="{% url 'job:complete-add' object.slug %}?next={% url 'job:detail' object.slug %}">
 					      {% csrf_token %}
@@ -124,7 +136,7 @@
 							{% endif %}
 						</form>
 		    		{% endif %}
-		    		<br>
+		    	
 		    		{% if object.completes.count > 0 %}
 		    			Total  Build Completed : {{object.completed}} <br>
 		    			<table class="table">

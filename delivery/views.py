@@ -2,13 +2,14 @@ from django.shortcuts import render
 from django.db.models import Q,F
 from django.views.generic import View,ListView,DetailView,CreateView,UpdateView,DeleteView
 from django.http import HttpResponse,HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required,permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 
 # Create your views here.
 from .models import Delivery
 
 @login_required
+@permission_required('delivery.can_view')
 def index(request):
     fname = "delivery/index.html"
     delivery_list 	= Delivery.objects.filter(
@@ -22,9 +23,10 @@ def index(request):
 			}
 		)
 
-class DeliveryListView(LoginRequiredMixin,ListView):
+class DeliveryListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model 		= Delivery
 	paginate_by = 100
+	permission_required = ('delivery.can_view','delivery.can_edit','delivery.can_add')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -34,6 +36,7 @@ class DeliveryListView(LoginRequiredMixin,ListView):
 									Q(po__product__name__icontains=query)).order_by('-created_date')
 		return Delivery.objects.all()
 
-class DeliveryDetailView(LoginRequiredMixin,DetailView):
+class DeliveryDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Delivery
+	permission_required = ('delivery.can_view','delivery.can_edit','delivery.can_add')
 
