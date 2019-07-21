@@ -12,7 +12,7 @@ from .models import Po
 from product.models import ProductGroup
 
 @login_required
-@permission_required('po.can_view')
+@permission_required('po.view_po')
 def index(request):
     fname = "po/index.html"
     po_list 	= Po.objects.filter(
@@ -30,7 +30,7 @@ def index(request):
 class PoListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model 		= Po
 	paginate_by = 100
-	permission_required = ('po.can_view','po.can_edit','po.can_add')
+	permission_required = ('po.view_po')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -43,6 +43,6 @@ class PoListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 
 class PoDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Po
-	permission_required = ('po.can_view','po.can_edit','po.can_add')
+	permission_required = ('po.view_po')
 
 

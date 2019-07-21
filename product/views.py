@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixi
 import datetime
 
 @login_required
-@permission_required('product.can_view')
+@permission_required('product.view_product')
 def index(request):
     fname = "product/index.html"
     product_list = Product.objects.filter(
@@ -28,7 +28,7 @@ from .models import Product,ProductGroup
 class ProductListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model = Product
 	paginate_by = 100
-	permission_required = ('product.can_view','product.can_edit','product.can_add')
+	permission_required = ('product.view_product')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -43,7 +43,7 @@ class ProductListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 
 class ProductDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Product
-	permission_required = ('product.can_view','product.can_edit','product.can_add')
+	permission_required = ('product.view_product')
 
 
 class ProductGroupListView(LoginRequiredMixin,ListView):

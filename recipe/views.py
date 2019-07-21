@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixi
 from .models import Recipe
 
 @login_required
-@permission_required('recipe.can_view')
+@permission_required('recipe.view_recipe')
 def index(request):
     fname = "recipe/index.html"
     recipe_list = Recipe.objects.filter(
@@ -27,7 +27,7 @@ def index(request):
 class RecipeListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model = Recipe
 	paginate_by = 100
-	permission_required = ('recipe.can_view','recipe.can_edit','recipe.can_add')
+	permission_required = ('recipe.view_recipe')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -38,4 +38,4 @@ class RecipeListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 
 class RecipeDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Recipe
-	permission_required = ('recipe.can_view','recipe.can_edit','recipe.can_add')
+	permission_required = ('recipe.view_recipe')

@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixi
 from .models import Machine
 
 @login_required
-@permission_required('machine.can_view')
+@permission_required('machine.view_machine')
 def index(request):
     fname = "machine/index.html"
     machine_list = Machine.objects.filter(
@@ -29,7 +29,7 @@ def index(request):
 class MachineListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model 		= Machine
 	paginate_by = 100
-	permission_required = ('machine.can_view','machine.can_edit','machine.can_add')
+	permission_required = ('machine.view_machine')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -40,6 +40,6 @@ class MachineListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 
 class MachineDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Machine
-	permission_required = ('machine.can_view','machine.can_edit','machine.can_add')
+	permission_required = ('machine.view_machine')
 
 

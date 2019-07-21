@@ -24,7 +24,7 @@
 				          <th scope="col">Description</th>
 				          <th scope="col">Shift</th>
 				          <th scope="col">Machine</th>
-				          <th scope="col">production_date</th>
+				          <th scope="col">Date</th>
 				          <th scope="col">Order?</th>
 				          <th scope="col">Stock?</th>
 				          <th scope="col">Final?</th>
@@ -32,14 +32,14 @@
 				      </thead>
 				      <tbody>
 
-	    	{% for production in object.productions.all|dictsort:"created_date" %}
+	    	{% for production in object.productions.all|dictsortreversed:"created_date"|slice:":20" %}
 	    				<tr>
 				          <td><a href="{{production.get_absolute_url}}">{{production}}</a></td>
 				          <td><a href="{{production.job.get_absolute_url}}">{{production.job}}</a></td>
 				          <td>{{production.description}}</td>
 				          <td>{{production.shifts}}</td>
 				          <td>{{production.machine}}</td>
-				          <td>{{production.production_date}}</td>
+				          <td>{{production.created_date}}</td>
 				          <td>{{production.order_qty}}</td>
 				          <td>{{production.stock_qty}}</td>
 				          <td>{{production.final_qty}}</td>

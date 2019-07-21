@@ -8,7 +8,7 @@ import datetime
 
 # Create your views here.
 @login_required
-@permission_required('production.can_view')
+@permission_required('production.view_production')
 def index(request):
     fname = "production/index.html"
     #     # modified_date__gt= datetime.datetime.today()-datetime.timedelta(days=30)
@@ -30,7 +30,7 @@ from .models import (Production,
 class ProductionListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model = Production
 	paginate_by = 100
-	permission_required = ('production.can_view','production.can_edit','production.can_add')
+	permission_required = ('production.view_production')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -42,7 +42,7 @@ class ProductionListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 
 class ProductionDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Production
-	permission_required = ('production.can_view','production.can_edit','production.can_add')
+	permission_required = ('production.view_production')
 
 
 class ProductionHourDetailView(LoginRequiredMixin,DetailView):

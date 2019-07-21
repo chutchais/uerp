@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixi
 from .models import Customer
 
 @login_required
-@permission_required('customer.can_view')
+@permission_required('customer.view_customer')
 def index(request):
     fname = "customer/index.html"
     return render(
@@ -19,7 +19,7 @@ def index(request):
 class CustomerListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model = Customer
 	paginate_by = 100
-	permission_required = ('customer.can_view','customer.can_edit','customer.can_add')
+	permission_required = ('customer.view_customer')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -33,7 +33,8 @@ class CustomerListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 
 class CustomerDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Customer
-	permission_required = ('customer.can_view','customer.can_edit','customer.can_add')
+	permission_required = ('customer.view_customer')
+	# 'customer.change_customer', 'customer.add_customer', 'customer.delete_customer', 'customer.view_customer'
 
 
 # permission_required = 'polls.can_vote'

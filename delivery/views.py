@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixi
 from .models import Delivery
 
 @login_required
-@permission_required('delivery.can_view')
+@permission_required('delivery.view_delivery')
 def index(request):
     fname = "delivery/index.html"
     delivery_list 	= Delivery.objects.filter(
@@ -26,7 +26,7 @@ def index(request):
 class DeliveryListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model 		= Delivery
 	paginate_by = 100
-	permission_required = ('delivery.can_view','delivery.can_edit','delivery.can_add')
+	permission_required = ('delivery.view_delivery')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -38,5 +38,5 @@ class DeliveryListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 
 class DeliveryDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Delivery
-	permission_required = ('delivery.can_view','delivery.can_edit','delivery.can_add')
+	permission_required = ('delivery.view_delivery')
 

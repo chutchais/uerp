@@ -12,6 +12,7 @@
             <!-- Start Item -->
               
               {% if perms.po %}
+               <!--  {{perms.po}} -->
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card" >
                       <div class="card-body">
@@ -53,7 +54,7 @@
               </div>
               {% endif %}
 
-              {% if perms.po %}
+             <!--  {% if perms.po %}
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card">
                       <div class="card-body ">
@@ -65,7 +66,7 @@
                       </div>
                     </div>
               </div>
-              {% endif %}
+              {% endif %} -->
 
 
               {% if perms.production %}
@@ -124,6 +125,7 @@
         <h2 class="col-12">Configuration</h2>
         <!-- Start Item -->
           {% if perms.customer %}
+              <!-- {{perms.customer}} -->
               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div class="card">
                       <div class="card-body">

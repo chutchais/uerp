@@ -14,7 +14,7 @@ from job.models import Job
 from po.models import Po
 
 @login_required
-@permission_required('order.can_view')
+@permission_required('order.view_order')
 def index(request):
     fname = "order/index.html"
     order_list 	= Order.objects.filter(
@@ -32,7 +32,7 @@ def index(request):
 class OrderListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 	model = Order
 	paginate_by = 100
-	permission_required = ('order.can_view','order.can_edit','order.can_add')
+	permission_required = ('order.view_order')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
@@ -46,7 +46,7 @@ class OrderListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 
 class OrderDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 	model = Order
-	permission_required = ('order.can_view','order.can_edit','order.can_add')
+	permission_required = ( 'order.view_order')
 
 	def get_context_data(self, **kwargs):
 		context     		= super().get_context_data(**kwargs)
