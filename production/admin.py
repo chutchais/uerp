@@ -116,7 +116,7 @@ class RawMaterialUsageInline(admin.TabularInline):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "recipeitem":
             production = self.get_object(request,Production)
-            print ('Master Job %s' % production.job.recipe)
+            # print ('Master Job %s' % production.job.recipe)
             if production :
                 kwargs["queryset"] = RecipeItem.objects.filter(recipe=production.job.recipe,).order_by('product')
         return super(RawMaterialUsageInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
