@@ -38,8 +38,8 @@ class Production(models.Model):
 	active			= models.BooleanField(default=True)
 	finished	 	= models.BooleanField(default=False)
 
-	class Meta:
-		unique_together = [['job', 'shifts']]
+	# class Meta:
+	# 	unique_together = [['job', 'shifts']]
 
 
 	def __str__(self):

@@ -109,11 +109,14 @@
 
 	    			<div class="producion">
 	    				<h3>Production Information</h3>
+	    				<ul>
 
 	    				{% for production in object.productions.all %}
-	    					<a href="{{production.get_absolute_url }}">{{production}}</a> <br>
+	    					<li>
+	    						<a href="{{production.get_absolute_url }}">{{production}}</a> -- <i>{{production.created_date }}</i> 
+	    					</li>
 	    				{% endfor %}
-
+	    				</ul>
 	    			</div>
 
 
