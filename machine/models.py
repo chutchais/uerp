@@ -6,6 +6,7 @@ from django.db.models import Sum
 # from django.db.models import Sum
 
 # Create your models here.
+from django.contrib.auth.models import User
 from product.models import ProductGroup
 
 class Machine(models.Model):
@@ -22,6 +23,8 @@ class Machine(models.Model):
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	draft			= models.BooleanField(default=True)
 	active			= models.BooleanField(default=True)
+	created_user	= models.ForeignKey(User, on_delete=models.SET_NULL,
+						blank=True,null=True)
 
 	class Meta:
 		verbose_name = 'Machine'
