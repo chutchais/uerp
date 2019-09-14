@@ -29,7 +29,10 @@ class Recipe(models.Model):
 		return self.items.count()
 
 	def sum(self):
-		return round(self.items.aggregate(Sum('ratio'))['ratio__sum'],3)
+		if self.items.count() > 0:
+			return round(self.items.aggregate(Sum('ratio'))['ratio__sum'],3)
+		else :
+			return 0
 
 	def get_absolute_url(self):
 		return reverse('recipe:detail', kwargs={'slug': self.slug})

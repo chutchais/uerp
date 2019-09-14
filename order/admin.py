@@ -1,12 +1,23 @@
 from django.contrib import admin
 
 # Register your models here.
+
+# For Export Data
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+from import_export.admin import ImportExportActionModelAdmin
+
 from order.models import Order,OrderItem
 from po.models	  import Po
 from product.models import Product
 
+class OrderItemResource(resources.ModelResource):
+    class Meta:
+        model = OrderItem
+        import_id_fields = ('seq','order')
+        fields = ('seq','order','po','note','created_date','completed')
 
-class OrderItemAdmin(admin.ModelAdmin):
+class OrderItemAdmin(ImportExportActionModelAdmin,ImportExportModelAdmin,admin.ModelAdmin):
     search_fields       = ['order__name','po__name','note']
     list_filter         = []
     list_display        = ('seq','order','po','note','created_date','completed')
@@ -15,6 +26,8 @@ class OrderItemAdmin(admin.ModelAdmin):
         ('Basic Information',{'fields': ['seq','order','po','note','created_date','completed']}),
         # ('Purchase Order',{'fields': ['pos']}),
     ]
+    resource_class      = OrderItemResource
+    
 admin.site.register(OrderItem,OrderItemAdmin)
 
 class OrderItemInline(admin.TabularInline):
@@ -38,7 +51,13 @@ class OrderItemInline(admin.TabularInline):
         return model.objects.get(pk=object_id)
 
 
-class OrderAdmin(admin.ModelAdmin):
+class OrderResource(resources.ModelResource):
+    class Meta:
+        model = Order
+        import_id_fields = ('name',)
+        fields = ('name','description','product','created_date','draft','completed')
+
+class OrderAdmin(ImportExportActionModelAdmin,ImportExportModelAdmin,admin.ModelAdmin):
     search_fields 		= ['name','product__name','product__fg_name','description']
     list_filter 		= ('draft','completed',('product',admin.RelatedOnlyFieldListFilter))
     list_display 		= ('name','description','product','pos','weight','created_date','draft','completed')
@@ -51,4 +70,6 @@ class OrderAdmin(admin.ModelAdmin):
         # ('Purchase Order',{'fields': ['pos']}),
     ]
     inlines = [OrderItemInline]
+    resource_class      = OrderResource
+
 admin.site.register(Order,OrderAdmin)

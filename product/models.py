@@ -90,13 +90,13 @@ PRODUCT_TYPE_CHOICES = (
 # Product Unit
 # Box,Pice,Roll,Section
 BOX 		= 'BOX'
-PICE 		= 'PICE'
+PICE 		= 'PIECE'
 ROLL 		= 'ROLL'
 SECTION 	= 'SECTION'
 OTHER 		= 'OTHER'
 PRODUCT_UNIT_CHOICES = (
 		(BOX,'Box'),
-		(PICE,'Pice'),
+		(PICE,'Piece'),
 		(ROLL,'Roll'),
 		(SECTION,'Section'),
 		(OTHER,'Other')

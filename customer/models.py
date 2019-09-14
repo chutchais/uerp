@@ -4,6 +4,8 @@ from django.utils.text import slugify
 from django.db.models.signals import pre_save
 
 # Create your models here.
+from django.contrib.auth.models import User
+
 class Customer(models.Model):
 	name 				= models.CharField(primary_key=True,max_length=50,null = False)
 	slug 				= models.SlugField(unique=True,blank=True, null=True)
@@ -14,6 +16,8 @@ class Customer(models.Model):
 	created_date		= models.DateTimeField(auto_now_add=True)
 	modified_date		= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active				= models.BooleanField(default=True)
+	created_user		= models.ForeignKey(User, on_delete=models.SET_NULL,
+							blank=True,null=True)
 
 	class Meta:
 		verbose_name = 'Customer'

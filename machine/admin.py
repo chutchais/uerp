@@ -13,6 +13,8 @@ class MachineResource(resources.ModelResource):
 	class Meta:
 		model = Machine
 		import_id_fields = ('name',)
+		skip_unchanged = True
+		report_skipped= True
 		fields =('name','description','productgroup')
 
 
@@ -26,6 +28,9 @@ class MachineAdmin(ImportExportActionModelAdmin,ImportExportModelAdmin,admin.Mod
 		('Basic Information',{'fields': ['name','slug','description','productgroup',
 										('created_date','created_user'),'modified_date']}),
 	]
+	save_as = True
+	save_as_continue = True
+	save_on_top =True
 
 	def save_model(self, request, obj, form, change):
 		if getattr(obj, 'created_user', None) is None:
