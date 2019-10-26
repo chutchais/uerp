@@ -37,11 +37,11 @@
     {% for object in object_list %}
 
         <tr>
-          <th scope="row"><a href="{{ object.get_absolute_url }}">
+          <th scope="row" class="text-nowrap"><a href="{{ object.get_absolute_url }}">
               {{object.name}}
             </a>
           </th>
-          <td>{{object.fg_name|default:""}}</td>
+          <td class="text-nowrap">{{object.fg_name|default:""}}</td>
           <td>{{object.description}}</td>
           <td>{{object.group}}</td>
           <td>{{object.qty}}</td>
