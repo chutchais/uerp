@@ -38,13 +38,13 @@
 
     {% for object in object_list %}
         <tr>
-          <th scope="row">
+          <th scope="row" class="text-nowrap">
               {% if object.master  %}
                 <i class="fa fa-tags" aria-hidden="true"></i>
               {% endif %}
               <a href="{{ object.get_absolute_url }}">{{object.name}}</a>
           </th>
-          <td><a href="{{object.order.get_absolute_url}}">{{object.order|default:"Order not defined"}}</a></td>
+          <td><a href="{{object.order.get_absolute_url}}">{{object.order|default:""}}</a></td>
           <td><a href="{{object.product.get_absolute_url}}">{{object.product}} </a></td>
           <td><span class="qty">{{object.qty}}</span></td>
           <td>{{object.start_date|default:""}}</td>

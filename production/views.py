@@ -12,7 +12,7 @@ import datetime
 def index(request):
     fname = "production/index.html"
     #     # modified_date__gt= datetime.datetime.today()-datetime.timedelta(days=30)
-    production_list 	= Production.objects.filter(
+    production_list 	= Production.objects.select_related('job__product__group').filter(
     						active= True ,finished = False,
     						modified_date__gt= datetime.datetime.today()-datetime.timedelta(days=7)
     					).order_by('job__product__group','created_date')
@@ -28,7 +28,8 @@ from .models import (Production,
 					ProductionHour)
 
 class ProductionListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
-	model = Production
+	# model = Production
+	queryset = Production.objects.select_related()
 	paginate_by = 100
 	permission_required = ('production.view_production')
 
@@ -38,15 +39,17 @@ class ProductionListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 			return Production.objects.filter(Q(job__name__icontains=query) |
 									Q(machine__name__icontains=query) |
 									Q(description__icontains=query) ).order_by('-created_date')
-		return Production.objects.all()
+		return Production.objects.select_related()
 
 class ProductionDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
-	model = Production
+	# model = Production
+	queryset = Production.objects.select_related()
 	permission_required = ('production.view_production')
 
 
 class ProductionHourDetailView(LoginRequiredMixin,DetailView):
-	model = ProductionHour
+	# model = ProductionHour
+	queryset = ProductionHour.objects.select_related()
 
 
 # class ProductGroupListView(ListView):

@@ -13,7 +13,7 @@ from .models import Recipe
 @permission_required('recipe.view_recipe')
 def index(request):
     fname = "recipe/index.html"
-    recipe_list = Recipe.objects.filter(
+    recipe_list = Recipe.objects.select_related('prod_group').filter(
     					active = True
     					).order_by('prod_group','name')
     return render(
@@ -25,17 +25,19 @@ def index(request):
 		)
 
 class RecipeListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
-	model = Recipe
+	# model = Recipe
+	queryset = Recipe.objects.select_related()
 	paginate_by = 100
 	permission_required = ('recipe.view_recipe')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
 		if query :
-			return Recipe.objects.filter(Q(name__icontains=query) |
+			return Recipe.objects.select_related('prod_group').filter(Q(name__icontains=query) |
 									Q(description__icontains=query) ).order_by('-created_date')
-		return Recipe.objects.all()
+		return Recipe.objects.select_related()
 
 class RecipeDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
-	model = Recipe
+	# model = Recipe
+	queryset = Recipe.objects.select_related()
 	permission_required = ('recipe.view_recipe')

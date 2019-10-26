@@ -17,7 +17,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixi
 @permission_required('job.view_job')
 def index(request):
     fname = "job/index.html"
-    job_list 	= Job.objects.filter(
+    job_list 	= Job.objects.select_related('product__group').filter(
     						active= True ,
     						finished = False
     					).order_by('product__group','created_date')
@@ -30,22 +30,25 @@ def index(request):
 		)
 
 class JobListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
-	model = Job
+	# model = Job
+	queryset = Job.objects.select_related()
 	paginate_by = 100
 	permission_required = ('job.view_job')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
 		if query :
-			return Job.objects.filter(Q(name__icontains=query) |
+			return Job.objects.select_related('product__group').filter(Q(name__icontains=query) |
 									Q(description__icontains=query) |
 									Q(product__name__icontains=query)|
+									Q(product__fg_name__icontains=query)|
 									Q(product__description__icontains=query) |
 									Q(order__name__icontains=query)).order_by('-created_date')
-		return Job.objects.all()
+		return Job.objects.select_related()
 
 class JobDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
-	model = Job
+	# model = Job
+	queryset = Job.objects.select_related()
 	permission_required = ('job.view_job')
 
 	def get_context_data(self, **kwargs):

@@ -15,7 +15,7 @@ from .models import Machine
 @permission_required('machine.view_machine')
 def index(request):
     fname = "machine/index.html"
-    machine_list = Machine.objects.filter(
+    machine_list = Machine.objects.select_related('productgroup').filter(
     					active = True
     					).order_by('productgroup','name')
     return render(
@@ -27,19 +27,21 @@ def index(request):
 		)
 
 class MachineListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
-	model 		= Machine
+	# model 		= Machine
+	queryset 	= Machine.objects.select_related()
 	paginate_by = 100
 	permission_required = ('machine.view_machine')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
 		if query :
-			return Machine.objects.filter(Q(name__icontains=query) |
+			return Machine.objects.select_related('productgroup').filter(Q(name__icontains=query) |
 									Q(description__icontains=query)).order_by('-created_date')
-		return Machine.objects.all()
+		return Machine.objects.select_related()
 
 class MachineDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
-	model = Machine
+	# model = Machine
+	queryset 	= Machine.objects.select_related()
 	permission_required = ('machine.view_machine')
 
 

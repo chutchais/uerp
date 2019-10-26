@@ -15,7 +15,7 @@ from product.models import ProductGroup
 @permission_required('po.view_po')
 def index(request):
     fname = "po/index.html"
-    po_list 	= Po.objects.filter(
+    po_list 	= Po.objects.select_related('product__group').filter(
     						active= True ,
     						completed = False
     					).order_by('product__group','created_date')
@@ -28,21 +28,24 @@ def index(request):
 		)
 
 class PoListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
-	model 		= Po
+	# model 		= Po
+	queryset 	= Po.objects.select_related()
 	paginate_by = 100
 	permission_required = ('po.view_po')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
 		if query :
-			return Po.objects.filter(Q(name__icontains=query) |
+			return Po.objects.select_related('product').filter(Q(name__icontains=query) |
 									Q(description__icontains=query) |
 									Q(product__name__icontains=query)|
-									Q(product__description__icontains=query)).order_by('-created_date')
-		return Po.objects.all()
+									Q(product__fg_name__icontains=query)|
+									Q(product__description__icontains=query)).order_by('-modified_date')
+		return Po.objects.select_related()
 
 class PoDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
-	model = Po
+	# model = Po
+	queryset 	= Po.objects.select_related()
 	permission_required = ('po.view_po')
 
 

@@ -17,7 +17,7 @@ from po.models import Po
 @permission_required('order.view_order')
 def index(request):
     fname = "order/index.html"
-    order_list 	= Order.objects.filter(
+    order_list 	= Order.objects.select_related('product__group').filter(
     						active= True ,
     						completed = False
     					).order_by('product__group','created_date')
@@ -30,22 +30,26 @@ def index(request):
 		)
 
 class OrderListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
-	model = Order
+	# model = Order
+	queryset = Order.objects.select_related()
 	paginate_by = 100
 	permission_required = ('order.view_order')
 
 	def get_queryset(self):
 		query = self.request.GET.get('q')
 		if query :
+			# print(query)
 			return Order.objects.filter(Q(name__icontains=query) |
 									Q(description__icontains=query) |
 									Q(product__name__icontains=query)|
+									Q(product__fg_name__icontains=query)|
 									Q(product__description__icontains=query)).order_by('-created_date')
-		return Order.objects.all()
+		return Order.objects.select_related()
 
 
 class OrderDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
-	model = Order
+	# model = Order
+	queryset = Order.objects.select_related()
 	permission_required = ( 'order.view_order')
 
 	def get_context_data(self, **kwargs):
@@ -57,13 +61,16 @@ class OrderDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 
 
 class OrderItemCreateView(LoginRequiredMixin,CreateView):
-	model = OrderItem
+	# model = OrderItem
+	queryset = OrderItem.objects.select_related()
 
 class OrderItemListView(LoginRequiredMixin,ListView):
-	model = OrderItem
+	# model = OrderItem
+	queryset = OrderItem.objects.select_related()
 
 class OrderItemDeleteView(LoginRequiredMixin,DeleteView):
-	model = OrderItem
+	# model = OrderItem
+	queryset = OrderItem.objects.select_related()
 	def get_success_url(self):
 		redirect = self.request.GET.get('next')
 		return redirect
