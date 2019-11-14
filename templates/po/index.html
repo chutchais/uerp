@@ -13,17 +13,14 @@
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-dark">{{ po.product.group }}</li>
              {% endifchanged %}
-            <li class="list-group-item"><a href="{{po.get_absolute_url}}">{{po}}</a>  <i>({{po.created_date}})</i> 
+            <li class="list-group-item">
+                <a href="{{po.get_absolute_url}}">{{po}}</a> -- {{po.product}}  <i>created on :{{po.created_date}}</i> 
+               <button type="button" class="btn btn-secondary">
+                Qty <span class="badge badge-light">{{po.qty}}</span>
+                <span class="sr-only">unread messages</span>
+              </button>
 
-
-
-
-             <button type="button" class="btn btn-secondary">
-              Qty <span class="badge badge-light">{{po.qty}}</span>
-              <span class="sr-only">unread messages</span>
-            </button>
-
-         </li>
+          </li>
         {% endfor %}
 
     </div>

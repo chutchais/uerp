@@ -15,9 +15,11 @@ class ProductGroup(models.Model):
 	modified_date	= models.DateTimeField(blank=True, null=True,auto_now=True)
 	active			= models.BooleanField(default=True)
 
+
 	class Meta:
 		verbose_name = 'Group'
 		verbose_name_plural = 'Products - Groups'
+		ordering = ['name']
 
 	def __str__(self):
 		return ('%s (%s)' % (self.name,self.description))
@@ -51,6 +53,7 @@ class ProductColor(models.Model):
 	class Meta:
 		verbose_name = 'Color'
 		verbose_name_plural = 'Products - Colors'
+		ordering = ['name']
 
 	def __str__(self):
 		return ('%s (%s)' % (self.name,self.description))
@@ -66,6 +69,7 @@ class ProductBrand(models.Model):
 	class Meta:
 		verbose_name = 'Brand'
 		verbose_name_plural = 'Products - Brands'
+		ordering = ['name']
 
 	def __str__(self):
 		return ('%s' % (self.name))
