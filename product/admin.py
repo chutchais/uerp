@@ -100,12 +100,8 @@ class ProductAdmin(ImportExportActionModelAdmin,ImportExportModelAdmin,admin.Mod
     ordering = ['name']
     list_display_links  = ['name','parent']
     fieldsets = [
-<<<<<<< HEAD
-        ('Basic Information',{'fields': [('name','prod_type'),'slug',('fg_name','customer'),'description',('group','color')]}),
-=======
         ('Basic Information',{'fields': [('name','prod_type'),'slug',('fg_name','customer'),
             'description',('group','color')]}),
->>>>>>> 422bef26c8159d00b49ec057b43cc6929988495b
         ('Brand',{'fields': ['brand']}),
         ('Warehouse Information',{'fields': [('qty','last_warehouse_date'),'min_order']}),
         ('Job Prefix Information',{'fields': ['job_prefix']}),
