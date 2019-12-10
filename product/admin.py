@@ -100,12 +100,12 @@ class ProductAdmin(ImportExportActionModelAdmin,ImportExportModelAdmin,admin.Mod
     ordering = ['name']
     list_display_links  = ['name','parent']
     fieldsets = [
-        ('Basic Information',{'fields': [('name','prod_type'),'slug','description',('group','color')]}),
+        ('Basic Information',{'fields': [('name','prod_type'),'slug',('fg_name','customer'),'description',('group','color')]}),
         ('Brand',{'fields': ['brand']}),
         ('Warehouse Information',{'fields': [('qty','last_warehouse_date'),'min_order']}),
         ('Job Prefix Information',{'fields': ['job_prefix']}),
         ('Bom Level Information',{'fields': ['parent']}),
-        ('Finish Goods Information',{'fields': ['fg_name','customer',('weight','weight_runner','weight_unit'),('prod_unit','unit_per_pack','max_pack')]}),
+        ('Finish Goods Information',{'fields': [('weight','weight_runner','weight_unit'),('prod_unit','unit_per_pack','max_pack')]}),
     ]
     inlines = [ProductInline]
     resource_class      = ProductResource
